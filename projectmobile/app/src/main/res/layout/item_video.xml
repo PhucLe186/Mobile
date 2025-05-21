@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText"
+    android:layout_height="match_parent">
+
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/playerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:show_buffering="always"
+        app:show_subtitle_button="true"
+        app:use_controller="false">
+    </androidx.media3.ui.PlayerView>
+
+    <LinearLayout
+        android:id="@+id/layout_interaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Avatar -->
+        <ImageView
+            android:id="@+id/user_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="User avatar"
+            android:padding="2dp"
+            app:tint="@color/white"
+            android:src="@drawable/user" />
+
+        <!-- Like button + count -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="Like video"
+                app:tint="@color/white"
+                android:src="@drawable/like" />
+
+            <TextView
+                android:id="@+id/txt_like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="328.7K"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Comment button + count -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="Comment"
+                android:src="@drawable/comment"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/txt_count_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="578"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Share button -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+                <ImageView
+                    android:layout_width="40dp"
+                    app:tint="@color/white"
+                    android:layout_height="40dp"
+                    android:contentDescription="share"
+                    android:src="@drawable/share" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="share"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
+        </LinearLayout>
+
+
+        <!-- Music / sound icon -->
+        <ImageView
+            android:id="@+id/img_sound_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="show sound avatar"
+            tools:srcCompat="@tools:sample/avatars" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/playerView"
+        app:layout_constraintEnd_toStartOf="@+id/layout_interaction"
+        app:layout_constraintStart_toStartOf="parent"
+
+        tools:ignore="UseCompoundDrawables">
+
+        <TextView
+            android:id="@+id/txt_author_name"
+            android:layout_width="wrap_content"
+            android:text="Author name"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"/>
+       <TextView
+           android:id="@+id/txt_description"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="15sp"
+           android:text="nlafjdshfkl áhdfkasdfhalsjdfhkljashlbfhaslhdflkjasdfkjlalskjdfhlasdjflashdfjahlsjdfhlasjdfhlkasjdfljasdfhljahdfljkhasldjf,nsbfkjashdklfhalskjdf"
+           />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

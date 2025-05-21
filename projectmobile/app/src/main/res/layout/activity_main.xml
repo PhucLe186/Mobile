@@ -2,18 +2,141 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/main" tools:context=".MainActivity"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:ignore="HardcodedText">
+    <!--Recycler of Videos-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_videos"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/layout_video_panel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:layout_width="wrap_content"
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/btn_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:tint="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_margin="5dp"
+            android:contentDescription="searching"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_search" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--Control panel-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_video_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:paddingBottom="10dp"
+        android:background="@color/black"
+        android:paddingTop="10dp">
+    <!--Add video button-->
+        <FrameLayout
+            android:id="@+id/btn_add_video"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_width="80dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:background="@drawable/tiktok_plus_symbol_button_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="+"
+                android:layout_marginBottom="4dp"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="35sp" />
+        </FrameLayout>
+        <!--Home Button-->
+        <LinearLayout
+            android:id="@+id/btn_home"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_add_video"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UseCompoundDrawables">
+            <ImageView
+                android:id="@+id/img_home"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:contentDescription="home"
+                app:srcCompat="@drawable/home"
+                app:tint="@color/white" />
+            <TextView
+                android:id="@+id/txt_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Lobby"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+        <!--User Info Button-->
+        <LinearLayout
+            android:id="@+id/btn_user_icon"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_add_video"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UseCompoundDrawables">
+            <ImageView
+                android:id="@+id/img_user_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:contentDescription="home"
+                app:srcCompat="@drawable/user"
+                app:tint="@color/white" />
+            <TextView
+                android:id="@+id/txt_user_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Lobby"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
