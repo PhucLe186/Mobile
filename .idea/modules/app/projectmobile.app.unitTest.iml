@@ -15,9 +15,19 @@
     <output-test url="file://$MODULE_DIR$/../../../projectmobile/app/build/intermediates/javac/debugUnitTest/compileDebugUnitTestJavaWithJavac/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../projectmobile/app/build/generated/ap_generated_sources/debugUnitTest/out" />
+    <content url="file://$MODULE_DIR$/../../../projectmobile/app/build/generated/ap_generated_sources/debugUnitTest/out" />
+    <content url="file://$MODULE_DIR$/../../../projectmobile/app/build/generated/ap_generated_sources/debugUnitTest/out" />
     <content url="file://$MODULE_DIR$/../../../projectmobile/app/src/test">
       <sourceFolder url="file://$MODULE_DIR$/../../../projectmobile/app/src/test/java" isTestSource="true" />
     </content>
+    <content url="file://$MODULE_DIR$/../../../projectmobile/app/src/test">
+      <sourceFolder url="file://$MODULE_DIR$/../../../projectmobile/app/src/test/java" isTestSource="true" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../projectmobile/app/src/test">
+      <sourceFolder url="file://$MODULE_DIR$/../../../projectmobile/app/src/test/java" isTestSource="true" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../projectmobile/app/src/testDebug" />
+    <content url="file://$MODULE_DIR$/../../../projectmobile/app/src/testDebug" />
     <content url="file://$MODULE_DIR$/../../../projectmobile/app/src/testDebug" />
     <orderEntry type="jdk" jdkName="Android API 35, extension level 13 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
