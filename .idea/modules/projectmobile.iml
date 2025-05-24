@@ -6,10 +6,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../projectmobile/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../projectmobile/build" />
     </content>
-    <content url="file://$MODULE_DIR$/../../projectmobile">
-      <excludeFolder url="file://$MODULE_DIR$/../../projectmobile/.gradle" />
-      <excludeFolder url="file://$MODULE_DIR$/../../projectmobile/build" />
-    </content>
+    <content url="file://$MODULE_DIR$/../../projectmobile" />
     <content url="file://$MODULE_DIR$/../../projectmobile" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

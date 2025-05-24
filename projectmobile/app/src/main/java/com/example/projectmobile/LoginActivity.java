@@ -1,11 +1,13 @@
 package com.example.projectmobile;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class LoginActivity extends AppCompatActivity {
 
     ImageView back_btn;
+    TextView btn_register;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -25,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         back_btn = (ImageView) findViewById(R.id.btn_back);
+        btn_register = (TextView) findViewById(R.id.btn_register);
 
         back_btn.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
@@ -40,7 +44,10 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         });
 
-
-
+        btn_register.setOnClickListener(v -> {
+                    Intent intent = new Intent(this, RegisterActivity.class);
+                    startActivity(intent);
+                }
+        );
     }
 }
