@@ -20,33 +20,38 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <!--Control panel-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:orientation="horizontal"
         android:padding="5dp"
-        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
         <ImageView
             android:id="@+id/btn_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:tint="@color/white"
-            android:clickable="true"
-            android:focusable="true"
+            android:layout_width="29dp"
+            android:layout_height="43dp"
             android:layout_margin="5dp"
+            android:layout_marginEnd="64dp"
+            android:layout_weight="1"
+            android:clickable="true"
             android:contentDescription="searching"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icon_search" />
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/icon_search"
+            app:tint="@color/white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--Control panel-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_video_panel"
         android:layout_width="match_parent"
@@ -99,12 +104,13 @@
                 android:contentDescription="home"
                 app:srcCompat="@drawable/home"
                 app:tint="@color/white" />
+
             <TextView
                 android:id="@+id/txt_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Lobby"
+                android:text="Home"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -129,12 +135,13 @@
                 android:contentDescription="home"
                 app:srcCompat="@drawable/user"
                 app:tint="@color/white" />
+
             <TextView
                 android:id="@+id/txt_user_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Lobby"
+                android:text="User"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
         </LinearLayout>
