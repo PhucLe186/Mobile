@@ -1,4 +1,5 @@
 package com.example.projectmobile;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
@@ -17,13 +18,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayoutManager;
-    PagerSnapHelper snapHelper ;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private PagerSnapHelper snapHelper;
+    private VideoAdapter videoAdapter;
 
-    VideoAdapter videoAdapter;
-
-    LinearLayout btn_user_icon;
+    private LinearLayout btnUser, btnInbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,35 +31,69 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        intentSearching();
-        intentUserInformation();
-        intentCreateVideo();
+        setupNavigationButtons();
+        setupRecyclerView();
+    }
+
+    private void setupNavigationButtons() {
+        // Nút tìm kiếm
+        ImageView btnSearch = findViewById(R.id.btn_search);
+        if (btnSearch != null) {
+            btnSearch.setOnClickListener(v -> {
+                startActivity(new Intent(this, SearchActivity.class));
+            });
+        }
+
+        // Nút tạo video
+        FrameLayout btnCreateVideo = findViewById(R.id.btn_add_video);
+        if (btnCreateVideo != null) {
+            btnCreateVideo.setOnClickListener(v -> {
+                startActivity(new Intent(this, CreateVideoActivity.class));
+            });
+        }
+
+        // Nút hồ sơ người dùng
+        btnUser = findViewById(R.id.btn_user_icon);
+        if (btnUser != null) {
+            btnUser.setOnClickListener(v -> {
+                startActivity(new Intent(this, UserInformation.class));
+            });
+        }
+
+        // Nút hộp thư (chuyển đến InboxActivity)
+        btnInbox = findViewById(R.id.btn_inbox);
+        if (btnInbox != null) {
+            btnInbox.setOnClickListener(v -> {
+                startActivity(new Intent(this, InboxActivity.class));
+            });
+        }
+    }
+
+    private void setupRecyclerView() {
+        recyclerView = findViewById(R.id.recycler_videos);
+        linearLayoutManager = new LinearLayoutManager(this);
+        snapHelper = new PagerSnapHelper();
 
         List<String> videoUrls = Arrays.asList(
                 "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
                 "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
         );
 
-        recyclerView = findViewById(R.id.recycler_videos);
         videoAdapter = new VideoAdapter(videoUrls, this);
-        linearLayoutManager = new LinearLayoutManager(this);
-        snapHelper = new PagerSnapHelper();
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(videoAdapter);
         snapHelper.attachToRecyclerView(recyclerView);
 
-        recyclerView.setAdapter(videoAdapter);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
+        // Tự động phát video đầu tiên
         playFirstVideo();
 
+        // Lắng nghe sự kiện cuộn để phát video mới
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(newState == RecyclerView.SCROLL_STATE_IDLE){
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     int position = linearLayoutManager.findFirstVisibleItemPosition();
-                    videoAdapter.playVideoAtPosition(position);
-
-                    if(position != RecyclerView.NO_POSITION){
+                    if (position != RecyclerView.NO_POSITION) {
                         videoAdapter.playVideoAtPosition(position);
                     }
                 }
@@ -68,41 +102,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void playFirstVideo() {
-        recyclerView.post(()->{
+        recyclerView.post(() -> {
             int position = linearLayoutManager.findFirstVisibleItemPosition();
-            if(position != RecyclerView.NO_POSITION){
+            if (position != RecyclerView.NO_POSITION) {
                 videoAdapter.playVideoAtPosition(position);
             }
-        });
-    }
-
-    private void intentCreateVideo() {
-        FrameLayout btn_create_video = findViewById(R.id.btn_add_video);
-        btn_create_video.setOnClickListener(v->{
-            Intent intentCreateVideo = new Intent(this, CreateVideoActivity.class);
-            startActivity(intentCreateVideo);
-        });
-    }
-
-    private void intentSearching() {
-        ImageView btn_search = findViewById(R.id.btn_search);
-        btn_search.setOnClickListener(v->{
-            Intent intentSearching = new Intent(this, SearchActivity.class);
-            startActivity(intentSearching);
-        });
-    }
-    private void intentUserInformation() {
-        btn_user_icon = findViewById(R.id.btn_user_icon);
-        btn_user_icon.setOnClickListener(v->{
-            Intent intentUserInformation = new Intent(this, UserInformation.class);
-            startActivity(intentUserInformation);
         });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(videoAdapter != null) {
+        if (videoAdapter != null) {
             videoAdapter.releasePlayer();
         }
     }

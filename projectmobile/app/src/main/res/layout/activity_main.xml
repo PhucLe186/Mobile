@@ -2,11 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main" tools:context=".MainActivity"
-
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".MainActivity"
     tools:ignore="HardcodedText">
+
     <!--Recycler of Videos-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_videos"
@@ -16,20 +17,17 @@
         app:layout_constraintBottom_toTopOf="@+id/layout_video_panel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.recyclerview.widget.RecyclerView>
-
+    <!-- Search Button -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:padding="5dp"
         android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
             android:id="@+id/btn_search"
@@ -46,30 +44,33 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/icon_search" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <!--Control panel-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_video_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:paddingBottom="10dp"
         android:background="@color/black"
-        android:paddingTop="10dp">
-    <!--Add video button-->
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Add video button -->
         <FrameLayout
             android:id="@+id/btn_add_video"
-            android:clickable="true"
-            android:focusable="true"
             android:layout_width="80dp"
             android:layout_height="45dp"
             android:layout_gravity="center"
+            android:clickable="true"
+            android:focusable="true"
             android:background="@drawable/tiktok_plus_symbol_button_bg"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintEnd_toEndOf="parent">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,17 +81,19 @@
                 android:textColor="#000000"
                 android:textSize="35sp" />
         </FrameLayout>
-        <!--Home Button-->
+
+        <!-- Home Button -->
         <LinearLayout
             android:id="@+id/btn_home"
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_add_video"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_inbox"
+            app:layout_constraintStart_toStartOf="parent"
             tools:ignore="UseCompoundDrawables">
+
             <ImageView
                 android:id="@+id/img_home"
                 android:layout_width="40dp"
@@ -99,6 +102,7 @@
                 android:contentDescription="home"
                 app:srcCompat="@drawable/home"
                 app:tint="@color/white" />
+
             <TextView
                 android:id="@+id/txt_home"
                 android:layout_width="wrap_content"
@@ -108,27 +112,63 @@
                 android:textColor="@color/white"
                 android:textSize="15sp" />
         </LinearLayout>
-        <!--User Info Button-->
+
+        <!-- Inbox / Message Button -->
         <LinearLayout
-            android:id="@+id/btn_user_icon"
-            android:clickable="true"
-            android:focusable="true"
+            android:id="@+id/btn_inbox"
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_add_video"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_home"
+            app:layout_constraintEnd_toStartOf="@+id/btn_add_video"
             tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/img_inbox"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:contentDescription="inbox"
+                app:srcCompat="@drawable/message"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/txt_inbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Inbox"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <!-- User Info Button -->
+        <LinearLayout
+            android:id="@+id/btn_user_icon"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_add_video"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="UseCompoundDrawables">
+
             <ImageView
                 android:id="@+id/img_user_icon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:contentDescription="home"
+                android:contentDescription="user"
                 app:srcCompat="@drawable/user"
                 app:tint="@color/white" />
+
             <TextView
                 android:id="@+id/txt_user_icon"
                 android:layout_width="wrap_content"
@@ -138,5 +178,6 @@
                 android:textColor="@color/white"
                 android:textSize="15sp" />
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
