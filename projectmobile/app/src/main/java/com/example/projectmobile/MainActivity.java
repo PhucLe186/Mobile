@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     private void intentUserInformation() {
         btn_user_icon = findViewById(R.id.btn_user_icon);
         btn_user_icon.setOnClickListener(v->{
-            Intent intentUserInformation = new Intent(this, UserInformation.class);
+            Intent intentUserInformation = new Intent(this, UserInformation_LoggedInProfile.class);
             startActivity(intentUserInformation);
         });
     }
