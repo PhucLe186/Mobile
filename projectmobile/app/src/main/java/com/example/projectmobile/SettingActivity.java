@@ -1,6 +1,8 @@
 package com.example.projectmobile;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +29,13 @@ public class SettingActivity extends AppCompatActivity {
         List.setLayoutManager(new LinearLayoutManager(this));
         SettingAdapter adapter = new SettingAdapter(this, arraycontact);
         List.setAdapter(adapter);
+
+        ImageView btnBack=findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> {
+            startActivity( new Intent(this, UserInformation_LoggedInProfile.class));
+        });
     }
+
 
     private void KhoiTaoDaTa() {
         arraycontact.add(new SettingItem(SettingItem.TYPE_HEADER, 0, "Cài đặt chung"));
