@@ -1,69 +1,81 @@
 package com.example.projectmobile;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import com.example.projectmobile.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends Activity {
 
-    EditText editTextSearch;
-    ListView listViewResults;
-    List<String> allVideos;
-    ArrayAdapter<String> adapter;
+    private EditText editTextSearch;
+    private TextView btnSearch;
+    private ImageView btnBack;
+    private ListView listViewResults;
+
+    private ArrayList<String> searchSuggestions;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_search);
 
-        // Áp dụng padding cho hệ thống thanh điều hướng/status bar
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
-        // Ánh xạ các thành phần UI
+        // Ánh xạ
         editTextSearch = findViewById(R.id.editTextSearch);
+        btnSearch = findViewById(R.id.btnSearch);
+        btnBack = findViewById(R.id.btnBack);
         listViewResults = findViewById(R.id.listViewResults);
 
-        // Dữ liệu mẫu
-        allVideos = new ArrayList<>();
-        allVideos.add("Funny cat video");
-        allVideos.add("Dance challenge 2025");
-        allVideos.add("Cooking with mom");
-        allVideos.add("Travel to Da Lat");
-        allVideos.add("TikTok trend mới");
+        // Dữ liệu gợi ý mẫu
+        searchSuggestions = new ArrayList<>();
+        searchSuggestions.add("Lặng Từ Nhân Thoại");
+        searchSuggestions.add("chai tẩy rửa đa năng");
+        searchSuggestions.add("sao mình chưa nắm tay doraemon");
+        searchSuggestions.add("nghịch lý 2 đồng xu");
+        searchSuggestions.add("under the influence remix");
 
-        // Adapter và ListView
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allVideos);
+        // Adapter cho ListView
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, searchSuggestions);
         listViewResults.setAdapter(adapter);
 
-        // Tìm kiếm động
-        editTextSearch.addTextChangedListener(new TextWatcher() {
+        // Bắt sự kiện tìm kiếm
+        btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter.getFilter().filter(s);
+            public void onClick(View view) {
+                String keyword = editTextSearch.getText().toString().trim();
+                if (!keyword.isEmpty()) {
+                    searchSuggestions.add(0, keyword); // Thêm vào đầu danh sách
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(SearchActivity.this, "Đã tìm kiếm: " + keyword, Toast.LENGTH_SHORT).show();
+                }
             }
+        });
 
+        // Bắt sự kiện click vào từng item trong ListView
+        listViewResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void afterTextChanged(Editable s) { }
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selected = searchSuggestions.get(position);
+                Toast.makeText(SearchActivity.this, "Bạn đã chọn: " + selected, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Nút quay lại
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish(); // Trở về màn hình trước
+            }
         });
     }
 }

@@ -31,9 +31,9 @@ public class SettingActivity extends AppCompatActivity {
         List.setAdapter(adapter);
 
         ImageView btnBack=findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> {
-            startActivity( new Intent(this, UserInformation_LoggedInProfile.class));
-        });
+        btnBack.setOnClickListener(v ->
+            finish()
+        );
     }
 
 
