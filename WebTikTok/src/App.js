@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { publicRoutes } from '~/routes';
-import Default from '~/user/component/default';
+import { publicRoutes } from '~/config/index';
+import Default from '~/DefaultLayout';
 import { AuthProvider } from './AuthContext';
 
 function App() {

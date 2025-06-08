@@ -1,5 +1,4 @@
 const routes = {
-   /////
-//    router
+    home: '/',
 };
 export default routes;
