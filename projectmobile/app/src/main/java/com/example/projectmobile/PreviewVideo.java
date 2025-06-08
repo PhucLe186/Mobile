@@ -14,10 +14,10 @@ import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
 public class PreviewVideo extends AppCompatActivity {
-    private PlayerView playerView;
+    PlayerView playerView;
     private ExoPlayer player;
-    private Button btnContinue;
-    private ImageView btnBack;
+    Button btnContinue;
+    ImageView btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +29,22 @@ public class PreviewVideo extends AppCompatActivity {
         btnContinue = findViewById(R.id.btn_next);
         btnBack = findViewById(R.id.btn_back);
 
+        //Back Button
+        btnBack.setOnClickListener(v -> {
+            finish();
+        });
+
+        //Get video from uri intent
         String videoUriString = getIntent().getStringExtra("videoUri");
+        if(videoUriString == null){
+            finish();
+            return;
+        }
         Uri videoUri = Uri.parse(videoUriString);
 
+        //video player
         player = new ExoPlayer.Builder(this).build();
         playerView.setPlayer(player);
-
         MediaItem mediaItem = MediaItem.fromUri(videoUri);
         player.setMediaItem(mediaItem);
         player.prepare();
@@ -51,6 +61,7 @@ public class PreviewVideo extends AppCompatActivity {
         //Continue Button
         btnContinue.setOnClickListener(v -> {
             Intent intent = new Intent(PreviewVideo.this, VideoConfig.class);
+            intent.putExtra("videoUri", videoUri.toString());
             startActivity(intent);
             finish();
         });
