@@ -1,0 +1,114 @@
+.parent {
+    display: flex;
+    width: 28rem;
+}
+.SlideBar {
+    height: 100vh;
+    width: 28rem;
+    transition: all 0.55s ease-in-out;
+
+    &.Open {
+        width: 94px;
+        border: 1px solid rgba(22, 24, 35, 0.05);
+    }
+}
+.inner {
+    display: flex;
+    flex-direction: column;
+    padding-top: 3rem;
+    padding-bottom: 1.5rem;
+    flex-shrink: 0;
+    gap: 3rem;
+    width: 100%;
+    margin-left: 20px;
+}
+.logo {
+    width: 50px;
+    height: 50px;
+}
+
+.logo_item {
+    display: flex;
+    align-items: flex-start;
+}
+.text {
+    font-size: 45px;
+    display: flex;
+    align-items: center;
+    transition: opacity 0.5s ease, width 0.5s ease;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.text_o {
+    margin-top: 7px;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    // margin: 0 2px;
+    border-radius: 50%;
+    background: black;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+    &::before {
+        content: '';
+        position: absolute;
+        top: -0.5px;
+        left: -2px;
+        right: -2px;
+        bottom: 0px;
+        border-radius: 50%;
+        background: linear-gradient(90deg, cyan, #fe2c55);
+        z-index: -1;
+    }
+    &::after {
+        content: '';
+        position: absolute;
+        top: 24%;
+        left: 26%;
+        width: 14px;
+        height: 14px;
+        background: white;
+        border-radius: 50%;
+    }
+}
+.search_wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 255px;
+    border-radius: 999px;
+    transition: all 0.55s ease-in-out;
+    &.Open {
+        width: 50px;
+    }
+}
+
+.search_icon {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 20px;
+    pointer-events: none;
+}
+.search {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 999px;
+    overflow: hidden;
+    font-size: 16px;
+    height: 50px;
+    background-color: rgba(22, 24, 35, 0.05);
+    padding: 8px 12px 8px 36px;
+    border-style: none;
+    font-size: 14px;
+    outline: none;
+
+    &:focus {
+        border: 1px solid #ccc;
+    }
+}

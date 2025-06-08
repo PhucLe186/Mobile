@@ -15,6 +15,12 @@
         android:theme="@style/Theme.Projectmobile"
         tools:targetApi="31">
         <activity
+            android:name=".VideoConfig"
+            android:exported="false" />
+        <activity
+            android:name=".PreviewVideo"
+            android:exported="false" />
+        <activity
             android:name=".CreateVideoActivity"
             android:exported="false" />
         <activity
@@ -28,7 +34,8 @@
             android:exported="false" />
         <activity
             android:name=".UserInformation_LoggedInProfile"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".SearchActivity"
             android:exported="false" />
@@ -38,7 +45,8 @@
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
-        <activity android:name=".InboxActivity" />
+        <activity android:name=".InboxActivity"
+            tools:ignore="Instantiatable" />
         <activity android:name=".ChatActivity" />
         <activity
             android:name=".MainActivity"
