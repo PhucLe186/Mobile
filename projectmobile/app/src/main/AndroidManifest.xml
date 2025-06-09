@@ -38,6 +38,13 @@
             android:name=".UserInformation"
             android:exported="false" />
         <activity
+            android:name=".SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserInformation_LoggedInProfile"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
+        <activity
             android:name=".SearchActivity"
             android:exported="false" />
         <activity
@@ -46,6 +53,9 @@
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
+        <activity android:name=".InboxActivity"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".ChatActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/menu_tiktok_studio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/user_star"
+        android:drawablePadding="10dp"
+        android:padding="12dp"
+        android:text="TikTok Studio"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/menu_so_du"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/wallet"
+        android:drawablePadding="10dp"
+        android:padding="12dp"
+        android:text="Số dư"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/menu_qr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/qr_code"
+        android:drawablePadding="10dp"
+        android:padding="12dp"
+        android:text="Mã QR của tôi"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/menu_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/settings"
+        android:drawablePadding="10dp"
+        android:padding="12dp"
+        android:text="Cài đặt và quyền riêng tư"
+        android:textSize="20sp" />
+</LinearLayout>

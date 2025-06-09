@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/home"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_add"
+        android:icon="@drawable/tiktok_plus_symbol_button_bg"
+        android:title="Add" />
+    <item
+        android:id="@+id/nav_inbox"
+        android:icon="@drawable/chat2"
+        android:title="Inbox" />
+    <item
+        android:id="@+id/nav_user"
+        android:icon="@drawable/user"
+        android:title="User" />
+</menu>

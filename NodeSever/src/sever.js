@@ -5,8 +5,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const route = require('./routes');
 const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const { db } = require('./firebaseconfig/firebase');
+
 
 const app = express();
 const port = process.env.PORT || 5000;

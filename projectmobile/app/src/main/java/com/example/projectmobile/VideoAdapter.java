@@ -20,7 +20,7 @@ import java.util.List;
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     private List<String> videoUrls;
     private ExoPlayer player;
-    private int currentPlayingPosition = -1; //-1 mean do not have any video running
+    private int currentPlayingPosition = -1;
     private Context context;
 
     public VideoAdapter(List<String> videoUrls, Context context){

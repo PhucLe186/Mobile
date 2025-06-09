@@ -2,140 +2,191 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main" tools:context=".MainActivity"
-
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".MainActivity"
     tools:ignore="HardcodedText">
     <!--Recycler of Videos-->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_videos"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/layout_video_panel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-    </androidx.recyclerview.widget.RecyclerView>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/layout_video_panel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:orientation="horizontal"
         android:padding="5dp"
-        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
         <ImageView
             android:id="@+id/btn_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:tint="@color/white"
-            android:clickable="true"
-            android:focusable="true"
+            android:layout_width="29dp"
+            android:layout_height="43dp"
             android:layout_margin="5dp"
+            android:layout_marginEnd="64dp"
+            android:layout_weight="1"
+            android:clickable="true"
             android:contentDescription="searching"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icon_search" />
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/icon_search"
+            app:tint="@color/white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--Control panel-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_video_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:paddingBottom="10dp"
-        android:background="@color/black"
-        android:paddingTop="10dp">
-    <!--Add video button-->
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
         <FrameLayout
             android:id="@+id/btn_add_video"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_width="80dp"
-            android:layout_height="45dp"
+            android:layout_width="58dp"
+            android:layout_height="39dp"
             android:layout_gravity="center"
             android:background="@drawable/tiktok_plus_symbol_button_bg"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_gravity="center"
+                android:layout_marginBottom="3dp"
+                android:gravity="center"
                 android:text="+"
-                android:layout_marginBottom="4dp"
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="35sp" />
         </FrameLayout>
-        <!--Home Button-->
+
         <LinearLayout
             android:id="@+id/btn_home"
-            android:layout_width="100dp"
-            android:layout_height="60dp"
+            android:layout_width="82dp"
+            android:layout_height="53dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_add_video"
+            app:layout_constraintHorizontal_bias="0.006"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.571"
             tools:ignore="UseCompoundDrawables">
+
             <ImageView
                 android:id="@+id/img_home"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="36dp"
+                android:layout_height="34dp"
                 android:layout_gravity="center"
                 android:contentDescription="home"
                 app:srcCompat="@drawable/home"
-                app:tint="@color/white" />
+                app:tint="#999999" />
+
             <TextView
                 android:id="@+id/txt_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Lobby"
-                android:textColor="@color/white"
+                android:text="Home"
+                android:textColor="#999999"
                 android:textSize="15sp" />
         </LinearLayout>
-        <!--User Info Button-->
+
         <LinearLayout
-            android:id="@+id/btn_user_icon"
+            android:id="@+id/btn_inbox"
+            android:layout_width="82dp"
+            android:layout_height="53dp"
             android:clickable="true"
             android:focusable="true"
-            android:layout_width="100dp"
-            android:layout_height="60dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.177"
             app:layout_constraintStart_toEndOf="@+id/btn_add_video"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
             tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/img_inbox"
+                android:layout_width="36dp"
+                android:layout_height="34dp"
+                android:layout_gravity="center"
+                android:contentDescription="inbox"
+                app:srcCompat="@drawable/chat"
+                />
+
+            <TextView
+                android:id="@+id/txt_inbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Inbox"
+                android:textColor="#999999"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_user_icon"
+            android:layout_width="82dp"
+            android:layout_height="53dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/btn_add_video"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.571"
+            tools:ignore="UseCompoundDrawables">
+
             <ImageView
                 android:id="@+id/img_user_icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
                 android:layout_gravity="center"
                 android:contentDescription="home"
-                app:srcCompat="@drawable/user"
-                app:tint="@color/white" />
+                app:srcCompat="@drawable/user1"
+                />
+
             <TextView
                 android:id="@+id/txt_user_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Lobby"
-                android:textColor="@color/white"
+                android:text="User"
+                android:textColor="#999999"
                 android:textSize="15sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

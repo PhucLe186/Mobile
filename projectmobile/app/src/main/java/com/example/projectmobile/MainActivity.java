@@ -1,109 +1,92 @@
 package com.example.projectmobile;
+
+
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
 
-import java.util.Arrays;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayoutManager;
-    PagerSnapHelper snapHelper ;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    VideoAdapter videoAdapter;
-
-    LinearLayout btn_user_icon;
+    private ImageView btnSearch;
+    private FrameLayout btnAdd;
+    private ImageView btnUser, btnInbox, btnHome;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        intentSearching();
-        intentUserInformation();
-        intentCreateVideo();
+        btnSearch=findViewById(R.id.btn_search);
+        btnAdd= findViewById(R.id.btn_add_video);
+        btnHome = findViewById(R.id.img_home);
+        btnInbox = findViewById(R.id.img_inbox);
+        btnUser = findViewById(R.id.img_user_icon);
 
-        List<String> videoUrls = Arrays.asList(
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
-        );
 
-        recyclerView = findViewById(R.id.recycler_videos);
-        videoAdapter = new VideoAdapter(videoUrls, this);
-        linearLayoutManager = new LinearLayoutManager(this);
-        snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(recyclerView);
+        findViewById(R.id.btn_home).setOnClickListener(this);
+        findViewById(R.id.btn_inbox).setOnClickListener(this);
+        findViewById(R.id.btn_user_icon).setOnClickListener(this);
 
-        recyclerView.setAdapter(videoAdapter);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        playFirstVideo();
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(newState == RecyclerView.SCROLL_STATE_IDLE){
-                    int position = linearLayoutManager.findFirstVisibleItemPosition();
-                    videoAdapter.playVideoAtPosition(position);
-
-                    if(position != RecyclerView.NO_POSITION){
-                        videoAdapter.playVideoAtPosition(position);
-                    }
-                }
-            }
+        loadFragment(new VideoActivity());
+        btnSearch.setOnClickListener(v -> {
+            startActivity(new Intent( this, SearchActivity.class));
+        });
+        btnAdd.setOnClickListener(v -> {
+            startActivity(new Intent( this, CreateVideoActivity.class));
         });
     }
 
-    private void playFirstVideo() {
-        recyclerView.post(()->{
-            int position = linearLayoutManager.findFirstVisibleItemPosition();
-            if(position != RecyclerView.NO_POSITION){
-                videoAdapter.playVideoAtPosition(position);
-            }
-        });
+
+    private void loadFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 
-    private void intentCreateVideo() {
-        FrameLayout btn_create_video = findViewById(R.id.btn_add_video);
-        btn_create_video.setOnClickListener(v->{
-            Intent intentCreateVideo = new Intent(this, CreateVideoActivity.class);
-            startActivity(intentCreateVideo);
-        });
-    }
-
-    private void intentSearching() {
-        ImageView btn_search = findViewById(R.id.btn_search);
-        btn_search.setOnClickListener(v->{
-            Intent intentSearching = new Intent(this, SearchActivity.class);
-            startActivity(intentSearching);
-        });
-    }
-    private void intentUserInformation() {
-        btn_user_icon = findViewById(R.id.btn_user_icon);
-        btn_user_icon.setOnClickListener(v->{
-            Intent intentUserInformation = new Intent(this, UserInformation.class);
-            startActivity(intentUserInformation);
-        });
-    }
-
+    @SuppressLint("NonConstantResourceId")
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(videoAdapter != null) {
-            videoAdapter.releasePlayer();
+    public void onClick(View v) {
+        Fragment selectedFragment = null;
+        int id =v.getId();
+
+        if(id == R.id.btn_user_icon){
+            selectedFragment= new UserInformation_LoggedInProfile();
+        } else if (id == R.id.btn_home) {
+            selectedFragment = new VideoActivity();
+        }else if (id == R.id.btn_inbox) {
+            selectedFragment = new InboxActivity();
+        }
+
+        if (selectedFragment != null) {
+            loadFragment(selectedFragment);
+            updateMenuIconColor(id);
         }
     }
+    private void updateMenuIconColor(int selectedId) {
+
+        btnHome.setImageResource(R.drawable.home1);
+        btnInbox.setImageResource(R.drawable.chat);
+        btnUser.setImageResource(R.drawable.user1);
+
+        if (selectedId == R.id.btn_home) {
+            btnHome.setImageResource(R.drawable.home);
+        } else if (selectedId == R.id.btn_inbox) {
+            btnInbox.setImageResource(R.drawable.chat2);
+        } else if (selectedId == R.id.btn_user_icon) {
+            btnUser.setImageResource(R.drawable.user2);
+        }
+    }
+
 }
