@@ -3,7 +3,7 @@ class TestController {
   async data(req, res) {
      try {
     const connection = await connectDB();
-    const [rows] = await connection.execute('SELECT * FROM student');
+    const [rows] = await connection.execute('SELECT * FROM users');
     await connection.end();
     res.json(rows);
   } catch (err) {

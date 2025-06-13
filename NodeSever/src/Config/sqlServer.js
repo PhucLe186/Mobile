@@ -6,7 +6,7 @@ async function connectDB() {
       host: 'localhost',
       user: 'root',
       password: '123456',
-      database: 'face_recognizer'
+      database: 'clone_tiktok'
     });
     console.log('Kết nối thành công tới MySQL');
     return connection;
