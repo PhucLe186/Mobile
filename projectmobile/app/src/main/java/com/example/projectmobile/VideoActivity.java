@@ -55,12 +55,12 @@ public class VideoActivity extends Fragment {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    int position = linearLayoutManager.findFirstVisibleItemPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        videoAdapter.playVideoAtPosition(position);
-                    }
+            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                int position = linearLayoutManager.findFirstVisibleItemPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    videoAdapter.playVideoAtPosition(position);
                 }
+            }
             }
         });
 
