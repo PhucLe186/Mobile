@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d("DEBUG", "URL đã gọi: " + call.request().url());
                 }
             }
-
             @Override
             public void onFailure(Call<List<Test>> call, Throwable t) {
                 Log.e("API", "Lỗi gọi API: " + t.getMessage());
