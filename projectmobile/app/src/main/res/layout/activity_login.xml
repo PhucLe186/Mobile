@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingTop="20dp"
     tools:ignore="HardcodedText"
-    tools:context=".LoginActivity">
+    tools:context=".Auth.LoginActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout_main"

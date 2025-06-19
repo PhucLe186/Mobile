@@ -1,6 +1,5 @@
-package com.example.projectmobile;
+package com.example.projectmobile.Setting;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -8,6 +7,8 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.projectmobile.R;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.projectmobile;
+package com.example.projectmobile.Setting;
 
 public class SettingItem {
     public static final int TYPE_HEADER = 0;

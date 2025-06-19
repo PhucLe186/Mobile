@@ -1,4 +1,4 @@
-package com.example.projectmobile;
+package com.example.projectmobile.CreateVideo;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -26,6 +26,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.projectmobile.R;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;

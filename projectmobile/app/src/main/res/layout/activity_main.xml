@@ -54,7 +54,7 @@
         android:id="@+id/layout_video_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="0dp"
 
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -79,6 +79,7 @@
             app:layout_constraintVertical_bias="0.0">
 
             <TextView
+                android:id="@+id/plus"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:layout_gravity="center"

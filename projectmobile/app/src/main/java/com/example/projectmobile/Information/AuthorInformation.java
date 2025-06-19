@@ -1,8 +1,7 @@
-package com.example.projectmobile;
+package com.example.projectmobile.Information;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -10,6 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.projectmobile.Notification.ChatActivity;
+import com.example.projectmobile.R;
 
 public class AuthorInformation extends AppCompatActivity {
 

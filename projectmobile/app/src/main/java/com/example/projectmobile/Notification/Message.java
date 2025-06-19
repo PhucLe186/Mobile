@@ -1,4 +1,4 @@
-package com.example.projectmobile;
+package com.example.projectmobile.Notification;
 
 public class Message {
     private String sender;

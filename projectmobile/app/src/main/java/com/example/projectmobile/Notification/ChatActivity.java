@@ -1,4 +1,4 @@
-package com.example.projectmobile;
+package com.example.projectmobile.Notification;
 
 import android.os.Bundle;
 import android.view.View;
@@ -6,6 +6,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.projectmobile.R;
+
 import java.util.ArrayList;
 
 public class ChatActivity extends AppCompatActivity {
