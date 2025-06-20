@@ -3,61 +3,86 @@ package com.example.projectmobile;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.projectmobile.ApiConfig.ApiClient;
+import com.example.projectmobile.ApiConfig.AuthApi;
+import com.example.projectmobile.Auth.AuthModule.CheckLogin;
 import com.example.projectmobile.CreateVideo.CreateVideoActivity;
+import com.example.projectmobile.Information.GuestProfileActivity;
 import com.example.projectmobile.Information.UserInformation_LoggedInProfile;
 import com.example.projectmobile.Notification.InboxActivity;
 import com.example.projectmobile.Search.SearchActivity;
 import com.example.projectmobile.Video.VideoActivity;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-
+    AuthApi api;
     private ImageView btnSearch;
     private FrameLayout btnAdd;
     private ImageView btnUser, btnInbox, btnHome;
+    private String token;
+
 
     private TextView btnPlus;
     @SuppressLint("WrongViewCast")
     @Override
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        token = prefs.getString("token", "");
 
-        btnSearch=findViewById(R.id.btn_search);
-        btnAdd= findViewById(R.id.btn_add_video);
-         btnPlus= findViewById(R.id.plus);
-        btnHome = findViewById(R.id.img_home);
-        btnInbox = findViewById(R.id.img_inbox);
-        btnUser = findViewById(R.id.img_user_icon);
+        initView();
+        SetupClick();
+
+        CheckLogin(token);
 
 
+    }
+
+    private void SetupClick() {
         findViewById(R.id.btn_home).setOnClickListener(this);
         findViewById(R.id.btn_inbox).setOnClickListener(this);
         findViewById(R.id.btn_user_icon).setOnClickListener(this);
 
         loadFragment(new VideoActivity());
-        btnSearch.setOnClickListener(v -> {
-            startActivity(new Intent( this, SearchActivity.class));
-        });
+
         btnAdd.setOnClickListener(v -> {
             startActivity(new Intent( this, CreateVideoActivity.class));
         });
+        btnSearch.setOnClickListener(v -> {
+            startActivity(new Intent( this, SearchActivity.class));
+        });
     }
 
+    private void initView() {
+        btnSearch=findViewById(R.id.btn_search);
+        btnAdd= findViewById(R.id.btn_add_video);
+        btnPlus= findViewById(R.id.plus);
+        btnHome = findViewById(R.id.img_home);
+        btnInbox = findViewById(R.id.img_inbox);
+        btnUser = findViewById(R.id.img_user_icon);
+    }
 
     private void loadFragment(Fragment fragment) {
         getSupportFragmentManager()
@@ -73,11 +98,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int id =v.getId();
 
         if(id == R.id.btn_user_icon){
-            selectedFragment= new UserInformation_LoggedInProfile();
+            if(token.isEmpty()){
+                selectedFragment= new GuestProfileActivity();
+            }
+            else {
+                selectedFragment= new UserInformation_LoggedInProfile();
+            }
         } else if (id == R.id.btn_home) {
             selectedFragment = new VideoActivity();
         }else if (id == R.id.btn_inbox) {
-            selectedFragment = new InboxActivity();
+            if(token.isEmpty()){
+                selectedFragment= new GuestProfileActivity();
+            }
+            else {
+                selectedFragment = new InboxActivity();
+            }
         }
 
         if (selectedFragment != null) {
@@ -110,6 +145,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             btnInbox.setImageResource(R.drawable.chat2);
         } else if (selectedId == R.id.btn_user_icon) {
             btnUser.setImageResource(R.drawable.user2);
+        }
+    }
+
+    private void CheckLogin(String token) {
+
+        if(!token.isEmpty()){
+            api= ApiClient.getClient().create(AuthApi.class);
+            api.checkLogin("Bearer " + token).enqueue(new Callback<CheckLogin>() {
+                @Override
+                public void onResponse(Call<CheckLogin> call, Response<CheckLogin> response) {
+                    Toast.makeText(MainActivity.this, token, Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFailure(Call<CheckLogin> call, Throwable t) {
+                    Toast.makeText(MainActivity.this, "chua login", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(this, "Token is empty!", Toast.LENGTH_SHORT).show();
         }
     }
 

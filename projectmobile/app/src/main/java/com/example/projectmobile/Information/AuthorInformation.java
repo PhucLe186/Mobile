@@ -12,9 +12,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.projectmobile.ApiConfig.ApiClient;
-import com.example.projectmobile.ApiConfig.getAuthor;
+import com.example.projectmobile.ApiConfig.AuthorApi;
 import com.example.projectmobile.Notification.ChatActivity;
 import com.example.projectmobile.R;
 
@@ -94,7 +93,7 @@ public class AuthorInformation extends AppCompatActivity {
     }
 
     private void fetchAuthorInfo() {
-        getAuthor getauthor = ApiClient.getClient().create(getAuthor.class);
+        AuthorApi getauthor = ApiClient.getClient().create(AuthorApi.class);
         Call<AuthorInfo> call = getauthor.getAuthorInfor(userId);
         Log.d("AuthorInfo", "Fetching info for userId = " + userId);
 
@@ -123,15 +122,12 @@ public class AuthorInformation extends AppCompatActivity {
         following.setText(info.getFollowing_count() + "\nĐã follower");
         likes.setText(String.valueOf(info.getLike_count())+ "\nThích" );
 
-        int radiusInDp = 50;
-        float density = getResources().getDisplayMetrics().density;
-        int radiusInPx = (int) (radiusInDp * density + 0.5f);
-
 
         Glide.with(this)
                 .load(info.getAvatar_url())
                 .placeholder(R.drawable.user)
-                .transform(new RoundedCorners(radiusInPx))
+                .error(R.drawable.user)
+                .circleCrop()
                 .into(imageViewAvatar);
     }
 }

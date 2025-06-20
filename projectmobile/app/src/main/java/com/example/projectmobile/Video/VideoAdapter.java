@@ -4,6 +4,7 @@ package com.example.projectmobile.Video;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.projectmobile.Comment.CommentActivity;
 import com.example.projectmobile.Information.AuthorInformation;
 import com.example.projectmobile.R;
@@ -64,6 +66,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     public void pausePlayer() {
         if(player != null && player.isPlaying()) {
             player.pause();
+
         }
     }
     public void Play() {
@@ -77,6 +80,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             player = null;
         }
     }
+
 
     @Override
     public int getItemCount() {
@@ -114,6 +118,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                     caption.setText(video.getCaption());
                     comment.setText(String.valueOf(video.getComment_count()));
                     like.setText(String.valueOf(video.getLike_count()));
+
+                    Log.d("AvatarURL", video.getAvatar_url());
+                    Glide.with(context)
+                            .load(video.getAvatar_url())
+                            .placeholder(R.drawable.user)
+                            .error(R.drawable.user)
+                            .circleCrop()
+                            .into(authorAvatar);
 
                     authorAvatar.setOnClickListener(v->{
                         Intent intentUserInformation = new Intent(context, AuthorInformation.class);

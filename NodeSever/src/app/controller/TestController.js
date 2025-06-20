@@ -1,8 +1,8 @@
-const  connectDB  = require('../../Config/sqlServer.js');
+const  db  = require('../../Config/sqlServer.js');
 class TestController {
   async data(req, res) {
       try {
-      const connection = await connectDB();
+      const connection = await db();
       
       const [rows] = await connection.execute(`
         SELECT 

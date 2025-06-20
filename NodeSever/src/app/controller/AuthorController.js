@@ -1,10 +1,10 @@
-const  connectDB  = require('../../Config/sqlServer.js');
+const  db  = require('../../Config/sqlServer.js');
 class AuthorController {
   async data(req, res) {
     const { id } = req.params;
     console.log( "id là",id)
       try {
-      const connection = await connectDB();
+      const connection = await db();
       
       const [rows] = await connection.execute(`
        SELECT videos.*, users.avatar_url, users.username,
