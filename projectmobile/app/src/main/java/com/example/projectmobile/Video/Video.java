@@ -2,13 +2,14 @@ package com.example.projectmobile.Video;
 
 public class Video {
     private int video_id;
+    private int user_id;
     private String video_url;
     private String caption;
     private String username;
     private String avatar_url;
     private int like_count;
 
-    public Video(int video_id, String video_url, String caption, String username, String avatar_url, int like_count, int comment_count) {
+    public Video(int video_id,int user_id, String video_url, String caption, String username, String avatar_url, int like_count, int comment_count) {
         this.video_id = video_id;
         this.video_url = video_url;
         this.caption = caption;
@@ -24,6 +25,10 @@ public class Video {
 
     public int getVideo_id() {
         return video_id;
+    }
+
+    public int getUser_id() {
+        return user_id;
     }
 
     public String getVideo_url() {

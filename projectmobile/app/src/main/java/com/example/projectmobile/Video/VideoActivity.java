@@ -99,4 +99,16 @@ public class VideoActivity extends Fragment {
             videoAdapter.releasePlayer();
         }
     }
+    public void onPause() {
+        super.onPause();
+        if (videoAdapter != null) {
+            videoAdapter.pausePlayer();
+        }
+    }
+    public void onResume() {
+        super.onResume();
+        if (videoAdapter != null) {
+            videoAdapter.Play();
+        }
+    }
 }

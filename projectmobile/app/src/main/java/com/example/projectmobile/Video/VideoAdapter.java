@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.media3.common.MediaItem;
@@ -16,8 +17,8 @@ import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.projectmobile.Information.AuthorInformation;
 import com.example.projectmobile.Comment.CommentActivity;
+import com.example.projectmobile.Information.AuthorInformation;
 import com.example.projectmobile.R;
 
 import java.util.List;
@@ -60,7 +61,16 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         currentPlayingPosition = position;
         notifyDataSetChanged();
     }
-
+    public void pausePlayer() {
+        if(player != null && player.isPlaying()) {
+            player.pause();
+        }
+    }
+    public void Play() {
+        if(player != null && !player.isPlaying()) {
+            player.play();
+        }
+    }
     public void releasePlayer() {
         if(player != null){
             player.release();
@@ -90,15 +100,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             like=itemView.findViewById(R.id.txt_like_count);
             comment=itemView.findViewById(R.id.txt_count_comment);
 
-
-            authorAvatar.setOnClickListener(v->{
-                Intent intentUserInformation = new Intent(context, AuthorInformation.class);
-                context.startActivity(intentUserInformation);
-            });
-            commentAvata.setOnClickListener(v -> {
-                Intent intent =new Intent(context, CommentActivity.class);
-                context.startActivity(intent);
-            });
         }
 
 
@@ -114,6 +115,16 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                     comment.setText(String.valueOf(video.getComment_count()));
                     like.setText(String.valueOf(video.getLike_count()));
 
+                    authorAvatar.setOnClickListener(v->{
+                        Intent intentUserInformation = new Intent(context, AuthorInformation.class);
+                        intentUserInformation.putExtra("user_id", video.getUser_id());
+                        Toast.makeText(context, "User: " + video.getUser_id(), Toast.LENGTH_SHORT).show();
+                        context.startActivity(intentUserInformation);
+                    });
+                    commentAvata.setOnClickListener(v -> {
+                        Intent intent =new Intent(context, CommentActivity.class);
+                        context.startActivity(intent);
+                    });
                     player.setMediaItem(mediaItem);
                     player.prepare();
                     player.play();
@@ -127,4 +138,5 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             }
         }
     }
+
 }
