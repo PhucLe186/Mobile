@@ -1,31 +1,45 @@
 package com.example.projectmobile.Information;
 
-import static com.example.projectmobile.R.id.button3;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.example.projectmobile.Auth.LoginActivity;
 import com.example.projectmobile.R;
 
-public class GuestProfileActivity extends AppCompatActivity {
-    @SuppressLint("MissingInflatedId")
+public class GuestProfileActivity extends Fragment {
+
+    private Button loginButton;
+    public GuestProfileActivity() {
+        // Required empty public constructor
+    }
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_information_guest);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
-        Button loginButton = findViewById(button3);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GuestProfileActivity.this, UserInformation_LoggedInProfile.class);
+        View view = inflater.inflate(R.layout.activity_user_information_guest, container, false);
 
-                startActivity(intent);
-            }
+        initView(view);
+        initListener();
+
+        return view;
+    }
+    private void initView(View view) {
+        loginButton = view.findViewById(R.id.button3);
+    }
+    private void initListener() {
+        loginButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
         });
     }
 }

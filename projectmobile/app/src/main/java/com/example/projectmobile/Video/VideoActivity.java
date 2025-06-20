@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectmobile.ApiConfig.ApiClient;
-import com.example.projectmobile.ApiConfig.getVideo;
+import com.example.projectmobile.ApiConfig.VideoApi;
 import com.example.projectmobile.R;
 
 import java.util.List;
@@ -29,7 +29,9 @@ public class VideoActivity extends Fragment {
     private VideoAdapter videoAdapter;
     private LinearLayoutManager linearLayoutManager;
     private PagerSnapHelper snapHelper;
-    private getVideo getVideo;
+    private VideoApi getVideo;
+
+
 
     public VideoActivity() {}
 
@@ -47,8 +49,8 @@ public class VideoActivity extends Fragment {
         snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
 
-        getVideo = ApiClient.getClient().create(getVideo.class);
-        fetchVideoList(); // Gọi API lấy danh sách video
+        getVideo = ApiClient.getClient().create(VideoApi.class);
+        fetchVideoList();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
