@@ -6,19 +6,26 @@ class TestController {
       
       const [rows] = await connection.execute(`
         SELECT 
-          v.video_id,
-          v.video_url,
-          v.caption,
-          u.username,
-          u.avatar_url,
-          COUNT(DISTINCT l.user_id) AS like_count,
-          COUNT(DISTINCT c.comment_id) AS comment_count
-        FROM Videos v
-        JOIN Users u ON v.user_id = u.user_id
-        LEFT JOIN Likes l ON v.video_id = l.video_id
-        LEFT JOIN Comments c ON v.video_id = c.video_id
-        GROUP BY v.video_id, v.video_url, v.caption, u.username, u.avatar_url
-        ORDER BY v.created_at DESC
+            v.video_id,
+            v.user_id,                         
+            v.video_url,
+            v.caption,
+            u.username,
+            u.avatar_url,
+            COUNT(DISTINCT l.user_id) AS like_count,
+            COUNT(DISTINCT c.comment_id) AS comment_count
+            FROM Videos v
+            JOIN Users u ON v.user_id = u.user_id
+            LEFT JOIN Likes l ON v.video_id = l.video_id
+            LEFT JOIN Comments c ON v.video_id = c.video_id
+            GROUP BY 
+            v.video_id,
+            v.user_id,                           
+            v.video_url,
+            v.caption,
+            u.username,
+            u.avatar_url
+            ORDER BY v.created_at DESC;
       `);
 
       await connection.end();

@@ -1,9 +1,11 @@
 
-const Test= require('./Test')
+const Video= require('./Video')
+const Author= require('./author')
 
 function route(app) {
   
-  app.use('/test', Test);
+  app.use('/video', Video);
+  app.use('/author', Author);
 
 
 
