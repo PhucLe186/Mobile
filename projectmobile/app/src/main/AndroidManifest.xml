@@ -2,19 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-
-
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -26,50 +16,50 @@
         android:theme="@style/Theme.Projectmobile"
         tools:targetApi="31">
         <activity
-            android:name=".VideoConfig"
+            android:name=".CreateVideo.VideoConfig"
             android:exported="false" />
         <activity
-            android:name=".PreviewVideo"
+            android:name=".CreateVideo.PreviewVideo"
             android:exported="false" />
         <activity
-            android:name=".CreateVideoActivity"
+            android:name=".CreateVideo.CreateVideoActivity"
             android:exported="false" />
         <activity
-            android:name=".AuthorInformation"
+            android:name=".Information.AuthorInformation"
             android:exported="false" />
         <activity
-            android:name=".UserInformation"
+            android:name=".Information.UserInformation"
             android:exported="false" />
         <activity
-            android:name=".SettingActivity"
+            android:name=".Setting.SettingActivity"
             android:exported="false" />
         <activity
-            android:name=".UserInformation_LoggedInProfile"
+            android:name=".Information.UserInformation_LoggedInProfile"
             android:exported="false"
             tools:ignore="Instantiatable" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".Search.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Auth.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Auth.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Comment.CommentActivity"
+            android:exported="false" />
+        <activity android:name=".Notification.InboxActivity"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".Notification.ChatActivity" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity android:name=".InboxActivity"
-            tools:ignore="Instantiatable" />
-        <activity android:name=".ChatActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false">
-
         </activity>
     </application>
 

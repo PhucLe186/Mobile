@@ -1,12 +1,13 @@
-const Test= require('./Test')
-const Auth = require('./authRoute')
+
+const Video= require('./Video')
+const Author= require('./author')
 
 function route(app) {
   
-  app.use('/test', Test);
+  app.use('/video', Video);
+  app.use('/author', Author);
 
-  //Khang's part (login, register, logout)
-  app.use('/api/auth', Auth);
+
 
 }
 

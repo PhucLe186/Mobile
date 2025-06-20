@@ -1,4 +1,4 @@
-package com.example.projectmobile;
+package com.example.projectmobile.Search;
 
 import android.app.Activity;
 import android.os.Bundle;

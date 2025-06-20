@@ -57,6 +57,7 @@
                 android:id="@+id/avatar"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
+
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/avatar_background"
                 android:scaleType="centerCrop"
@@ -91,6 +92,7 @@
                 android:layout_marginTop="12dp">
 
                 <TextView
+                    android:id="@+id/following"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -101,6 +103,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/followers"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -111,6 +114,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/likes"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

@@ -1,4 +1,4 @@
-package com.example.projectmobile;
+package com.example.projectmobile.Information;
 
 import static com.example.projectmobile.R.id.button3;
 
@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.projectmobile.UserInformation_LoggedInProfile;
+import com.example.projectmobile.R;
 
 public class GuestProfileActivity extends AppCompatActivity {
     @SuppressLint("MissingInflatedId")

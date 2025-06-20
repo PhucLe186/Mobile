@@ -1,4 +1,4 @@
-package com.example.projectmobile;
+package com.example.projectmobile.Video;
 
 
 import android.annotation.SuppressLint;
@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.media3.common.MediaItem;
@@ -15,17 +17,24 @@ import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.projectmobile.Comment.CommentActivity;
+import com.example.projectmobile.Information.AuthorInformation;
+import com.example.projectmobile.R;
+
 import java.util.List;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
-    private List<String> videoUrls;
+    private List<Video> videoList;
     private ExoPlayer player;
     private int currentPlayingPosition = -1;
     private Context context;
 
-    public VideoAdapter(List<String> videoUrls, Context context){
+
+
+
+    public VideoAdapter(List<Video> videoList, Context context) {
         this.context = context;
-        this.videoUrls = videoUrls;
+        this.videoList = videoList;
     }
 
     @NonNull
@@ -34,11 +43,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_video, parent, false);
         return new VideoViewHolder(view);
+
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull VideoAdapter.VideoViewHolder holder, int position) {
-        holder.bind(videoUrls.get(position), position);
+        holder.bind(videoList.get(position), position);
     }
 
 //  Playing video when scrolling
@@ -50,7 +61,16 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         currentPlayingPosition = position;
         notifyDataSetChanged();
     }
-
+    public void pausePlayer() {
+        if(player != null && player.isPlaying()) {
+            player.pause();
+        }
+    }
+    public void Play() {
+        if(player != null && !player.isPlaying()) {
+            player.play();
+        }
+    }
     public void releasePlayer() {
         if(player != null){
             player.release();
@@ -60,32 +80,51 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
     @Override
     public int getItemCount() {
-        return videoUrls.size();
+        return videoList.size();
     }
 
-    //The ViewHolder class for the VideoAdapter
      class VideoViewHolder extends RecyclerView.ViewHolder{
         PlayerView playerView;
         ImageView authorAvatar;
-        public VideoViewHolder(@NonNull View itemView) {
+        ImageView commentAvata;
+        TextView name, caption, like, comment;
+
+
+         public VideoViewHolder(@NonNull View itemView) {
             super(itemView);
             playerView = itemView.findViewById(R.id.playerView);
-
+            commentAvata = itemView.findViewById(R.id.icon_comment);
             authorAvatar = itemView.findViewById(R.id.user_avatar);
-            authorAvatar.setOnClickListener(v->{
-                Intent intentUserInformation = new Intent(context, AuthorInformation.class);
-                context.startActivity(intentUserInformation);
-            });
+            name=itemView.findViewById(R.id.txt_author_name);
+            caption=itemView.findViewById(R.id.txt_description);
+            like=itemView.findViewById(R.id.txt_like_count);
+            comment=itemView.findViewById(R.id.txt_count_comment);
+
         }
 
 
-        public void bind(String videoUrl, int position){
+        public void bind(Video video, int position){
             if(position == currentPlayingPosition){
                 //check if player has been created
                 if(player == null){
                     player = new ExoPlayer.Builder(context).build();
                     playerView.setPlayer(player);
-                    MediaItem mediaItem = MediaItem.fromUri(videoUrl);
+                    MediaItem mediaItem = MediaItem.fromUri(video.getVideo_url());
+                    name.setText(video.getUsername());
+                    caption.setText(video.getCaption());
+                    comment.setText(String.valueOf(video.getComment_count()));
+                    like.setText(String.valueOf(video.getLike_count()));
+
+                    authorAvatar.setOnClickListener(v->{
+                        Intent intentUserInformation = new Intent(context, AuthorInformation.class);
+                        intentUserInformation.putExtra("user_id", video.getUser_id());
+                        Toast.makeText(context, "User: " + video.getUser_id(), Toast.LENGTH_SHORT).show();
+                        context.startActivity(intentUserInformation);
+                    });
+                    commentAvata.setOnClickListener(v -> {
+                        Intent intent =new Intent(context, CommentActivity.class);
+                        context.startActivity(intent);
+                    });
                     player.setMediaItem(mediaItem);
                     player.prepare();
                     player.play();
@@ -99,4 +138,5 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             }
         }
     }
+
 }

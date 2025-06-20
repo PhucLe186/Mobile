@@ -1,4 +1,4 @@
-package com.example.projectmobile;
+package com.example.projectmobile.Auth;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -30,6 +30,8 @@ import com.google.gson.Gson;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import com.example.projectmobile.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
