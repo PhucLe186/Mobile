@@ -38,8 +38,8 @@ public class VideoActivity extends Fragment {
         snapHelper.attachToRecyclerView(recyclerView);
 
         List<String> videoUrls = Arrays.asList(
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+            "https://commondatastorage.googlepis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            "https://commondatastorage.googlepis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
         );
 
         videoAdapter = new VideoAdapter(videoUrls, getContext());
@@ -55,12 +55,12 @@ public class VideoActivity extends Fragment {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                int position = linearLayoutManager.findFirstVisibleItemPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    videoAdapter.playVideoAtPosition(position);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    int position = linearLayoutManager.findFirstVisibleItemPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        videoAdapter.playVideoAtPosition(position);
+                    }
                 }
-            }
             }
         });
 

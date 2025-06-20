@@ -31,19 +31,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView btnUser, btnInbox, btnHome;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        keyAPI = ApiClient.getClient().create(keyAPI.class);
+        keyAPI = ApiClient.getClient(this).create(keyAPI.class);
         getUsersFromApi();
         btnSearch=findViewById(R.id.btn_search);
         btnAdd= findViewById(R.id.btn_add_video);
         btnHome = findViewById(R.id.img_home);
         btnInbox = findViewById(R.id.img_inbox);
         btnUser = findViewById(R.id.img_user_icon);
-
 
         findViewById(R.id.btn_home).setOnClickListener(this);
         findViewById(R.id.btn_inbox).setOnClickListener(this);

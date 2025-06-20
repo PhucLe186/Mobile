@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        authAPIService = ApiClient.getClient().create(AuthAPIService.class);//CREATE API SERVICE
+        authAPIService = ApiClient.getClient(this).create(AuthAPIService.class);//CREATE API SERVICE
         LoginRequest request = new LoginRequest(username, password);//CREATE REQUEST OBJECT
         Call<LoginResponse> call = authAPIService.login(request);//MAKE CALL
 
@@ -97,13 +97,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {//WHEN SUCCESS
                     LoginResponse loginResponse = response.body();
+                    String token = loginResponse.getToken();//GET TOKEN
                     Log.d("LOGIN", new Gson().toJson(loginResponse));//LOG TO DEBUG
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));//MAKE INTENT
                 } else {//IF NOT SUCCESS
                     handleErrorResponse(response);
                 }
             }
-
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {//IF ERROR OCCURS
                 txtError.setText("Network error: " + t.getMessage());

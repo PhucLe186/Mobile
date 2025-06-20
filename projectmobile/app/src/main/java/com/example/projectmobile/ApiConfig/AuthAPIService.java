@@ -13,6 +13,6 @@ public interface AuthAPIService {
     @POST("api/auth/login")//Login API
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
 
-    @POST("api/register")//Register API
+    @POST("api/auth/register")//Register API
     Call<RegisterResponse> register(@Body RegisterRequest registerRequest);
 }

@@ -1,4 +1,5 @@
 const db = require('../../Config/sqlServer.js');
+//Login Service
 exports.login = async (username, password) => {
   try {
     const connection = await db(); // Ensure you have a valid connection
@@ -16,6 +17,38 @@ exports.login = async (username, password) => {
     }
   } catch (error) {
     console.error('Error during login:', error);
+    throw error; // Propagate the error to be handled by the controller
+  }
+}
+//Register Service
+exports.register = async (email, username, password) => {
+  try {
+    const connection = await db(); // Ensure you have a valid connection
+    // Query to check if the user already exists
+    const [existingUser] = await connection.execute(
+      'SELECT * FROM users WHERE username = ? LIMIT 1',
+      [username]
+    );
+    const [existingEmail] = await connection.execute(
+      'SELECT * FROM users WHERE email = ? LIMIT 1',
+      [email]
+    );
+    // If the user already exists, throw an error
+    if (existingUser.length > 0 ) {
+      throw new Error('User already exists');
+    }
+    if (existingEmail.length > 0) {
+      throw new Error('Email already exists');
+    }
+
+    // Insert the new user into the database
+    const [result] = await connection.execute(
+      'INSERT INTO users (email, username, password) VALUES (?, ?, ?)',
+      [email, username, password]
+    );
+
+  } catch (error) {
+    console.error('Error during registration:', error);
     throw error; // Propagate the error to be handled by the controller
   }
 }
