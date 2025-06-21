@@ -15,8 +15,8 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.AuthApi;
-import com.example.projectmobile.Auth.AuthModule.LoginRequest;
-import com.example.projectmobile.Auth.AuthModule.LoginResponse;
+import com.example.projectmobile.Auth.AuthModel.LoginRequest;
+import com.example.projectmobile.Auth.AuthModel.LoginResponse;
 import com.example.projectmobile.MainActivity;
 import com.example.projectmobile.R;
 
@@ -27,7 +27,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     private ImageView backBtn;
-    private TextView btnRegister, txtError;
+    private TextView btnRegister, txtError, forgotPassword;
     private EditText edtUsername, edtPassword;
     private AppCompatButton btnLogin;
     private AuthApi auth;
@@ -47,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         edtUsername = findViewById(R.id.edit_text_name);
         edtPassword = findViewById(R.id.edit_txt_password);
         txtError = findViewById(R.id.txt_error);
+        forgotPassword = findViewById(R.id.btn_forgot_password);
     }
     private void setListeners() {
         btnLogin.setOnClickListener(v -> handleLogin());
@@ -54,6 +55,10 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
         });
+        forgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ForgotPasswordActivity.class);
+            startActivity(intent);
+        });//Intent to forgot password
         backBtn.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -67,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
             }
             return true;
         });
-
     }
 
     private void handleLogin() {

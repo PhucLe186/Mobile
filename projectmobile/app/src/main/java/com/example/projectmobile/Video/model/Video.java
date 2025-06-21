@@ -58,4 +58,12 @@ public class Video {
     public int getLiked() {
         return liked;
     }
+
+    public void setLike_count(int like_count) {
+        this.like_count = like_count;
+    }
+
+    public void setLiked(int liked) {
+        this.liked = liked;
+    }
 }

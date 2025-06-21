@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">projectmobile</string>
+    <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
 </resources>

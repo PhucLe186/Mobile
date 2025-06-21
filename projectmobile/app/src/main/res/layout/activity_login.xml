@@ -35,7 +35,7 @@
 
         <EditText
             android:id="@+id/edit_text_name"
-            android:layout_width="384dp"
+            android:layout_width="match_parent"
             android:layout_height="53dp"
             android:layout_marginTop="44dp"
             android:autofillHints="username"

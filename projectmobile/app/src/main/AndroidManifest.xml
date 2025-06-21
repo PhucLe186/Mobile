@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Projectmobile"
         tools:targetApi="31">
         <activity
+            android:name=".Auth.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateVideo.VideoConfig"
             android:exported="false" />
         <activity

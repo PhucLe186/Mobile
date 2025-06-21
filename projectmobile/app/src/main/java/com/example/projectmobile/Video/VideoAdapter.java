@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.media3.common.MediaItem;
@@ -20,15 +21,17 @@ import com.bumptech.glide.Glide;
 import com.example.projectmobile.Comment.CommentActivity;
 import com.example.projectmobile.Information.AuthorInformation;
 import com.example.projectmobile.R;
+import com.example.projectmobile.Video.CallApi.LikeCall;
+import com.example.projectmobile.Video.CallApi.LikeHelper;
 import com.example.projectmobile.Video.model.Video;
 
 import java.util.List;
-
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     private List<Video> videoList;
     private ExoPlayer player;
     private int currentPlayingPosition = -1;
     private Context context;
+
     public VideoAdapter(List<Video> videoList, Context context) {
         this.context = context;
         this.videoList = videoList;
@@ -132,6 +135,35 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                     player.setMediaItem(mediaItem);
                     player.prepare();
                     player.play();
+                    icon_like.setOnClickListener(v -> {
+                        if(video.getLiked()==1){
+                            LikeHelper.LAUvideo(context, video.getVideo_id(), new LikeCall() {
+                                public void onSuccess() {
+                                    video.setLiked(0);
+                                    video.setLike_count(video.getLike_count() - 1);
+                                    icon_like.setImageResource(R.drawable.favorite);
+                                    like.setText(String.valueOf(video.getLike_count()));
+
+                                }
+                                public void onFailure(String errorMessage) {
+                                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        else {
+                            LikeHelper.LAUvideo(context, video.getVideo_id(), new LikeCall() {
+                                public void onSuccess() {
+                                    video.setLiked(1);
+                                    video.setLike_count(video.getLike_count() + 1);
+                                    icon_like.setImageResource(R.drawable.favorite_red);
+                                    like.setText(String.valueOf(video.getLike_count()));
+                                }
+                                public void onFailure(String errorMessage) {
+                                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
 
                 }
                 else{
