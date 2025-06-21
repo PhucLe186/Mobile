@@ -135,34 +135,29 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                     player.setMediaItem(mediaItem);
                     player.prepare();
                     player.play();
-                    icon_like.setOnClickListener(v -> {
-                        if(video.getLiked()==1){
-                            LikeHelper.LAUvideo(context, video.getVideo_id(), new LikeCall() {
-                                public void onSuccess() {
-                                    video.setLiked(0);
-                                    video.setLike_count(video.getLike_count() - 1);
-                                    icon_like.setImageResource(R.drawable.favorite);
-                                    like.setText(String.valueOf(video.getLike_count()));
 
-                                }
-                                public void onFailure(String errorMessage) {
-                                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                        else {
-                            LikeHelper.LAUvideo(context, video.getVideo_id(), new LikeCall() {
-                                public void onSuccess() {
-                                    video.setLiked(1);
-                                    video.setLike_count(video.getLike_count() + 1);
-                                    icon_like.setImageResource(R.drawable.favorite_red);
-                                    like.setText(String.valueOf(video.getLike_count()));
-                                }
-                                public void onFailure(String errorMessage) {
-                                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
+                    icon_like.setOnClickListener(v -> {
+                        int newLikedState = video.getLiked() == 1 ? 0 : 1;
+                        int likeCountChange = newLikedState == 1 ? 1 : -1;
+
+                        video.setLiked(newLikedState);
+                        video.setLike_count(video.getLike_count() + likeCountChange);
+                        icon_like.setImageResource(newLikedState == 1 ? R.drawable.favorite_red : R.drawable.favorite);
+                        like.setText(String.valueOf(video.getLike_count()));
+
+                        LikeHelper.LAUvideo(context, video.getVideo_id(), new LikeCall() {
+                            @Override
+                            public void onSuccess() {
+                            }
+                            public void onFailure(String errorMessage) {
+                                video.setLiked(newLikedState == 1 ? 0 : 1);
+                                video.setLike_count(video.getLike_count() - likeCountChange);
+                                icon_like.setImageResource(newLikedState == 1 ? R.drawable.favorite : R.drawable.favorite_red);
+                                like.setText(String.valueOf(video.getLike_count()));
+                                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                     });
 
                 }
