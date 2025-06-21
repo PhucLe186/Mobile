@@ -1,5 +1,6 @@
 const  db  = require('../../Config/sqlServer.js');
 const jwt = require('jsonwebtoken');
+const authService = require("../services/authServices");
 require('dotenv').config();
 
 class AuthController {
@@ -41,6 +42,34 @@ class AuthController {
     }
 }
 
+async Register(req, res) {
+  const { email,username, password } = req.body;
+
+  try {
+    // If not, return a 400 Bad Request response
+    if (!email || !username || !password) {
+      return res.status(400).json({ error: "Cần đầy đủ thông tin" });
+    }
+    if(!email.endsWith("@gmail.com")) {
+      return res.status(400).json({ error: "Email phải kết thúc bằng @gmail.com" });
+    }
+
+    // Call the authService to handle the registration logic
+    // This service should handle the registration logic, such as checking if the user already exists
+    // and creating a new user in the database if not
+    await authService.register(email, username, password);
+
+    // If the user is successfully registered, return a 201 Created response with the user data
+    res.status(201).json({
+        message: "Registration successful",
+    });
+  } catch (error) {
+    console.error("Registration error:", error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
  async Checklogin(req, res) {
     const authHeader = req.headers['authorization'];
     if (!authHeader) return res.status(401).json({ message: 'Không có token' });
@@ -55,7 +84,7 @@ class AuthController {
   });
 }
 
-}
+};
 
 
 module.exports = new AuthController();

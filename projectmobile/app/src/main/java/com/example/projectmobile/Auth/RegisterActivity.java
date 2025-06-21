@@ -10,20 +10,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy;
 
 import com.example.projectmobile.ApiConfig.ApiClient;
-import com.example.projectmobile.ApiConfig.AuthAPIService;
+import com.example.projectmobile.ApiConfig.AuthApi;
 import com.example.projectmobile.Model.ErrorResponse;
-import com.example.projectmobile.Model.UserModel.RegisterRequest;
-import com.example.projectmobile.Model.UserModel.RegisterResponse;
+import com.example.projectmobile.Auth.AuthModel.RegisterRequest;
+import com.example.projectmobile.Auth.AuthModel.RegisterResponse;
 import com.example.projectmobile.Module.CaptchaGenerator;
 import com.google.gson.Gson;
 
@@ -40,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText captchaInput, edit_txt_email, edit_txt_name, edit_txt_password, edit_txt_re_password;
     Button btnVerify;
     Button btnRefresh;
-    private AuthAPIService authAPIService;
+    private AuthApi authApi;
 
     CaptchaGenerator captchaGenerator;
 
@@ -128,9 +126,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void handleRegister(String email, String name, String password) {
-        authAPIService = ApiClient.getClient(this).create(AuthAPIService.class);//Create API Service
+        authApi = ApiClient.getClient().create(AuthApi.class);//Create API Service
         RegisterRequest request = new RegisterRequest(email, name, password);//Create Request Object
-        Call<RegisterResponse> call = authAPIService.register(request);//Make Call
+        Call<RegisterResponse> call = authApi.register(request);//Make Call
         call.enqueue(new Callback<RegisterResponse>() {
             @Override
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
@@ -173,6 +171,7 @@ public class RegisterActivity extends AppCompatActivity {
         try {
             if (response.errorBody() != null) {
                 String errorJson = response.errorBody().string();
+                Log.d("Register Error:",errorJson);
                 ErrorResponse error = new Gson().fromJson(errorJson, ErrorResponse.class);
                 Log.d("LOGIN_ERROR", new Gson().toJson(error));//log to debug
                 txtError.setText(error.getError());//display onto screen =D

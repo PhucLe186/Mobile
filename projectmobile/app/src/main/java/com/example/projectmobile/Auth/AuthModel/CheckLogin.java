@@ -1,13 +1,13 @@
-package com.example.projectmobile.Auth.AuthModule;
+package com.example.projectmobile.Auth.AuthModel;
 
 public class CheckLogin {
     private boolean login;
-    private UserModule user;
+    private UserModel user;
 
     public boolean isLogin() {
         return login;
     }
-    public UserModule getUser() {
+    public UserModel getUser() {
         return user;
     }
 }

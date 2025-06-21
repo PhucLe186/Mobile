@@ -1,4 +1,4 @@
-package com.example.projectmobile.Model.UserModel;
+package com.example.projectmobile.Auth.AuthModel;
 
 public class RegisterRequest {
     String email;

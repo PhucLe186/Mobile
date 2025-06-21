@@ -63,7 +63,6 @@ public class VideoActivity extends Fragment {
                 }
             }
         });
-
         return view;
     }
 

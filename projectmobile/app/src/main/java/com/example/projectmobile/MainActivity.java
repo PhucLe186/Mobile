@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.AuthApi;
-import com.example.projectmobile.Auth.AuthModule.CheckLogin;
+import com.example.projectmobile.Auth.AuthModel.CheckLogin;
 import com.example.projectmobile.CreateVideo.CreateVideoActivity;
 import com.example.projectmobile.Information.GuestProfileActivity;
 import com.example.projectmobile.Information.UserInformation_LoggedInProfile;

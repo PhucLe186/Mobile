@@ -1,5 +1,6 @@
 package com.example.projectmobile.Auth;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,8 +16,8 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.AuthApi;
-import com.example.projectmobile.Auth.AuthModule.LoginRequest;
-import com.example.projectmobile.Auth.AuthModule.LoginResponse;
+import com.example.projectmobile.Auth.AuthModel.LoginRequest;
+import com.example.projectmobile.Auth.AuthModel.LoginResponse;
 import com.example.projectmobile.MainActivity;
 import com.example.projectmobile.R;
 
@@ -48,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.edit_txt_password);//password edit text
         txtError = findViewById(R.id.txt_error);//error text
     }
+    @SuppressLint("ClickableViewAccessibility")
     private void setListeners() {
         btnLogin.setOnClickListener(v -> handleLogin());
         btnRegister.setOnClickListener(v -> {

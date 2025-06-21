@@ -1,4 +1,4 @@
-package com.example.projectmobile.Auth.AuthModule;
+package com.example.projectmobile.Auth.AuthModel;
 
 public class LoginRequest {
     private String username;

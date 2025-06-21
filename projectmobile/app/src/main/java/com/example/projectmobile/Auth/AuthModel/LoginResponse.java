@@ -1,4 +1,4 @@
-package com.example.projectmobile.Auth.AuthModule;
+package com.example.projectmobile.Auth.AuthModel;
 
 public class LoginResponse {
     private String success;

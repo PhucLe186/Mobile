@@ -1,6 +1,6 @@
-package com.example.projectmobile.Auth.AuthModule;
+package com.example.projectmobile.Auth.AuthModel;
 
-public class UserModule {
+public class UserModel {
     private int user_id;
     private String email;
     private long iat;

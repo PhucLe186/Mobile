@@ -9,8 +9,6 @@ function route(app) {
   app.use('/video', Video);
   app.use('/author', Author);
   app.use('/auth', Auth);
-
-
 }
 
 module.exports = route;
