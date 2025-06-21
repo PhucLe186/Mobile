@@ -1,11 +1,17 @@
 package com.example.projectmobile.ApiConfig;
 
-import com.example.projectmobile.Video.Video;
+import com.example.projectmobile.Video.model.Video;
+
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 
 public interface VideoApi {
     @GET("video/")
     Call<List<Video>> getVideo();
+
+    @GET("video/local")
+    Call<List<Video>> getVideobyid(@Header("Authorization") String authHeader);
 }

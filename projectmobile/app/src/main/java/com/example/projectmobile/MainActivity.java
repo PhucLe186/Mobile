@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             api.checkLogin("Bearer " + token).enqueue(new Callback<CheckLogin>() {
                 @Override
                 public void onResponse(Call<CheckLogin> call, Response<CheckLogin> response) {
-                    Toast.makeText(MainActivity.this, token, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "bạn đã đăng nhập", Toast.LENGTH_LONG).show();
                 }
 
                 @Override

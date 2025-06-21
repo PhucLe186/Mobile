@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,10 +14,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.projectmobile.Auth.LoginActivity;
 import com.example.projectmobile.R;
+import com.example.projectmobile.Setting.SettingNotLogin;
 
 public class GuestProfileActivity extends Fragment {
 
     private Button loginButton;
+    private ImageView menubar;
     public GuestProfileActivity() {
         // Required empty public constructor
     }
@@ -35,11 +38,16 @@ public class GuestProfileActivity extends Fragment {
     }
     private void initView(View view) {
         loginButton = view.findViewById(R.id.button3);
+        menubar=view.findViewById(R.id.img);
     }
     private void initListener() {
         loginButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
+        });
+        menubar.setOnClickListener(v -> {
+            Intent inten=new Intent(getActivity(), SettingNotLogin.class);
+            startActivity(inten);
         });
     }
 }

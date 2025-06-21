@@ -19,14 +19,19 @@
             android:name=".CreateVideo.VideoConfig"
             android:exported="false" />
         <activity
+            android:name=".Setting.SettingNotLogin"
+            android:exported="false" />
+        <activity
             android:name=".CreateVideo.PreviewVideo"
             android:exported="false" />
         <activity
             android:name=".CreateVideo.CreateVideoActivity"
             android:exported="false" />
         <activity
+
             android:name=".Information.AuthorInformation"
             android:exported="false" />
+
         <activity
             android:name=".Information.UserInformation"
             android:exported="false" />

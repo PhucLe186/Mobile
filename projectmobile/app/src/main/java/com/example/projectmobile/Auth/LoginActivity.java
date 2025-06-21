@@ -40,13 +40,13 @@ public class LoginActivity extends AppCompatActivity {
         initViews();
         setListeners();
     }
-    private void initViews() {//init all views
-        btnLogin = findViewById(R.id.btn_login);//login button
-        backBtn = findViewById(R.id.btn_back);//go back button
-        btnRegister = findViewById(R.id.btn_register);//register button
-        edtUsername = findViewById(R.id.edit_text_name);//username edit text
-        edtPassword = findViewById(R.id.edit_txt_password);//password edit text
-        txtError = findViewById(R.id.txt_error);//error text
+    private void initViews() {
+        btnLogin = findViewById(R.id.btn_login);
+        backBtn = findViewById(R.id.btn_back);
+        btnRegister = findViewById(R.id.btn_register);
+        edtUsername = findViewById(R.id.edit_text_name);
+        edtPassword = findViewById(R.id.edit_txt_password);
+        txtError = findViewById(R.id.txt_error);
     }
     private void setListeners() {
         btnLogin.setOnClickListener(v -> handleLogin());
