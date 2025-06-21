@@ -1,6 +1,8 @@
 package com.example.projectmobile.ApiConfig;
 
 import com.example.projectmobile.Auth.AuthModel.CheckLogin;
+import com.example.projectmobile.Auth.AuthModel.ForgotPasswordRequest;
+import com.example.projectmobile.Auth.AuthModel.ForgotPasswordResponse;
 import com.example.projectmobile.Auth.AuthModel.LoginRequest;
 import com.example.projectmobile.Auth.AuthModel.LoginResponse;
 import com.example.projectmobile.Auth.AuthModel.RegisterRequest;
@@ -17,7 +19,8 @@ public interface AuthApi {
     Call<LoginResponse> Login(@Body LoginRequest loginModule);
     @POST("auth/register")//Register API
     Call<RegisterResponse> register(@Body RegisterRequest registerRequest);
-
+    @POST("auth/forgotpassword")//Forgot password API
+    Call<ForgotPasswordResponse> forgotPassword(@Body ForgotPasswordRequest forgotPasswordRequest);
     @GET("/auth/checklogin")
     Call<CheckLogin> checkLogin(@Header("Authorization") String authHeader);
 }

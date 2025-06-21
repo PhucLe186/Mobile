@@ -69,6 +69,30 @@ async Register(req, res) {
   }
 }
 
+async ForgotPassword(req, res) {
+    const {email,username} = req.body;
+    if (!email || !username) {
+        return res.status(400).json({ error: "Cần đầy đủ thông tin" });
+      }
+      if (!email.endsWith("@gmail.com")) {
+        return res
+          .status(400)
+          .json({ error: "Email phải kết thúc bằng @gmail.com" });
+      }
+    try{
+      // Call the authService to handle the forgot password logic
+      const password = await authService.forgotPassword(email, username);
+      res.status(200).json({
+        message: "successfully forgot password request",
+        password:password,
+      });
+    }
+    catch (error) {
+      console.error("Forgot password error:", error);
+      res.status(500).json({ error: error.message });
+    }
+  };
+
 
  async Checklogin(req, res) {
     const authHeader = req.headers['authorization'];

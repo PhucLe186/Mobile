@@ -28,7 +28,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     private ImageView backBtn;
-    private TextView btnRegister, txtError;
+    private TextView btnRegister, txtError,forgotPassword;
     private EditText edtUsername, edtPassword;
     private AppCompatButton btnLogin;
     private AuthApi auth;
@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         edtUsername = findViewById(R.id.edit_text_name);//username edit text
         edtPassword = findViewById(R.id.edit_txt_password);//password edit text
         txtError = findViewById(R.id.txt_error);//error text
+        forgotPassword = findViewById(R.id.btn_forgot_password);
     }
     @SuppressLint("ClickableViewAccessibility")
     private void setListeners() {
@@ -55,7 +56,11 @@ public class LoginActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(v -> {
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
-        });
+        });//Intent to register
+        forgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ForgotPasswordActivity.class);
+            startActivity(intent);
+        });//Intent to forgot password
         backBtn.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -68,8 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                     break;
             }
             return true;
-        });
-
+        });//Start handling Login
     }
 
     private void handleLogin() {
@@ -80,7 +84,6 @@ public class LoginActivity extends AppCompatActivity {
         auth = ApiClient.getClient().create(AuthApi.class);
         LoginRequest loginModule= new LoginRequest(username, password);
         auth.Login(loginModule).enqueue(new Callback<LoginResponse>() {
-
 
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
