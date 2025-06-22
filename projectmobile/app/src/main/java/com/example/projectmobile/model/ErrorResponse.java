@@ -1,4 +1,4 @@
-package com.example.projectmobile.Model;
+package com.example.projectmobile.model;
 
 public class ErrorResponse {
     private String error;

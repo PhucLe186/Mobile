@@ -32,20 +32,20 @@ public class UserInformation_LoggedInProfile extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_user_infomation_logged_in, container, false);
 
+
+
+       initView(view);
+        menuButton.setOnClickListener(v -> showBottomMenu());
+
+        return view;
+    }
+
+    private void initView( View view) {
         usernameText = view.findViewById(R.id.usernameText);
         followersText = view.findViewById(R.id.followersText);
         likesText = view.findViewById(R.id.likesText);
         menuButton = view.findViewById(R.id.img);
 
-        // Dữ liệu giả lập
-        usernameText.setText("@user123");
-        followersText.setText("Followers: 12.3K");
-        likesText.setText("Likes: 48.7K");
-
-        // Bắt sự kiện menu
-        menuButton.setOnClickListener(v -> showBottomMenu());
-
-        return view;
     }
 
     private void showBottomMenu() {

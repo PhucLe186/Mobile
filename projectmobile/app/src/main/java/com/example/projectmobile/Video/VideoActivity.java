@@ -34,8 +34,6 @@ public class VideoActivity extends Fragment {
     private PagerSnapHelper snapHelper;
     private VideoApi getVideo;
 
-
-
     public VideoActivity() {}
 
     @Nullable
@@ -75,7 +73,6 @@ public class VideoActivity extends Fragment {
 
         return view;
     }
-
     private void fetchVideoList(String token) {
         if(token==null){
             getVideo = ApiClient.getClient().create(VideoApi.class);
@@ -134,7 +131,6 @@ public class VideoActivity extends Fragment {
             });
         }
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

@@ -2,8 +2,7 @@ package com.example.projectmobile.follow;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewGroup;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,7 +11,6 @@ import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.FollowApi;
 import com.example.projectmobile.R;
 import com.example.projectmobile.UserAdapter.UserAdapter;
-import com.example.projectmobile.model.User;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -29,7 +27,7 @@ public class FollowActivity extends AppCompatActivity implements UserAdapter.OnF
     private List<User> userList = new ArrayList<>();
 
     private FollowApi followApi;
-    private String currentUserId = "1"; // Bạn có thể thay bằng id thực tế
+    private String currentUserId = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

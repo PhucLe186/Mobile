@@ -13,8 +13,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.projectmobile.R;
-import com.example.projectmobile.model.User;
-import java.text.BreakIterator;
+import com.example.projectmobile.follow.User;
+
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {

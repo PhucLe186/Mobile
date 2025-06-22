@@ -18,7 +18,7 @@ import androidx.media3.ui.PlayerView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.projectmobile.Comment.CommentActivity;
+import com.example.projectmobile.Comment.CommentBottomSheet;
 import com.example.projectmobile.Information.AuthorInformation;
 import com.example.projectmobile.R;
 import com.example.projectmobile.Video.CallApi.LikeCall;
@@ -85,8 +85,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         ImageView authorAvatar;
         ImageView commentAvata, icon_like;
         TextView name, caption, like, comment;
-
-
          public VideoViewHolder(@NonNull View itemView) {
             super(itemView);
             playerView = itemView.findViewById(R.id.playerView);
@@ -123,9 +121,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                         intentUserInformation.putExtra("user_id", video.getUser_id());
                         context.startActivity(intentUserInformation);
                     });
-                    commentAvata.setOnClickListener(v -> {
-                        Intent intent =new Intent(context, CommentActivity.class);
-                        context.startActivity(intent);
+                    commentAvata.setOnClickListener(view -> {
+                        CommentBottomSheet.show(context,video.getVideo_id());
                     });
                     if(video.getLiked()==1){
                         icon_like.setImageResource(R.drawable.favorite_red);

@@ -3,7 +3,7 @@ package com.example.projectmobile.ApiConfig;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.*;
-import com.example.projectmobile.model.User;
+import com.example.projectmobile.follow.User;
 
     public interface FollowApi {
 

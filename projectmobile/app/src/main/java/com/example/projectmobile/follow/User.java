@@ -1,4 +1,4 @@
-package com.example.projectmobile.model;
+package com.example.projectmobile.follow;
 public class User {
     private String userId;
     private String username;

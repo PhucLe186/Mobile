@@ -10,15 +10,12 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.AuthApi;
 import com.example.projectmobile.Auth.AuthModel.ForgotPasswordRequest;
 import com.example.projectmobile.Auth.AuthModel.ForgotPasswordResponse;
-import com.example.projectmobile.Model.ErrorResponse;
+import com.example.projectmobile.model.ErrorResponse;
 import com.example.projectmobile.R;
 import com.google.gson.Gson;
 
