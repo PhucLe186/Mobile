@@ -12,9 +12,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Projectmobile"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".follow.FollowActivity"
+            android:exported="false" />
         <activity
             android:name=".Auth.ForgotPasswordActivity"
             android:exported="false" />
@@ -31,10 +34,8 @@
             android:name=".CreateVideo.CreateVideoActivity"
             android:exported="false" />
         <activity
-
             android:name=".Information.AuthorInformation"
             android:exported="false" />
-
         <activity
             android:name=".Information.UserInformation"
             android:exported="false" />
@@ -57,7 +58,8 @@
         <activity
             android:name=".Comment.CommentActivity"
             android:exported="false" />
-        <activity android:name=".Notification.InboxActivity"
+        <activity
+            android:name=".Notification.InboxActivity"
             tools:ignore="Instantiatable" />
         <activity android:name=".Notification.ChatActivity" />
         <activity
@@ -69,6 +71,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
