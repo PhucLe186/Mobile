@@ -1,81 +1,104 @@
-package com.example.projectmobile;
+package com.example.projectmobile; // Nhớ đổi đúng tên package của bạn
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.projectmobile.R;
+import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends AppCompatActivity {
 
-    private EditText editTextSearch;
-    private TextView btnSearch;
-    private ImageView btnBack;
-    private ListView listViewResults;
+    EditText editTextSearch;
+    TextView btnSearch;
+    ListView listViewResults;
 
-    private ArrayList<String> searchSuggestions;
-    private ArrayAdapter<String> adapter;
+    ArrayList<String> userList = new ArrayList<>();
+    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        // Ánh xạ
+        // Gán view
         editTextSearch = findViewById(R.id.editTextSearch);
         btnSearch = findViewById(R.id.btnSearch);
-        btnBack = findViewById(R.id.btnBack);
         listViewResults = findViewById(R.id.listViewResults);
 
-        // Dữ liệu gợi ý mẫu
-        searchSuggestions = new ArrayList<>();
-        searchSuggestions.add("Lặng Từ Nhân Thoại");
-        searchSuggestions.add("chai tẩy rửa đa năng");
-        searchSuggestions.add("sao mình chưa nắm tay doraemon");
-        searchSuggestions.add("nghịch lý 2 đồng xu");
-        searchSuggestions.add("under the influence remix");
-
-        // Adapter cho ListView
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, searchSuggestions);
+        // Adapter
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, userList);
         listViewResults.setAdapter(adapter);
 
-        // Bắt sự kiện tìm kiếm
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String keyword = editTextSearch.getText().toString().trim();
-                if (!keyword.isEmpty()) {
-                    searchSuggestions.add(0, keyword); // Thêm vào đầu danh sách
-                    adapter.notifyDataSetChanged();
-                    Toast.makeText(SearchActivity.this, "Đã tìm kiếm: " + keyword, Toast.LENGTH_SHORT).show();
+        // Bắt sự kiện click nút "Tìm kiếm"
+        btnSearch.setOnClickListener(v -> {
+            String keyword = editTextSearch.getText().toString().trim();
+            if (!keyword.isEmpty()) {
+                searchUser(keyword);
+            } else {
+                Toast.makeText(this, "Nhập từ khóa tìm kiếm", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Gọi API tìm kiếm
+    private void searchUser(String keyword) {
+        new Thread(() -> {
+            try {
+                // IP này là localhost trên máy ảo Android
+                URL url = new URL("http://10.0.2.2:5000/api/search?q=" + URLEncoder.encode(keyword, "UTF-8"));
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setConnectTimeout(5000);
+                conn.setReadTimeout(5000);
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+
+                    reader.close();
+                    String json = response.toString();
+
+                    // Parse JSON
+                    JSONArray jsonArray = new JSONArray(json);
+                    userList.clear();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+
+                        JSONObject user = jsonArray.getJSONObject(i);
+                        String name = user.getString("username"); // ← đổi thành đúng tên cột trong database
+                        userList.add(name);
+                    }
+
+                    runOnUiThread(() -> adapter.notifyDataSetChanged());
+                } else {
+                    runOnUiThread(() ->
+                            Toast.makeText(this, "Lỗi server: " + responseCode, Toast.LENGTH_SHORT).show());
                 }
-            }
-        });
 
-        // Bắt sự kiện click vào từng item trong ListView
-        listViewResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selected = searchSuggestions.get(position);
-                Toast.makeText(SearchActivity.this, "Bạn đã chọn: " + selected, Toast.LENGTH_SHORT).show();
+                conn.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() ->
+                        Toast.makeText(this, "Lỗi kết nối API", Toast.LENGTH_SHORT).show());
             }
-        });
-
-        // Nút quay lại
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish(); // Trở về màn hình trước
-            }
-        });
+        }).start();
     }
 }
