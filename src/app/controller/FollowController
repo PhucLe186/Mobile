@@ -1,5 +1,5 @@
-// FollowController_SQL.js
-const db = require('../config/db'); // sử dụng mysql2 connection pool
+
+const db = require('../config/db'); 
 
 class FollowController {
     // [GET] /api/users/:userId/following?page=1&limit=10
