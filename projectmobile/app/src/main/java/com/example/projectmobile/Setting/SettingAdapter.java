@@ -1,13 +1,14 @@
 package com.example.projectmobile.Setting;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import com.example.projectmobile.R;
 
@@ -22,7 +23,6 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.context = context;
         this.items = items;
     }
-
     public static class HeaderViewHolder extends RecyclerView.ViewHolder {
         TextView headerTitle;
         public HeaderViewHolder(View itemView) {
@@ -64,8 +64,29 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof HeaderViewHolder) {
             ((HeaderViewHolder) holder).headerTitle.setText(item.getTitle());
         } else if (holder instanceof ItemViewHolder) {
-            ((ItemViewHolder) holder).textView.setText(item.getTitle());
-            ((ItemViewHolder) holder).imageView.setImageResource(item.getIcon());
+            ItemViewHolder itemHolder = (ItemViewHolder) holder;
+            itemHolder.textView.setText(item.getTitle());
+            itemHolder.imageView.setImageResource(item.getIcon());
+
+            SharedPreferences prefs = context.getSharedPreferences("MyAppPrefs", context.MODE_PRIVATE);
+            String token = prefs.getString("token", "");
+
+            if(token.isEmpty()){
+                itemHolder.itemView.setOnClickListener(v -> {
+                    if (context instanceof SettingNotLogin) {
+                        ((SettingNotLogin) context).onSettingItemClick(item);
+                        ;
+                    }
+                });
+            }
+
+            else {
+                itemHolder.itemView.setOnClickListener(v -> {
+                    if (context instanceof SettingActivity) {
+                        ((SettingActivity) context).handleSettingClick(item);
+                    }
+                });
+            }
         }
     }
 

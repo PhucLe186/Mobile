@@ -29,11 +29,10 @@ import com.example.projectmobile.Information.ItemVideo.VideoItemHolder;
 import com.example.projectmobile.Module.DecodeToken;
 import com.example.projectmobile.R;
 import com.example.projectmobile.Setting.SettingActivity;
-import com.example.projectmobile.Video.Video;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;

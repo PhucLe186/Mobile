@@ -78,53 +78,56 @@ CREATE TABLE Messages (
 
 
 
--- Thêm người dùng
-INSERT INTO Users (username, email, password, phone, avatar_url)
-VALUES
-('alice', 'alice@example.com', 'password123','0969119817' ,'https://res.cloudinary.com/dm1lcegq1/image/upload/v1749828089/unnamed_reqim7.png'),
-('bob', 'bob@example.com', 'securepass','0969119817','https://res.cloudinary.com/dm1lcegq1/image/upload/v1749828088/92a78ba51b1769d5e4baf07cd38dfd22_ot5chu.jpg'),
-('charlie', 'charlie@example.com', 'charlie123','0969119817', 'https://res.cloudinary.com/dm1lcegq1/image/upload/v1749828088/anh-anime-sad_srlfwk.webp');
+-- USERS
+INSERT INTO Users (username, email, password, avatar_url, phone) VALUES
+('alice', 'alice@example.com', 'pass123', 'https://example.com/ava1.jpg', '0123456789'),
+('bob', 'bob@example.com', 'pass456', 'https://example.com/ava2.jpg', '0987654321'),
+('charlie', 'charlie@example.com', 'pass789', 'https://example.com/ava3.jpg', '0111222333'),
+('david', 'david@example.com', 'pass111', 'https://example.com/ava4.jpg', '0333444555'),
+('eva', 'eva@example.com', 'pass222', 'https://example.com/ava5.jpg', '0444555666'),
+('frank', 'frank@example.com', 'pass333', 'https://example.com/ava6.jpg', '0555666777'),
+('grace', 'grace@example.com', 'pass444', 'https://example.com/ava7.jpg', '0666777888'),
+('henry', 'henry@example.com', 'pass555', 'https://example.com/ava8.jpg', '0777888999'),
+('irene', 'irene@example.com', 'pass666', 'https://example.com/ava9.jpg', '0888999000'),
+('jack', 'jack@example.com', 'pass777', 'https://example.com/ava10.jpg', '0999000111');
 
--- Thêm video
-INSERT INTO Videos (user_id, video_url, caption)
-VALUES
+-- VIDEOS
+INSERT INTO Videos (user_id, video_url, caption) VALUES
 (1, 'https://res.cloudinary.com/dm1lcegq1/video/upload/v1749828284/iLoveTik.com_TikTok_Media_001_8cd079008bf2ee9a725140133951ab5a_zjev5n.mp4', 'Check this out! 😎'),
 (2, 'https://res.cloudinary.com/dm1lcegq1/video/upload/v1749828286/Download_tnxdke.mp4', 'My first dance video 💃'),
 (3, 'https://res.cloudinary.com/dm1lcegq1/video/upload/v1749828281/Download_1_b7fzr4.mp4', 'Travel vlog in Da Nang 🇻🇳');
+(4, 'https://res.cloudinary.com/dm1lcegq1/video/upload/v1750584458/Download_2_v1adsd.mp4', 'Dancing in the rain'),
+(5, 'https://res.cloudinary.com/dm1lcegq1/video/upload/v1750584458/Download_4_djb7tp.mp4', 'Guitar solo'),
+(6, 'https://res.cloudinary.com/dm1lcegq1/video/upload/v1750584458/Download_1_x23qyp.mp4', 'Cooking pasta'),
+(7, 'https://res.cloudinary.com/dm1lcegq1/video/upload/v1750584458/Download_6_aa2n4p.mp4', 'My travel vlog'),
+(8, 'https://res.cloudinary.com/dm1lcegq1/video/upload/v1750584462/Download_3_d9fcvn.mp4', 'Drawing challenge'),
+(9, 'https://res.cloudinary.com/dm1lcegq1/video/upload/v1750584462/Download_3_d9fcvn.mp4', 'Gaming highlights'),
+(10,'https://res.cloudinary.com/dm1lcegq1/video/upload/v1750584463/Download_5_wdsys0.mp4', 'Satisfying ASMR');
 
--- Thêm lượt like
-INSERT INTO Likes (user_id, video_id)
-VALUES
-(1, 2),
-(2, 1),
-(3, 1),
-(1, 3);
+-- LIKES
+INSERT INTO Likes (user_id, video_id) VALUES
+(1, 2), (1, 3), (2, 1), (2, 4), (3, 5),
+(4, 6), (5, 7), (6, 8), (7, 9), (8, 10);
 
--- Thêm bình luận
-INSERT INTO Comments (video_id, user_id, comment)
-VALUES
-(1, 2, 'Wow, great video! 🔥'),
-(1, 3, 'Love this! 💖'),
-(2, 1, 'Nice moves!'),
-(3, 1, 'I want to go there too! ✈️');
+-- COMMENTS
+INSERT INTO Comments (video_id, user_id, comment) VALUES
+(1, 2, 'Nice video!'), (2, 3, 'Well done!'), (3, 1, 'Cute cat!'),
+(4, 5, 'Amazing dance'), (5, 4, 'Great performance!'),
+(6, 6, 'I want the recipe!'), (7, 7, 'Beautiful place!'),
+(8, 8, 'Awesome art!'), (9, 9, 'LOL 🤣'), (10, 10, 'So relaxing');
 
--- Thêm theo dõi
-INSERT INTO Follows (follower_id, following_id)
-VALUES
-(1, 2),
-(1, 3),
-(2, 3),
-(3, 1);
+-- FOLLOWS
+INSERT INTO Follows (follower_id, following_id) VALUES
+(1, 2), (2, 3), (3, 4), (4, 5), (5, 6),
+(6, 7), (7, 8), (8, 9), (9, 10), (10, 1);
 
--- Thêm lưu video
-INSERT INTO SavedVideos (user_id, video_id)
-VALUES
-(1, 1),
-(2, 3),
-(3, 2);
+-- SAVED VIDEOS
+INSERT INTO SavedVideos (user_id, video_id) VALUES
+(1, 5), (2, 6), (3, 7), (4, 8), (5, 9),
+(6, 10), (7, 1), (8, 2), (9, 3), (10, 4);
 
-INSERT INTO Messages (sender_id, receiver_id, message)
-VALUES
-(1, 2, 'Hey Bob, how are you?'),
-(2, 1, 'Hi Alice! I’m doing great 😊'),
-(3, 1, 'Hey Alice, are you free for a collab?');
+-- MESSAGES
+INSERT INTO Messages (sender_id, receiver_id, message) VALUES
+(1, 2, 'Hey!'), (2, 3, 'What\'s up?'), (3, 4, 'Nice video!'),
+(4, 5, 'Hello 👋'), (5, 6, 'Let\'s collab'), (6, 7, 'Cool!'),
+(7, 8, 'How did you do that?'), (8, 9, 'GG WP!'), (9, 10, 'Follow me!'), (10, 1, 'Yo!');

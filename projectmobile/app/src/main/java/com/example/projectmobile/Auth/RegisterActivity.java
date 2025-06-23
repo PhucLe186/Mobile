@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.AuthApi;
-import com.example.projectmobile.Model.ErrorResponse;
+import com.example.projectmobile.model.ErrorResponse;
 import com.example.projectmobile.Auth.AuthModel.RegisterRequest;
 import com.example.projectmobile.Auth.AuthModel.RegisterResponse;
 import com.example.projectmobile.Module.CaptchaGenerator;

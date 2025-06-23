@@ -1,4 +1,4 @@
-package com.example.projectmobile.Video;
+package com.example.projectmobile.Video.model;
 
 public class Video {
     private int video_id;
@@ -8,19 +8,19 @@ public class Video {
     private String username;
     private String avatar_url;
     private int like_count;
+    private int comment_count;
+    private int liked;
 
-    public Video(int video_id,int user_id, String video_url, String caption, String username, String avatar_url, int like_count, int comment_count) {
+    public Video(int video_id, int user_id, String video_url, String caption, String username, String avatar_url, int like_count, int comment_count, int liked) {
         this.video_id = video_id;
+        this.user_id = user_id;
         this.video_url = video_url;
         this.caption = caption;
         this.username = username;
         this.avatar_url = avatar_url;
         this.like_count = like_count;
         this.comment_count = comment_count;
-    }
-
-    public int getComment_count() {
-        return comment_count;
+        this.liked = liked;
     }
 
     public int getVideo_id() {
@@ -51,5 +51,19 @@ public class Video {
         return like_count;
     }
 
-    private int comment_count;
+    public int getComment_count() {
+        return comment_count;
+    }
+
+    public int getLiked() {
+        return liked;
+    }
+
+    public void setLike_count(int like_count) {
+        this.like_count = like_count;
+    }
+
+    public void setLiked(int liked) {
+        this.liked = liked;
+    }
 }
