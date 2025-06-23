@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Information.ItemVideo.FullScreenVideoActivity"
+            android:exported="false" />
+        <activity
             android:name=".Auth.ForgotPasswordActivity"
             android:exported="false" />
         <activity
@@ -31,13 +34,13 @@
             android:name=".Information.AuthorInformation"
             android:exported="false" />
         <activity
-            android:name=".Information.UserInformation"
+            android:name=".Information.User.UserInformation"
             android:exported="false" />
         <activity
             android:name=".Setting.SettingActivity"
             android:exported="false" />
         <activity
-            android:name=".Information.UserInformation_LoggedInProfile"
+            android:name=".Information.User.UserInformation_LoggedInProfile"
             android:exported="false"
             tools:ignore="Instantiatable" />
         <activity
@@ -64,7 +67,7 @@
         <activity android:name=".Notification.ChatActivity" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>
