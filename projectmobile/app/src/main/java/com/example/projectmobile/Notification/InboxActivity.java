@@ -11,9 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.projectmobile.ApiConfig.ApiClient;
+import com.example.projectmobile.ApiConfig.InboxApi;
 import com.example.projectmobile.R;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class InboxActivity extends Fragment {
 
@@ -35,14 +42,11 @@ public class InboxActivity extends Fragment {
         inboxListView = rootView.findViewById(R.id.inbox_list);
 
         messageList = new ArrayList<>();
-        messageList.add(new Message("ebe", "Đã gửi 5 giờ trước"));
-        messageList.add(new Message("Tuanh", "Đã gửi 6 giờ trước"));
-        messageList.add(new Message("gia đình", "đã chia sẻ một video"));
-        messageList.add(new Message("em guột", "đã chia sẻ một video"));
-        messageList.add(new Message("phantom voice", "đã chia sẻ một video"));
-
         messageAdapter = new MessageAdapter(getContext(), messageList);
         inboxListView.setAdapter(messageAdapter);
+
+        // Gọi API để lấy danh sách tin nhắn
+        loadMessagesFromApi();
 
         inboxListView.setOnItemClickListener((parent, view, position, id) -> {
             Message selectedMessage = messageList.get(position);
@@ -52,5 +56,27 @@ public class InboxActivity extends Fragment {
         });
 
         return rootView;
+    }
+
+    private void loadMessagesFromApi() {
+        InboxApi inboxApi = ApiClient.getInboxApi();
+        Call<List<Message>> call = inboxApi.getInboxMessages();
+
+        call.enqueue(new Callback<List<Message>>() {
+            @Override
+            public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    messageList.clear();
+                    messageList.addAll(response.body());
+                    messageAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Message>> call, Throwable t) {
+                t.printStackTrace();
+                // TODO: Có thể thêm Toast báo lỗi ở đây nếu cần
+            }
+        });
     }
 }
