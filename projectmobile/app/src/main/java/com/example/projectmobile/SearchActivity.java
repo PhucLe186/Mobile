@@ -1,4 +1,4 @@
-package com.example.projectmobile; // Nhớ đổi đúng tên package của bạn
+package com.example.projectmobile;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -33,16 +33,13 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        // Gán view
         editTextSearch = findViewById(R.id.editTextSearch);
         btnSearch = findViewById(R.id.btnSearch);
         listViewResults = findViewById(R.id.listViewResults);
 
-        // Adapter
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, userList);
         listViewResults.setAdapter(adapter);
 
-        // Bắt sự kiện click nút "Tìm kiếm"
         btnSearch.setOnClickListener(v -> {
             String keyword = editTextSearch.getText().toString().trim();
             if (!keyword.isEmpty()) {
@@ -53,11 +50,9 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    // Gọi API tìm kiếm
     private void searchUser(String keyword) {
         new Thread(() -> {
             try {
-                // IP này là localhost trên máy ảo Android
                 URL url = new URL("http://10.0.2.2:5000/api/search?q=" + URLEncoder.encode(keyword, "UTF-8"));
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
@@ -77,14 +72,14 @@ public class SearchActivity extends AppCompatActivity {
                     reader.close();
                     String json = response.toString();
 
-                    // Parse JSON
                     JSONArray jsonArray = new JSONArray(json);
                     userList.clear();
                     for (int i = 0; i < jsonArray.length(); i++) {
-
                         JSONObject user = jsonArray.getJSONObject(i);
-                        String name = user.getString("username"); // ← đổi thành đúng tên cột trong database
-                        userList.add(name);
+                        String name = user.getString("username");
+                        String caption = user.optString("caption", "(Không có caption)");
+                        String display = "Người dùng: " + name + "\nCaption: " + caption;
+                        userList.add(display);
                     }
 
                     runOnUiThread(() -> adapter.notifyDataSetChanged());
