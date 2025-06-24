@@ -15,4 +15,8 @@ public class ApiClient {
         }
         return retrofit;
     }
+
+    public static InboxApi getInboxApi() {
+        return getClient().create(InboxApi.class);
+    }
 }
