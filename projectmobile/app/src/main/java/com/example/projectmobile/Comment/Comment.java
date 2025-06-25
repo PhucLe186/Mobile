@@ -2,16 +2,15 @@ package com.example.projectmobile.Comment;
 
 public class Comment {
     private String avatar_url;
-    private String userName;
+    private String username;
     private String comment;
+    private String created_at;
 
-    private String comment_time;
-
-    public Comment(String avatar_url ,String userName, String comment, String comment_time) {
+    public Comment(String avatar_url ,String username, String comment, String comment_time) {
         this.avatar_url=avatar_url;
-        this.userName = userName;
+        this.username = username;
         this.comment = comment;
-        this.comment_time = comment_time;
+        this.created_at = comment_time;
     }
 
     public String getAvatar_url() {
@@ -19,7 +18,7 @@ public class Comment {
     }
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
     public String getComment() {
@@ -27,7 +26,7 @@ public class Comment {
     }
 
     public String getComment_time() {
-        return comment_time;
+        return created_at;
     }
 
     public void setAvatar_url(String avatar_url) {
@@ -35,7 +34,7 @@ public class Comment {
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
     public void setComment(String comment) {
@@ -43,6 +42,6 @@ public class Comment {
     }
 
     public void setComment_time(String comment_time) {
-        this.comment_time = comment_time;
+        this.created_at = comment_time;
     }
 }

@@ -1,7 +1,11 @@
 package com.example.projectmobile.follow;
 
+import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.FollowApi;
 import com.example.projectmobile.R;
-import com.example.projectmobile.UserAdapter.UserAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -22,33 +25,61 @@ import retrofit2.Response;
 
 public class FollowActivity extends AppCompatActivity implements UserAdapter.OnFollowClickListener {
 
+    private String token;
+    private ImageView onback;
+    private TextView headername;
     private RecyclerView recyclerView;
+    private TabLayout tabLayout;
     private UserAdapter adapter;
     private List<User> userList = new ArrayList<>();
 
+    private  String username;
     private FollowApi followApi;
-    private String currentUserId = "1";
+    private String currentUserId;
+    private String styles;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        initView();
+        listener();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        currentUserId=getIntent().getStringExtra("user_id");
+        username = getIntent().getStringExtra("name");
+        styles=getIntent().getStringExtra("following");
         // Khởi tạo Retrofit
         followApi = ApiClient.getClient().create(FollowApi.class);
-
         setupTabs(tabLayout);
-        loadFollowingList(); // Mặc định load danh sách following trước
+        //lấy token
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        token = prefs.getString("token", "");
+
+        if ("1".equals(styles)) {
+            tabLayout.selectTab(tabLayout.getTabAt(0));  // Chọn tab Following
+            loadFollowingList();
+        } else {
+            tabLayout.selectTab(tabLayout.getTabAt(1));  // Chọn tab Followers
+            loadFollowersList();
+        }
+    }
+
+    private void listener() {
+        onback.setOnClickListener(v -> finish());
+
+    }
+
+    private void initView() {
+        onback=findViewById(R.id.onback);
+        headername=findViewById(R.id.header);
+        recyclerView = findViewById(R.id.recyclerView);
+        tabLayout = findViewById(R.id.tabLayout);
     }
 
     private void setupTabs(TabLayout tabLayout) {
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.following));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.followers));
-
+        headername.setText(username);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -74,7 +105,6 @@ public class FollowActivity extends AppCompatActivity implements UserAdapter.OnF
                     Log.e("Follow", "Load following failed: " + response.message());
                 }
             }
-
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
                 Log.e("Follow", "Error: " + t.getMessage());
@@ -108,12 +138,13 @@ public class FollowActivity extends AppCompatActivity implements UserAdapter.OnF
 
     @Override
     public void onFollowClick(int position, User user) {
-        boolean newStatus = !user.isFollowing();
-        user.setFollowing(newStatus);
+
+        String newStatus = user.getFollow_status();
+        user.setFollow_status("Bạn bè");
         adapter.notifyItemChanged(position);
 
-        if (newStatus) {
-            FollowApi.followUser(user.getUserId()).enqueue(new Callback<Void>() {
+        if ("Follow".equals(newStatus)) {
+            followApi.followUser("Bearer " + token, user).enqueue(new Callback<Void>()  {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
@@ -128,17 +159,17 @@ public class FollowActivity extends AppCompatActivity implements UserAdapter.OnF
                     Log.e("Follow", "Follow error: " + t.getMessage());
                 }
             });
+
         } else {
-            FollowApi.unfollowUser(user.getUserId()).enqueue(new Callback<Void>() {
+            followApi.unfollowUser("Bearer " + token, user).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        Log.d("Follow", "Unfollow success: " + user.getUserId());
+                        Log.d("Follow", "Unfollow success: " + currentUserId);
                     } else {
                         Log.e("Follow", "Unfollow failed");
                     }
                 }
-
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     Log.e("Follow", "Unfollow error: " + t.getMessage());

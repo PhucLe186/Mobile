@@ -43,22 +43,22 @@ public class SettingActivity extends AppCompatActivity {
 
     private void KhoiTaoDaTa() {
         arraycontact.add(new SettingItem(SettingItem.TYPE_HEADER, 0, "Cài đặt chung"));
-            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Tài Khoản"));
-            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Quyền riêng tư"));
-            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Bảo mật & quyền"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.usersss, "Tài Khoản"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.lock, "Quyền riêng tư"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.shield, "Bảo mật & quyền"));
         arraycontact.add(new SettingItem(SettingItem.TYPE_HEADER, 0, "Cài đặt chung"));
-            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Thông báo"));
-            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Trung tâm hoạt động"));
-            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Tùy chọn nội dung"));
-            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Phát"));
-            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Hiển Thị"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.bell, "Thông báo"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.clock, "Trung tâm hoạt động"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.camera, "Tùy chọn nội dung"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.play, "Phát"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.moon, "Hiển Thị"));
         arraycontact.add(new SettingItem(SettingItem.TYPE_HEADER, 0, "Hỗ trợ và giới thiệu"));
-            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Báo cáo vấn đề"));
-            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Hỗ trợ"));
-            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Điều khoản và chính sách"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.flag, "Báo cáo vấn đề"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.messageee, "Hỗ trợ"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.error, "Điều khoản và chính sách"));
         arraycontact.add(new SettingItem(SettingItem.TYPE_HEADER, 0, "Đăng nhập"));
-            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Chuyển đổi tài khoản"));
-            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Đăng xuất"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.arrows, "Chuyển đổi tài khoản"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.logout, "Đăng xuất"));
     }
     public void handleSettingClick(SettingItem item) {
         String title = item.getTitle();

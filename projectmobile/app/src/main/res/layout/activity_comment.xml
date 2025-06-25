@@ -1,22 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="540dp"
     android:orientation="vertical"
-    android:padding="12dp">
+    android:background="@drawable/bg_bottom_sheet"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="1 bình luận"
+        android:textSize="15dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_comments"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_height="410dp"
+         />
 
     <LinearLayout
+        android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/border_top"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
+    <ImageView
+        android:layout_marginEnd="20dp"
+        android:id="@+id/avatar_url"
+        android:layout_width="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_height="40dp"/>
+    <LinearLayout
+        android:background="@drawable/bg_search_bar"
+        android:gravity="center_vertical"
+        android:layout_width="310dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="20dp">
 
         <EditText
+            android:background="@null"
             android:id="@+id/edit_comment"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -29,5 +55,6 @@
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_menu_send"
             android:padding="8dp" />
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>

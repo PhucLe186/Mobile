@@ -1,5 +1,8 @@
 const  db  = require('../../Config/sqlServer.js');
 const jwt = require('jsonwebtoken');
+const authService = require("../services/authServices");
+const videoService = require("../services/videoServices");
+
 require('dotenv').config();
 
 class AuthController {
@@ -103,6 +106,66 @@ async ForgotPassword(req, res) {
       res.status(500).json({ error: error.message });
     }
   };
+  async Videos(req, res) {
+    const { user_id } = req.body;
+    if (!user_id) {
+      return res.status(400).json({ error: "Cần user_id" });
+    }
+    try {
+      const result = await videoService.getUserVideos(user_id);
+      if (result.error) {
+        // If user not found
+        return res.status(404).json({
+          error: result.error,
+        });
+      }
+      // If no videos found
+      if (result.videos.length === 0) {
+        return res.status(404).json({
+          message: "Không có video nào",
+        });
+      } else {
+        const data = result.videos.map((video) => ({
+          video_id: video.video_id,
+          video_url: video.video_url,
+        }));
+        res.status(200).json({
+          message: "Lấy video thành công",
+          data: data,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching user videos:", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+  async GetUserInfo(req, res) {
+    const { user_id } = req.body;
+    if (!user_id) {
+      return res.status(400).json({ error: "Cần user_id" });
+    }
+    if (isNaN(user_id)) {
+      return res.status(400).json({ error: "user_id phải là một số" });
+    }
+    if(user_id <= 0) {
+      return res.status(400).json({ error: "user_id phải lớn hơn 0" });
+    }
+    try {
+      const result = await authService.getUserInfo(user_id);
+      if (result.error) {
+        return res.status(404).json({
+          error: result.error,
+        });
+      }
+      res.status(200).json({
+        message: "Lấy thông tin người dùng thành công",
+        data: result.data,
+      });
+    } catch (error) {
+      console.error("Error fetching user info:", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
 
 }
 

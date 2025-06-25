@@ -35,6 +35,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.userComment.setText(comment.getComment());
         holder.time.setText((CharSequence) comment.getComment_time());
 
+
         Glide.with(context)
                 .load(comment.getAvatar_url())
                 .placeholder(R.drawable.user)

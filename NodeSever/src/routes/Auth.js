@@ -8,5 +8,7 @@ route.use('/login', authController.Login);
 route.use('/checklogin', authController.Checklogin);
 route.use('/register', authController.Register);
 route.use('/forgotpassword', authController.ForgotPassword);
+route.use('/listvideo',authController.Videos);
+route.use('/userinfo', authController.GetUserInfo);
 
 module.exports = route;

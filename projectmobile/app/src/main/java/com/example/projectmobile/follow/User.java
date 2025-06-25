@@ -1,23 +1,36 @@
 package com.example.projectmobile.follow;
 public class User {
-    private String userId;
+    private String id;
     private String username;
     private String avatarUrl;
-    private boolean isFollowing;
+    private String follow_status;
 
-    public User(String userId, String username, String avatarUrl, boolean isFollowing) {
-        this.userId = userId;
+    public User(String id, String username, String avatarUrl, String follow_status) {
+        this.id = id;
         this.username = username;
         this.avatarUrl = avatarUrl;
-        this.isFollowing = isFollowing;
+        this.follow_status = follow_status;
     }
 
     // Getters
-    public String getUserId() { return userId; }
-    public String getUsername() { return username; }
-    public String getAvatarUrl() { return avatarUrl; }
-    public boolean isFollowing() { return isFollowing; }
 
-    // Setters
-    public void setFollowing(boolean following) { isFollowing = following; }
+    public String getUserId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public String getFollow_status() {
+        return follow_status;
+    }
+
+    public void setFollow_status(String follow_status) {
+        this.follow_status = follow_status;
+    }
 }

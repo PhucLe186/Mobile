@@ -1,5 +1,6 @@
 package com.example.projectmobile.Auth;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         txtError = findViewById(R.id.txt_error);
         forgotPassword = findViewById(R.id.btn_forgot_password);
     }
+    @SuppressLint("ClickableViewAccessibility")
     private void setListeners() {
         btnLogin.setOnClickListener(v -> handleLogin());
         btnRegister.setOnClickListener(v -> {

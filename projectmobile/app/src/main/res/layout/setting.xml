@@ -52,6 +52,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/header"
         android:layout_marginStart="17dp"
-        android:background="#f5f5f5"
+        android:background="@color/white"
         android:layout_marginEnd="17dp" />
 </RelativeLayout>
