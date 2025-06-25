@@ -14,7 +14,6 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Projectmobile"
-        android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
 
@@ -27,9 +26,6 @@
             android:exported="false" />
         <activity
             android:name=".Information.ItemVideo.FullScreenVideoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Auth.ForgotPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".CreateVideo.VideoConfig"
@@ -64,7 +60,13 @@
             android:exported="false" />
         <activity
             android:name=".Auth.LoginActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".Notification.InboxActivity"
@@ -72,12 +74,8 @@
         <activity android:name=".Notification.ChatActivity" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="false">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

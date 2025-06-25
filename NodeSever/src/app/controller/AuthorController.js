@@ -1,4 +1,5 @@
 const  db  = require('../../Config/sqlServer.js');
+require("dotenv").config();
 class AuthorController {
   async data(req, res) {
     const { id } = req.params;
@@ -34,7 +35,6 @@ class AuthorController {
     }
 }
 }
-
 
 module.exports = new AuthorController();
 

@@ -4,14 +4,13 @@ public class Comment {
     private String avatar_url;
     private String userName;
     private String comment;
-
-    private String comment_time;
+    private String created_at;
 
     public Comment(String avatar_url ,String userName, String comment, String comment_time) {
         this.avatar_url=avatar_url;
         this.userName = userName;
         this.comment = comment;
-        this.comment_time = comment_time;
+        this.created_at = comment_time;
     }
 
     public String getAvatar_url() {
@@ -27,7 +26,7 @@ public class Comment {
     }
 
     public String getComment_time() {
-        return comment_time;
+        return created_at;
     }
 
     public void setAvatar_url(String avatar_url) {
@@ -43,6 +42,6 @@ public class Comment {
     }
 
     public void setComment_time(String comment_time) {
-        this.comment_time = comment_time;
+        this.created_at = comment_time;
     }
 }

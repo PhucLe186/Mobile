@@ -42,7 +42,7 @@ exports.register = async (email, username, password) => {
     }
 
     // Insert the new user into the database
-    const [result] = await connection.execute(
+    await connection.execute(
       'INSERT INTO users (email, username, password) VALUES (?, ?, ?)',
       [email, username, password]
     );
@@ -120,3 +120,4 @@ exports.getUserInfo = async (userId) => {
     throw error; // Propagate the error to be handled by the controller
   }
 }
+

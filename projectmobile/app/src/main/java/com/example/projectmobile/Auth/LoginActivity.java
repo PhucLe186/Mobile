@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -93,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("token", token);
                     editor.apply();
+                    Log.d("token", token);
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                 }
