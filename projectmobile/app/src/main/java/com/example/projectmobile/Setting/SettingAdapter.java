@@ -75,7 +75,6 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 itemHolder.itemView.setOnClickListener(v -> {
                     if (context instanceof SettingNotLogin) {
                         ((SettingNotLogin) context).onSettingItemClick(item);
-                        ;
                     }
                 });
             }

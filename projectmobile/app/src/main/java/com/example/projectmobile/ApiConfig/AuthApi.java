@@ -1,5 +1,7 @@
 package com.example.projectmobile.ApiConfig;
 
+import com.example.projectmobile.Auth.AuthModel.ChangePassReq;
+import com.example.projectmobile.Auth.AuthModel.ChangePassRes;
 import com.example.projectmobile.Auth.AuthModel.CheckLogin;
 import com.example.projectmobile.Auth.AuthModel.ForgotPasswordRequest;
 import com.example.projectmobile.Auth.AuthModel.ForgotPasswordResponse;
@@ -27,5 +29,6 @@ public interface AuthApi {
     Call<CheckLogin> checkLogin(@Header("Authorization") String authHeader);
     @POST("/auth/userinfo")
     Call<GetUserInfoRes> getUserInfo(@Body GetUserInfoReq getUserInfoReq);
-
+    @POST("/auth/changepassword")
+    Call<ChangePassRes> requireChangePassword(@Header("Authorization") String token,  @Body ChangePassReq request);
 }

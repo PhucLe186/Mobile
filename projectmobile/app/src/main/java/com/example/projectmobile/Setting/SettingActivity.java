@@ -10,14 +10,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.projectmobile.Auth.ChangePasswordActivity;
 import com.example.projectmobile.MainActivity;
 import com.example.projectmobile.R;
 
 import java.util.ArrayList;
 
 public class SettingActivity extends AppCompatActivity {
-
-
     private ArrayList<SettingItem> arraycontact = new ArrayList<>();
     private RecyclerView List;
 
@@ -57,6 +56,7 @@ public class SettingActivity extends AppCompatActivity {
             arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Hỗ trợ"));
             arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Điều khoản và chính sách"));
         arraycontact.add(new SettingItem(SettingItem.TYPE_HEADER, 0, "Đăng nhập"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Đổi mật khẩu"));
             arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Chuyển đổi tài khoản"));
             arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Đăng xuất"));
     }
@@ -106,6 +106,10 @@ public class SettingActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
+                break;
+            case "Đổi mật khẩu":
+                Intent changePassIntent = new Intent(this, ChangePasswordActivity.class);
+                startActivity(changePassIntent);
                 break;
         }
     }
