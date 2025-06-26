@@ -16,6 +16,7 @@ import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.AuthorApi;
 import com.example.projectmobile.Notification.ChatActivity;
 import com.example.projectmobile.R;
+import com.example.projectmobile.follow.FollowActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -122,6 +123,22 @@ public class AuthorInformation extends AppCompatActivity {
         following.setText(info.getFollowing_count() + "\nĐã follower");
         likes.setText(String.valueOf(info.getLike_count())+ "\nThích" );
 
+        following.setOnClickListener(v -> {
+
+                Intent intent= new Intent(this, FollowActivity.class);
+                intent.putExtra("following", "1");
+                intent.putExtra("name", info.getUsername());
+                intent.putExtra("user_id", String.valueOf(info.getUser_id()));
+                startActivity(intent);
+        });
+        follower.setOnClickListener(v -> {
+
+            Intent intent= new Intent(this, FollowActivity.class);
+            intent.putExtra("following", "0");
+            intent.putExtra("name", info.getUsername());
+            intent.putExtra("user_id", String.valueOf(info.getUser_id()));
+            startActivity(intent);
+        });
 
         Glide.with(this)
                 .load(info.getAvatar_url())

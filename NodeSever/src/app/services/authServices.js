@@ -127,3 +127,25 @@ exports.getUserInfo = async (userId) => {
     throw error; // Propagate the error to be handled by the controller
   }
 }
+exports.changePassword = async(user_id, oldPass, newPass)=>{
+  try{
+    const connection = await db()
+    const [rows] = await connection.execute(`
+      SELECT * FROM users WHERE user_id = ? AND password = ?
+      `,[user_id,oldPass])
+    if(rows.length === 0 ){
+      return{
+        success:false,
+        message:"Old Password was wrong!"}
+    }
+    await connection.execute(`
+      UPDATE users SET password = ? WHERE user_id = ?
+      `,[newPass,user_id])
+    return {
+      success:true,
+      message:"Changing Password Successfully"}
+  }
+  catch(error){
+      throw error
+  }
+}

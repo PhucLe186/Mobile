@@ -126,13 +126,22 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                             .circleCrop()
                             .into(authorAvatar);
 
+
                     authorAvatar.setOnClickListener(v->{
                         Intent intentUserInformation = new Intent(context, AuthorInformation.class);
                         intentUserInformation.putExtra("user_id", video.getUser_id());
                         context.startActivity(intentUserInformation);
                     });
                     commentAvata.setOnClickListener(view -> {
-                        CommentBottomSheet.show(context,video.getVideo_id());
+                        CommentBottomSheet.show(context, video.getVideo_id(), new CommentBottomSheet.OnCommentChangedListener() {
+                            @Override
+                            public void onCommentChanged(int newCommentCount) {
+                                // Cập nhật số comment ở đây
+                                video.setComment_count((newCommentCount));
+                                comment.setText(String.valueOf(newCommentCount));
+
+                            }
+                        });
                     });
                     if(video.getLiked()==1){
                         icon_like.setImageResource(R.drawable.favorite_red);

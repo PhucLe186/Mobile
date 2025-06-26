@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.projectmobile.Auth.ChangePasswordActivity;
 import com.example.projectmobile.MainActivity;
 import com.example.projectmobile.R;
 
@@ -57,6 +58,7 @@ public class SettingActivity extends AppCompatActivity {
             arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.messageee, "Hỗ trợ"));
             arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.error, "Điều khoản và chính sách"));
         arraycontact.add(new SettingItem(SettingItem.TYPE_HEADER, 0, "Đăng nhập"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Đổi mật khẩu"));
             arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.arrows, "Chuyển đổi tài khoản"));
             arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.logout, "Đăng xuất"));
     }
@@ -95,6 +97,11 @@ public class SettingActivity extends AppCompatActivity {
             case "Điều khoản và chính sách":
 
                 break;
+            case "Đổi mật khẩu":
+                Intent inten= new Intent(SettingActivity.this, ChangePasswordActivity.class);
+                startActivity(inten);
+                break;
+
             case "Chuyển đổi tài khoản":
 
                 break;

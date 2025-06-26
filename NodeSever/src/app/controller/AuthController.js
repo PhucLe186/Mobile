@@ -166,6 +166,28 @@ async ForgotPassword(req, res) {
       res.status(500).json({ error: error.message });
     }
   }
+  async ChangePassword(req,res){
+    const user_id = req.user?.user_id
+    const {oldPass, newPass} = req.body
+    if(!oldPass){
+      return res.status(400).json({error:"oldPass is required!"})
+    }
+    if(!newPass){
+      return res.status(400).json({error:"newPass is required!"})
+    }
+    try{
+      const result = await authService.changePassword(user_id,oldPass,newPass)
+      if(result.success) {
+        res.status(200).json(result)
+      }
+      else {res.status(401).json(result)}
+
+    }catch(error){
+        console.error("Error in changing password Occur:",error)
+        res.status(500).json({error:error.message})
+    }
+
+  }
 
 }
 

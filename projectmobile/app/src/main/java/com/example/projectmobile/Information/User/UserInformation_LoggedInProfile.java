@@ -131,14 +131,14 @@ public class UserInformation_LoggedInProfile extends Fragment {
                             .into(imgAvatar);
                     layout1.setOnClickListener(v -> {
                         Intent intent = new Intent(getContext(), FollowActivity.class);
-                        intent.putExtra("following", 1);
+                        intent.putExtra("following", "1");
                         intent.putExtra("name", response.body().getData().getUserName());
                         intent.putExtra("user_id", response.body().getData().getUser_id());
                         startActivity(intent);
                     });
                     layout2.setOnClickListener(v -> {
                         Intent intent = new Intent(getContext(), FollowActivity.class);
-                        intent.putExtra("follower", 2);
+                        intent.putExtra("following", "0");
                         intent.putExtra("name", response.body().getData().getUserName());
                         intent.putExtra("user_id", response.body().getData().getUser_id());
                         startActivity(intent);

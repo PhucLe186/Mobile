@@ -57,6 +57,7 @@ public class FollowActivity extends AppCompatActivity implements UserAdapter.OnF
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         token = prefs.getString("token", "");
 
+
         if ("1".equals(styles)) {
             tabLayout.selectTab(tabLayout.getTabAt(0));  // Chọn tab Following
             loadFollowingList();
@@ -161,6 +162,11 @@ public class FollowActivity extends AppCompatActivity implements UserAdapter.OnF
             });
 
         } else {
+            newStatus = "Follow";
+
+            user.setFollow_status(newStatus);
+            adapter.notifyItemChanged(position);
+
             followApi.unfollowUser("Bearer " + token, user).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {

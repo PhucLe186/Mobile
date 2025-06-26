@@ -30,6 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class CommentBottomSheet {
 
     private static ImageView avt;
@@ -38,10 +39,9 @@ public class CommentBottomSheet {
     private static String username;
     private static String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
-    public static void show(Context context, int videoId) {
+    public static void show(Context context, int videoId, OnCommentChangedListener listener) {
         BottomSheetDialog dialog = new BottomSheetDialog(context);
         View view = LayoutInflater.from(context).inflate(R.layout.activity_comment, null);
-
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_comments);
         EditText editComment = view.findViewById(R.id.edit_comment);
@@ -72,21 +72,41 @@ public class CommentBottomSheet {
         sendBtn.setOnClickListener(v -> {
             String text = editComment.getText().toString().trim();
             if (!text.isEmpty()) {
-                commentList.add(new Comment(avatar_url, username, text, currentTime));
-                adapter.notifyItemInserted(commentList.size() - 1);
-                editComment.setText("");
-                recyclerView.scrollToPosition(commentList.size() - 1);
-                sendCommentToServer(token,videoId, text,context);//Send comment to server need token to get user_id
+//                commentList.add(new Comment(avatar_url, username, text, currentTime));
+//                adapter.notifyItemInserted(commentList.size() - 1);
+//                editComment.setText("");
+//                recyclerView.scrollToPosition(commentList.size() - 1);
+//                sendCommentToServer(token,videoId, text,context,  listener);//Send comment to server need token to get user_id
+                sendCommentToServer(token, videoId, text, context, new OnCommentChangedListener() {
+                    @Override
+                    public void onCommentChanged(int newCommentCount) {
+                        // Khi server trả về thành công, cập nhật UI
+                        commentList.add(new Comment(avatar_url, username, text, currentTime));
+                        adapter.notifyItemInserted(commentList.size() - 1);  // Đã sửa tham số position
+                        editComment.setText("");
+                        recyclerView.scrollToPosition(commentList.size() - 1);  // Đã sửa tên biến
+
+                        // Gọi callback để cập nhật số lượng comment ở nơi gọi BottomSheet
+                        if (listener != null) {
+                            listener.onCommentChanged(newCommentCount);
+                        }
+                    }
+                });
             } else {
                 Toast.makeText(context, "Nhập nội dung bình luận!", Toast.LENGTH_SHORT).show();
             }
         });
 
+
         dialog.setContentView(view);
         dialog.show();
     }
 
-    private static void sendCommentToServer(String token,int video_id, String comment,Context context) {
+    public interface OnCommentChangedListener {
+        void onCommentChanged( int newCommentCount);
+
+    }
+    private static void sendCommentToServer(String token,int video_id, String comment,Context context, OnCommentChangedListener listener) {
         commentApi.uploadComment("Bearer "+ token, new UploadCommentReq(video_id, comment, currentTime)).enqueue(
                 new Callback<UploadCommentRes>() {
                     @Override
@@ -95,7 +115,14 @@ public class CommentBottomSheet {
                             UploadCommentRes res = response.body();
                             if(response.body().isSuccess()){
                                 Log.d("comment",res.getMessage());
-                                Toast.makeText(context, "Your comment has been upload!", Toast.LENGTH_SHORT).show();
+
+                                if (listener != null) {
+                                    Toast.makeText(context, String.valueOf(res.getComment_count()), Toast.LENGTH_SHORT).show();
+                                    // Giả sử res.getCommentCount() trả về số lượng comment mới
+                                    // Nếu API không trả về số lượng, bạn có thể cần gọi lại API để lấy số lượng comment mới
+                                    listener.onCommentChanged(res.getComment_count());
+                                }
+
                             }
                             else{
                                 Log.d("comment",res.getMessage());

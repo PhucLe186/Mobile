@@ -1,4 +1,4 @@
-package com.example.projectmobile.Information;
+package com.example.projectmobile.Information.User;
 
 import android.content.Intent;
 import android.os.Bundle;

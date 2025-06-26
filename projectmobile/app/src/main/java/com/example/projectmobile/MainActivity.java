@@ -19,7 +19,7 @@ import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.AuthApi;
 import com.example.projectmobile.Auth.AuthModel.CheckLogin;
 import com.example.projectmobile.CreateVideo.CreateVideoActivity;
-import com.example.projectmobile.Information.GuestProfileActivity;
+import com.example.projectmobile.Information.User.GuestProfileActivity;
 import com.example.projectmobile.Information.User.UserInformation_LoggedInProfile;
 import com.example.projectmobile.Notification.InboxActivity;
 import com.example.projectmobile.Search.SearchActivity;
