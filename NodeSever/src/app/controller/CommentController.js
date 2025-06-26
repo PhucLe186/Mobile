@@ -69,8 +69,8 @@ class CommentController {
       })
     }
     try{
-      await commentServices.sendComment(user_id, comment, created_at, video_id)
-      return res.status(200).json({success:true, message:"Upload comment successfully!!"})
+      const result = await commentServices.sendComment(user_id, comment, created_at, video_id)
+      return res.status(200).json({success:true, message:"Upload comment successfully!!", comment_count: result.commentCount})
     }
     catch(error){
       console.error("Error during upload user comment to server =(")

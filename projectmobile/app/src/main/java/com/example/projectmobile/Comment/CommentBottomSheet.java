@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.CommentApi;
 import com.example.projectmobile.R;
@@ -29,19 +30,27 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class CommentBottomSheet {
+
+    private static ImageView avt;
     private static CommentApi commentApi;
     private static String avatar_url;
     private static String username;
     private static String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-    public static void show(Context context, int videoId) {
+
+    public static void show(Context context, int videoId, OnCommentChangedListener listener) {
         BottomSheetDialog dialog = new BottomSheetDialog(context);
         View view = LayoutInflater.from(context).inflate(R.layout.activity_comment, null);
+
         RecyclerView recyclerView = view.findViewById(R.id.recycler_comments);
         EditText editComment = view.findViewById(R.id.edit_comment);
         ImageView sendBtn = view.findViewById(R.id.btn_send_comment);
+        avt =view.findViewById(R.id.avatar_url);
 
-        List<Comment> commentList = new ArrayList<>();//Fetch data and pass to adapter
+
+
+        List<Comment> commentList = new ArrayList<>();
         CommentAdapter adapter = new CommentAdapter(context, commentList );
 
         //Get token from shared preferences
@@ -51,60 +60,88 @@ public class CommentBottomSheet {
         editor.putString("token", token);
         editor.apply();
 
+
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
         commentApi = ApiClient.getClient().create(CommentApi.class);
         getComments(adapter,commentList, videoId);
         getUserAvatar(token);
 
-        //Send User Comment
+        adapter.notifyDataSetChanged();
+
         sendBtn.setOnClickListener(v -> {
             String text = editComment.getText().toString().trim();
             if (!text.isEmpty()) {
-                commentList.add(new Comment(avatar_url, username, text, currentTime));
-                adapter.notifyItemInserted(commentList.size() - 1);
-                editComment.setText("");
-                recyclerView.scrollToPosition(commentList.size() - 1);
-                sendCommentToServer(token,videoId, text,context);//Send comment to server need token to get user_id
+//                commentList.add(new Comment(avatar_url, username, text, currentTime));
+//                adapter.notifyItemInserted(commentList.size() - 1);
+//                editComment.setText("");
+//                recyclerView.scrollToPosition(commentList.size() - 1);
+//                sendCommentToServer(token,videoId, text,context,  listener);//Send comment to server need token to get user_id
+                sendCommentToServer(token, videoId, text, context, new OnCommentChangedListener() {
+                    @Override
+                    public void onCommentChanged(int newCommentCount) {
+                        // Khi server trả về thành công, cập nhật UI
+                        commentList.add(new Comment(avatar_url, username, text, currentTime));
+                        adapter.notifyItemInserted(commentList.size() - 1);  // Đã sửa tham số position
+                        editComment.setText("");
+                        recyclerView.scrollToPosition(commentList.size() - 1);  // Đã sửa tên biến
+
+                        // Gọi callback để cập nhật số lượng comment ở nơi gọi BottomSheet
+                        if (listener != null) {
+                            listener.onCommentChanged(newCommentCount);
+                        }
+                    }
+                });
             } else {
                 Toast.makeText(context, "Nhập nội dung bình luận!", Toast.LENGTH_SHORT).show();
             }
         });
 
+
         dialog.setContentView(view);
         dialog.show();
     }
 
-    private static void sendCommentToServer(String token,int video_id, String comment,Context context) {
-        commentApi.uploadComment("Bearer "+ token, new UploadCommentReq(video_id, comment, currentTime)).enqueue(
-        new Callback<UploadCommentRes>() {
-            @Override
-            public void onResponse(@NonNull Call<UploadCommentRes> call, @NonNull Response<UploadCommentRes> response) {
-                if(response.isSuccessful() &&   response.body() != null){
-                    UploadCommentRes res = response.body();
-                    if(response.body().isSuccess()){
-                       Log.d("comment",res.getMessage());
-                       Toast.makeText(context, "Your comment has been upload!", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        Log.d("comment",res.getMessage());
-                        Toast.makeText(context, "Your comment can not be uploaded!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else{
-                    Log.e("comment", String.valueOf(response.code()));
-                    Toast.makeText(context, "Your comment can not be uploaded!", Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onFailure(@NonNull Call<UploadCommentRes> call, @NonNull Throwable t) {
-                Log.d("comment", "Error Occur:" + t.getMessage());
-                Toast.makeText(context, "Your comment can not be uploaded!", Toast.LENGTH_SHORT).show();
-            }
-        });
+    public interface OnCommentChangedListener {
+        void onCommentChanged( int newCommentCount);
 
     }
+    private static void sendCommentToServer(String token,int video_id, String comment,Context context, OnCommentChangedListener listener) {
+        commentApi.uploadComment("Bearer "+ token, new UploadCommentReq(video_id, comment, currentTime)).enqueue(
+                new Callback<UploadCommentRes>() {
+                    @Override
+                    public void onResponse(@NonNull Call<UploadCommentRes> call, @NonNull Response<UploadCommentRes> response) {
+                        if(response.isSuccessful() &&   response.body() != null){
+                            UploadCommentRes res = response.body();
+                            if(response.body().isSuccess()){
+                                Log.d("comment",res.getMessage());
 
+                                if (listener != null) {
+                                    Toast.makeText(context, String.valueOf(res.getComment_count()), Toast.LENGTH_SHORT).show();
+                                    // Giả sử res.getCommentCount() trả về số lượng comment mới
+                                    // Nếu API không trả về số lượng, bạn có thể cần gọi lại API để lấy số lượng comment mới
+                                    listener.onCommentChanged(res.getComment_count());
+                                }
+
+                            }
+                            else{
+                                Log.d("comment",res.getMessage());
+                                Toast.makeText(context, "Your comment can not be uploaded!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else{
+                            Log.e("comment", String.valueOf(response.code()));
+                            Toast.makeText(context, "Your comment can not be uploaded!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(@NonNull Call<UploadCommentRes> call, @NonNull Throwable t) {
+                        Log.d("comment", "Error Occur:" + t.getMessage());
+                        Toast.makeText(context, "Your comment can not be uploaded!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
     private static void getComments(CommentAdapter adapter, List<Comment> commentList,int videoId) {
         commentApi.getComments(videoId).enqueue(new Callback<CommentRes>() {
             @Override
@@ -132,7 +169,6 @@ public class CommentBottomSheet {
             }
         });
     }
-
     private static void getUserAvatar(String token){
         commentApi.getInfo("Bearer " + token).enqueue(new Callback<GetUserInfoRes>() {
             @Override
@@ -145,6 +181,13 @@ public class CommentBottomSheet {
                     avatar_url = response.body().getAvatar_url();
                     username = response.body().getUserName();
                     //=====================//
+
+                    Glide.with(avt.getContext())
+                            .load(avatar_url)
+                            .placeholder(R.drawable.user)
+                            .error(R.drawable.user)
+                            .circleCrop()
+                            .into(avt);
 
 
                     Log.d("avatar",avatar_url);

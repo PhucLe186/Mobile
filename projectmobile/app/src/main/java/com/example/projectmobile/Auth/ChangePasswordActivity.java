@@ -64,53 +64,53 @@ public class ChangePasswordActivity extends AppCompatActivity {
             token = preferences.getString("token",null);
             api = ApiClient.getClient().create(AuthApi.class);
             api.requireChangePassword("Bearer "+token, new ChangePassReq(oldpass_value,newpass_value))
-                .enqueue(new Callback<ChangePassRes>() {
-                    @Override
-                    public void onResponse(Call<ChangePassRes> call, Response<ChangePassRes> response) {
-                        if(response.isSuccessful()){
-                            Log.d("changepass",String.valueOf(response));
-                            Toast.makeText(ChangePasswordActivity.this, "Your Password has been Changed!!", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            try {
-                                String errorBody = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(errorBody);
-                                String message = jsonObject.optString("message", "Change password failed");
-                                Toast.makeText(ChangePasswordActivity.this, message, Toast.LENGTH_SHORT).show();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Toast.makeText(ChangePasswordActivity.this, "Error parsing server response", Toast.LENGTH_SHORT).show();
+                    .enqueue(new Callback<ChangePassRes>() {
+                        @Override
+                        public void onResponse(Call<ChangePassRes> call, Response<ChangePassRes> response) {
+                            if(response.isSuccessful()){
+                                Log.d("changepass",String.valueOf(response));
+                                Toast.makeText(ChangePasswordActivity.this, "Your Password has been Changed!!", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                try {
+                                    String errorBody = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(errorBody);
+                                    String message = jsonObject.optString("message", "Change password failed");
+                                    Toast.makeText(ChangePasswordActivity.this, message, Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(ChangePasswordActivity.this, "Error parsing server response", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<ChangePassRes> call, Throwable t) {
-                        Log.e("changepass", "Request failed", t);
+                        @Override
+                        public void onFailure(Call<ChangePassRes> call, Throwable t) {
+                            Log.e("changepass", "Request failed", t);
 
-                        String errorMessage;
+                            String errorMessage;
 
-                        if (t instanceof IOException) {
-                            // Lỗi kết nối mạng, timeout
-                            errorMessage = "Network error! Please check your internet connection.";
-                        } else if (t instanceof HttpException) {
-                            // Lỗi HTTP
-                            errorMessage = "Unexpected server error!";
-                        } else {
-                            // Lỗi khác
-                            errorMessage = "An unexpected error occurred!";
+                            if (t instanceof IOException) {
+                                // Lỗi kết nối mạng, timeout
+                                errorMessage = "Network error! Please check your internet connection.";
+                            } else if (t instanceof HttpException) {
+                                // Lỗi HTTP
+                                errorMessage = "Unexpected server error!";
+                            } else {
+                                // Lỗi khác
+                                errorMessage = "An unexpected error occurred!";
+                            }
+
+                            Toast.makeText(ChangePasswordActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                         }
-
-                        Toast.makeText(ChangePasswordActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-                    }
-                });
+                    });
         }
     }
 
     //Back to setting when clicking on Back Button
     private void createIntent(ImageView backImgBtn) {
         backImgBtn.setOnClickListener(v->{
-           finish();
+            finish();
         });
     }
 

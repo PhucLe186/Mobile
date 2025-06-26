@@ -34,12 +34,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
 public class CreateVideoActivity extends AppCompatActivity {
-
     private PreviewView previewView;
     @SuppressLint("RestrictedApi")
     private VideoCapture videoCapture;
     private boolean isRecording = false;
-
     private Executor executor;
 
     @Override

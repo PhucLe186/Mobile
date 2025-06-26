@@ -5,6 +5,8 @@ import com.example.projectmobile.Information.ItemVideo.GetVideosItemRes;
 import com.example.projectmobile.Information.ItemVideo.VideoItemHolder;
 
 
+import com.example.projectmobile.Information.ItemVideo.GetVideosItemReq;
+import com.example.projectmobile.Information.ItemVideo.GetVideosItemRes;
 import com.example.projectmobile.Video.model.Like;
 import com.example.projectmobile.Video.model.Video;
 
@@ -18,6 +20,10 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface VideoApi {
+
+
+    @POST("auth/listvideo")
+    Call<GetVideosItemRes> getUserVideo(@Body GetVideosItemReq req);
     @GET("video/")
     Call<List<Video>> getVideo();
 

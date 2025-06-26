@@ -8,7 +8,7 @@
     android:paddingTop="20dp"
     tools:ignore="HardcodedText"
     android:background="@color/white"
-    android:layout_marginTop="30dp"
+    android:layout_marginTop="40dp"
     android:paddingBottom="70dp"
     tools:context=".Information.User.UserInformation_LoggedInProfile">
 
@@ -26,19 +26,20 @@
         android:id="@+id/img_avatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/avatar_background"
         android:contentDescription="Avatar"
         android:scaleType="centerCrop"
-        android:background="@drawable/avatar_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_marginTop="20dp"
         android:id="@+id/txt_username"
         android:textStyle="bold"
+        android:textSize="17dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="tên người dùng"
@@ -58,6 +59,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_username">
 
         <LinearLayout
+            android:id="@+id/layout1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -68,15 +70,42 @@
                 android:id="@+id/txt_followers_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="number of followers"
+                android:text="100"
+                android:textSize="20dp"
                 android:textStyle="bold" />
+
 
             <TextView
                 android:id="@+id/txtview1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Followers" />
+                android:text="Đã follow"
+                android:textColor="#666666"/>
 
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_following_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtview2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Followers"
+                android:textColor="#666666"/>
         </LinearLayout>
 
         <LinearLayout
@@ -91,18 +120,46 @@
                 android:id="@+id/txt_like_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Number Of like"
+                android:text="2"
+                android:textSize="20dp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtview2"
+                android:id="@+id/txtview3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Likes" />
-        </LinearLayout>
+                android:text="Thích"
 
+                android:textColor="#666666"/>
+        </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/border_bottom"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/btn_danhsachvid"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/icon_danhsachvid" />
+
+        <ImageView
+            android:id="@+id/btn_danglai"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/icon_danglai" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -112,6 +169,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
         app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

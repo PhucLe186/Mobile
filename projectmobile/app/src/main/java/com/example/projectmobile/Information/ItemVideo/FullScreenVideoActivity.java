@@ -1,18 +1,13 @@
 package com.example.projectmobile.Information.ItemVideo;
 
-import android.media.browse.MediaBrowser;
 import android.os.Bundle;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.media3.common.MediaItem;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
-
 import com.example.projectmobile.R;
 
 public class FullScreenVideoActivity extends AppCompatActivity {

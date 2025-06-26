@@ -19,16 +19,17 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface AuthApi {
-    @POST("auth/login")//Login API
+    @POST("auth/login")
     Call<LoginResponse> Login(@Body LoginRequest loginModule);
+    @GET("/auth/checklogin")
+    Call<CheckLogin> checkLogin(@Header("Authorization") String authHeader);
+
     @POST("auth/register")//Register API
     Call<RegisterResponse> register(@Body RegisterRequest registerRequest);
     @POST("auth/forgotpassword")//Forgot password API
     Call<ForgotPasswordResponse> forgotPassword(@Body ForgotPasswordRequest forgotPasswordRequest);
-    @GET("/auth/checklogin")
-    Call<CheckLogin> checkLogin(@Header("Authorization") String authHeader);
     @POST("/auth/userinfo")
     Call<GetUserInfoRes> getUserInfo(@Body GetUserInfoReq getUserInfoReq);
     @POST("/auth/changepassword")
-    Call<ChangePassRes> requireChangePassword(@Header("Authorization") String token,  @Body ChangePassReq request);
+    Call<ChangePassRes> requireChangePassword(@Header("Authorization") String token, @Body ChangePassReq request);
 }

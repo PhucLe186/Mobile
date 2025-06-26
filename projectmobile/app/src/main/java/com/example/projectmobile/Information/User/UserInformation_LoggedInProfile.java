@@ -1,5 +1,6 @@
 package com.example.projectmobile.Information.User;
 
+import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,18 +31,21 @@ import com.example.projectmobile.Information.ItemVideo.VideoItemHolder;
 import com.example.projectmobile.Module.DecodeToken;
 import com.example.projectmobile.R;
 import com.example.projectmobile.Setting.SettingActivity;
+import com.example.projectmobile.follow.FollowActivity;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class UserInformation_LoggedInProfile extends Fragment {
 
-    private TextView usernameText, followersText, likesText;
+    private LinearLayout layout1, layout2, layout3;
+    private TextView usernameText, followersText,followingText , likesText;
     private ImageView menuButton,imgAvatar;
     private RecyclerView recyclerView;
     private VideoGridAdapter adapter;
@@ -60,37 +65,62 @@ public class UserInformation_LoggedInProfile extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_user_infomation_logged_in, container, false);
 
-        usernameText = view.findViewById(R.id.txt_username);
-        followersText = view.findViewById(R.id.txt_followers_number);
-        likesText = view.findViewById(R.id.txt_like_number);
-        menuButton = view.findViewById(R.id.img_menu);
-        imgAvatar = view.findViewById(R.id.img_avatar);
-        recyclerView = view.findViewById(R.id.recyclerView);
 
-        //TODO: Get use_id from pref
+
+       initView(view);
+
         getUserIdFromToken();
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));//set layout
         getUserVideo();//get video from server then store it into gridList
         getUserInfo();//get user info to display on screen
 
-
-        menuButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), SettingActivity.class);
-            startActivity(intent);
-        });//Menu Intent
+        menuButton.setOnClickListener(v -> showBottomMenu());
 
         return view;
+    }
+
+
+
+    private void initView( View view) {
+        layout1=view.findViewById(R.id.layout1);
+        layout2=view.findViewById(R.id.layout2);
+        usernameText = view.findViewById(R.id.txt_username);
+        followingText = view.findViewById(R.id.txt_followers_number);
+        followersText=view.findViewById(R.id.txt_following_number);
+        likesText = view.findViewById(R.id.txt_like_number);
+        menuButton = view.findViewById(R.id.img_menu);
+        imgAvatar = view.findViewById(R.id.img_avatar);
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+    }
+
+    private void showBottomMenu() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
+        View bottomSheetView = getLayoutInflater().inflate(R.layout.bottom_menu, null);
+
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+
+        bottomSheetView.findViewById(R.id.menu_tiktok_studio).setOnClickListener(v -> bottomSheetDialog.dismiss());
+        bottomSheetView.findViewById(R.id.menu_so_du).setOnClickListener(v -> bottomSheetDialog.dismiss());
+        bottomSheetView.findViewById(R.id.menu_qr).setOnClickListener(v -> bottomSheetDialog.dismiss());
+        bottomSheetView.findViewById(R.id.menu_settings).setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), SettingActivity.class));
+            bottomSheetDialog.dismiss();
+        });
     }
 
     private void getUserInfo() {
         authApi = ApiClient.getClient().create(AuthApi.class);
         GetUserInfoReq request = new GetUserInfoReq(user_id);
+        Log.d(TAG, "getUserInfo:" +request);
         authApi.getUserInfo(request).enqueue(new Callback<GetUserInfoRes>() {
             @Override
             public void onResponse(@NonNull Call<GetUserInfoRes> call, @NonNull Response<GetUserInfoRes> response) {
                 if (response.isSuccessful()){
                     assert response.body() != null;
                     usernameText.setText(response.body().getData().getUserName());
+                    followingText.setText(response.body().getData().getNumber_of_following());
                     followersText.setText(response.body().getData().getNumber_of_followers());
                     likesText.setText(response.body().getData().getNumber_of_likes());
                     Glide.with(requireContext())
@@ -99,6 +129,20 @@ public class UserInformation_LoggedInProfile extends Fragment {
                             .circleCrop()
                             .error(R.drawable.user)
                             .into(imgAvatar);
+                    layout1.setOnClickListener(v -> {
+                        Intent intent = new Intent(getContext(), FollowActivity.class);
+                        intent.putExtra("following", "1");
+                        intent.putExtra("name", response.body().getData().getUserName());
+                        intent.putExtra("user_id", response.body().getData().getUser_id());
+                        startActivity(intent);
+                    });
+                    layout2.setOnClickListener(v -> {
+                        Intent intent = new Intent(getContext(), FollowActivity.class);
+                        intent.putExtra("following", "0");
+                        intent.putExtra("name", response.body().getData().getUserName());
+                        intent.putExtra("user_id", response.body().getData().getUser_id());
+                        startActivity(intent);
+                    });
                 }
             }
             @Override
@@ -107,6 +151,7 @@ public class UserInformation_LoggedInProfile extends Fragment {
             }
         });
     }
+
     private void getUserIdFromToken() {
         SharedPreferences prefs = requireContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = prefs.edit();
@@ -130,7 +175,6 @@ public class UserInformation_LoggedInProfile extends Fragment {
         //Handle the first video when it's display on screen
         recyclerView.post(()->adapter.playVisibleVideos(recyclerView));
     }
-
     private void getUserVideo() {
         videoApi = ApiClient.getClient().create(VideoApi.class);
         GetVideosItemReq request = new GetVideosItemReq(user_id);
@@ -154,12 +198,10 @@ public class UserInformation_LoggedInProfile extends Fragment {
                     Log.d("getUserVideo", String.valueOf(response.body()));
                 }
             }
-
             @Override
             public void onFailure(@NonNull Call<GetVideosItemRes> call, @NonNull Throwable t) {
 
             }
         });
-
     }
 }

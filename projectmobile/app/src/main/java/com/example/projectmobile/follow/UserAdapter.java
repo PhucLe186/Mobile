@@ -1,4 +1,4 @@
-package com.example.projectmobile.UserAdapter;
+package com.example.projectmobile.follow;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,13 +7,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.projectmobile.R;
-import com.example.projectmobile.follow.User;
 
 import java.util.List;
 
@@ -57,25 +58,38 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 .into(holder.avatar);
 
         // Update follow button
-        updateFollowButton(holder.followButton, user.isFollowing());
+        updateFollowButton(holder.followButton, user.getFollow_status());
 
         // Set click listener
         holder.followButton.setOnClickListener(v -> {
-            int adapterPosition = holder.getAdapterPosition();
+            int adapterPosition = holder.getBindingAdapterPosition();
+            if (adapterPosition == RecyclerView.NO_POSITION) {
+                return;
+            }
             if (adapterPosition != RecyclerView.NO_POSITION) {
                 listener.onFollowClick(adapterPosition, userList.get(adapterPosition));
             }
         });
     }
 
-    private void updateFollowButton(Button button, boolean isFollowing) {
-        if (isFollowing) {
-            button.setText(R.string.following);
-            button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.gray_light));
-        } else {
-            button.setText(R.string.follow);
-            button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.red_tiktok));
+    private void updateFollowButton(Button button, String getFollow_status) {
+        switch(getFollow_status){
+            case"Bạn bè":
+                button.setText(getFollow_status);
+                button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.gray_light));
+                break;
+            case "Follow":
+                button.setText(R.string.follow);
+                button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.red_tiktok));
+                break;
+            case "Đã follow":
+                button.setText(getFollow_status);
+                button.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.gray_light));
+                break;
+            default:
+                Toast.makeText(context, "Looxi", Toast.LENGTH_LONG).show();
         }
+
     }
 
     @Override

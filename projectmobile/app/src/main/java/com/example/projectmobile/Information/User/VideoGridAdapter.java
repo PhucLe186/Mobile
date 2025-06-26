@@ -26,9 +26,9 @@ public class VideoGridAdapter extends RecyclerView.Adapter<VideoGridAdapter.View
 
 
     /*
-    * Get the list of videos from the server, which belong the user
-    * then display and play each of them on the screen
-    * */
+     * Get the list of videos from the server, which belong the user
+     * then display and play each of them on the screen
+     * */
     public VideoGridAdapter(Context context, List<String> videoList) {
         this.context = context;
         this.videoList = videoList;

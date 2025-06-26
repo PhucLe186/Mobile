@@ -23,6 +23,7 @@ exports.getComments = async (video_id) => {
       return {
         success:true,
         data: comments.map(comment => ({
+
           comment: comment.comment,
           created_at: comment.created_at,
           username: comment.username,
@@ -91,7 +92,25 @@ exports.sendComment = async(userId, comment, created_at, video_id) =>{
     await connection.execute(`
       INSERT INTO comments (video_id, user_id, comment,created_at) VALUES (?, ?, ?, ?)
       `,[video_id, userId, comment, created_at])
+
+///////////////////new code Phuc add/////////////////////////////
+
+    const [countResult] = await connection.execute(
+      `SELECT COUNT(*) AS total_comments FROM comments WHERE video_id = ?`,
+      [video_id]
+    );
+
+    const commentCount = countResult[0].total_comments;
+
+    // 5. Trả về kết quả (bao gồm số lượng comment)
+    return {
+      success: true,
+      message: "Comment added successfully",
+      commentCount: commentCount
+    };
+
   }
+
    catch (error) {
     console.error('Error during upload Comment:', error);
     throw error; // Propagate the error to be handled by the controller

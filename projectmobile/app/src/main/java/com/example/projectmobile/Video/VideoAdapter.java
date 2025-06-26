@@ -1,6 +1,5 @@
 package com.example.projectmobile.Video;
 
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.media3.common.MediaItem;
+import androidx.media3.common.Player;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,7 +47,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     public void onBindViewHolder(@NonNull VideoAdapter.VideoViewHolder holder, int position) {
         holder.bind(videoList.get(position), position);
     }
-//  Playing video when scrolling
+
     @SuppressLint("NotifyDataSetChanged")
     public void playVideoAtPosition(int position){
         if(position == currentPlayingPosition) return;
@@ -104,6 +104,16 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                     player = new ExoPlayer.Builder(context).build();
                     playerView.setPlayer(player);
                     MediaItem mediaItem = MediaItem.fromUri(video.getVideo_url());
+                    player.addListener(new Player.Listener() {
+                        @Override
+                        public void onPlaybackStateChanged(int playbackState) {
+                            Player.Listener.super.onPlaybackStateChanged(playbackState);
+                            if (playbackState == player.STATE_ENDED) {
+                                player.seekTo(0);
+                                player.play();
+                            }
+                        }
+                    });
                     name.setText(video.getUsername());
                     caption.setText(video.getCaption());
                     comment.setText(String.valueOf(video.getComment_count()));
@@ -116,13 +126,22 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                             .circleCrop()
                             .into(authorAvatar);
 
+
                     authorAvatar.setOnClickListener(v->{
                         Intent intentUserInformation = new Intent(context, AuthorInformation.class);
                         intentUserInformation.putExtra("user_id", video.getUser_id());
                         context.startActivity(intentUserInformation);
                     });
                     commentAvata.setOnClickListener(view -> {
-                        CommentBottomSheet.show(context,video.getVideo_id());
+                        CommentBottomSheet.show(context, video.getVideo_id(), new CommentBottomSheet.OnCommentChangedListener() {
+                            @Override
+                            public void onCommentChanged(int newCommentCount) {
+                                // Cập nhật số comment ở đây
+                                video.setComment_count((newCommentCount));
+                                comment.setText(String.valueOf(newCommentCount));
+
+                            }
+                        });
                     });
                     if(video.getLiked()==1){
                         icon_like.setImageResource(R.drawable.favorite_red);

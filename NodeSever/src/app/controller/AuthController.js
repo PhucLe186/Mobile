@@ -1,12 +1,13 @@
-const db = require("../../Config/sqlServer.js");
-const jwt = require("jsonwebtoken");
+const  db  = require('../../Config/sqlServer.js');
+const jwt = require('jsonwebtoken');
 const authService = require("../services/authServices");
 const videoService = require("../services/videoServices");
-require("dotenv").config();
+require('dotenv').config();
 
 class AuthController {
   async Login(req, res) {
-    const connection = await db();
+
+    const connection = await db(); 
     const { username, password } = req.body;
     try {
       if (!username && !password) {
@@ -197,3 +198,5 @@ class AuthController {
 }
 
 module.exports = new AuthController();
+
+

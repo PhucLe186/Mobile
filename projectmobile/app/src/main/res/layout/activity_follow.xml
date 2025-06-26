@@ -2,14 +2,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        android:background="@color/white"
+        android:layout_height="40dp">
+        <ImageView
+            android:id="@+id/onback"
+            android:src="@drawable/onback"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="331dp"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="User" />
+
+    </LinearLayout>
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/white"
         app:tabIndicatorColor="@color/black"
+        app:tabBackground="@drawable/border_bottom"
         app:tabIndicatorHeight="2dp"
         app:tabSelectedTextColor="@color/black">
 
@@ -17,7 +41,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/following" />
-
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

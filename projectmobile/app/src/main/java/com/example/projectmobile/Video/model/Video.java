@@ -66,4 +66,8 @@ public class Video {
     public void setLiked(int liked) {
         this.liked = liked;
     }
+
+    public void setComment_count(int comment_count) {
+        this.comment_count = comment_count;
+    }
 }
