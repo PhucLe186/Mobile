@@ -1,4 +1,4 @@
-package com.example.projectmobile.Comment;
+package com.example.projectmobile.Comment.Model;
 
 public class UploadCommentReq {
     private int video_id;

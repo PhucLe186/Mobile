@@ -1,6 +1,6 @@
 package com.example.projectmobile.ApiConfig;
 
-import com.example.projectmobile.Information.AuthorInfo;
+import com.example.projectmobile.Information.Author.AuthorInfo;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

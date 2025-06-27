@@ -11,15 +11,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.OptIn;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
+import androidx.media3.common.util.UnstableApi;
+import androidx.media3.datasource.DefaultHttpDataSource;
 import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.exoplayer.source.MediaSource;
+import androidx.media3.exoplayer.source.ProgressiveMediaSource;
 import androidx.media3.ui.PlayerView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.projectmobile.Comment.CommentBottomSheet;
-import com.example.projectmobile.Information.AuthorInformation;
+import com.example.projectmobile.Information.Author.AuthorInformation;
 import com.example.projectmobile.R;
 import com.example.projectmobile.Video.CallApi.LikeCall;
 import com.example.projectmobile.Video.CallApi.LikeHelper;
@@ -31,10 +36,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     private ExoPlayer player;
     private int currentPlayingPosition = -1;
     private Context context;
-
     public VideoAdapter(List<Video> videoList, Context context) {
         this.context = context;
         this.videoList = videoList;
+
     }
     @NonNull
     @Override
@@ -46,12 +51,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     @Override
     public void onBindViewHolder(@NonNull VideoAdapter.VideoViewHolder holder, int position) {
         holder.bind(videoList.get(position), position);
-    }
 
+    }
     @SuppressLint("NotifyDataSetChanged")
     public void playVideoAtPosition(int position){
         if(position == currentPlayingPosition) return;
-
         releasePlayer();
         currentPlayingPosition = position;
         notifyDataSetChanged();
@@ -59,7 +63,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     public void pausePlayer() {
         if(player != null && player.isPlaying()) {
             player.pause();
-
         }
     }
     public void Play() {
@@ -73,13 +76,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             player = null;
         }
     }
-
-
     @Override
     public int getItemCount() {
         return videoList.size();
     }
-
      class VideoViewHolder extends RecyclerView.ViewHolder{
         PlayerView playerView;
         ImageView authorAvatar;
@@ -97,13 +97,35 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             icon_like=itemView.findViewById(R.id.icon_like);
 
         }
-        public void bind(Video video, int position){
-            if(position == currentPlayingPosition){
+         @OptIn(markerClass = UnstableApi.class)
+         public void bind(Video video, int position){
+             name.setText(video.getUsername());
+             caption.setText(video.getCaption());
+             comment.setText(String.valueOf(video.getComment_count()));
+             like.setText(String.valueOf(video.getLike_count()));
 
+             Glide.with(context)
+                     .load(video.getAvatar_url())
+                     .placeholder(R.drawable.user)
+                     .error(R.drawable.user)
+                     .circleCrop()
+                     .into(authorAvatar);
+             icon_like.setImageResource(video.getLiked() == 1 ? R.drawable.favorite_red : R.drawable.favorite);
+
+             MediaSource mediaSource = new ProgressiveMediaSource.Factory(
+                     new DefaultHttpDataSource.Factory()
+             ).createMediaSource(MediaItem.fromUri(video.getVideo_url()));
+
+            if(position == currentPlayingPosition){
                 if(player == null){
                     player = new ExoPlayer.Builder(context).build();
                     playerView.setPlayer(player);
-                    MediaItem mediaItem = MediaItem.fromUri(video.getVideo_url());
+
+                    player.setMediaSource(mediaSource);
+                    player.prepare();
+                    player.setPlayWhenReady(true);
+
+//                    MediaItem mediaItem = MediaItem.fromUri(video.getVideo_url());
                     player.addListener(new Player.Listener() {
                         @Override
                         public void onPlaybackStateChanged(int playbackState) {
@@ -114,24 +136,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                             }
                         }
                     });
-                    name.setText(video.getUsername());
-                    caption.setText(video.getCaption());
-                    comment.setText(String.valueOf(video.getComment_count()));
-                    like.setText(String.valueOf(video.getLike_count()));
-
-                    Glide.with(context)
-                            .load(video.getAvatar_url())
-                            .placeholder(R.drawable.user)
-                            .error(R.drawable.user)
-                            .circleCrop()
-                            .into(authorAvatar);
-
 
                     authorAvatar.setOnClickListener(v->{
                         Intent intentUserInformation = new Intent(context, AuthorInformation.class);
                         intentUserInformation.putExtra("user_id", video.getUser_id());
                         context.startActivity(intentUserInformation);
                     });
+
                     commentAvata.setOnClickListener(view -> {
                         CommentBottomSheet.show(context, video.getVideo_id(), new CommentBottomSheet.OnCommentChangedListener() {
                             @Override
@@ -139,18 +150,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                                 // Cập nhật số comment ở đây
                                 video.setComment_count((newCommentCount));
                                 comment.setText(String.valueOf(newCommentCount));
-
                             }
                         });
                     });
-                    if(video.getLiked()==1){
-                        icon_like.setImageResource(R.drawable.favorite_red);
-                    }else{
-                        icon_like.setImageResource(R.drawable.favorite);
-                    }
-                    player.setMediaItem(mediaItem);
-                    player.prepare();
-                    player.play();
+
 
                     icon_like.setOnClickListener(v -> {
                         int newLikedState = video.getLiked() == 1 ? 0 : 1;
@@ -175,7 +178,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                         });
 
                     });
-
                 }
                 else{
                     playerView.setPlayer(player);
@@ -185,5 +187,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 playerView.setPlayer(null);
             }
         }
+
     }
 }

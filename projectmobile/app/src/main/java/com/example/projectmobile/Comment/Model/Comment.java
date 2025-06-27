@@ -1,4 +1,4 @@
-package com.example.projectmobile.Comment;
+package com.example.projectmobile.Comment.Model;
 
 public class Comment {
     private String avatar_url;

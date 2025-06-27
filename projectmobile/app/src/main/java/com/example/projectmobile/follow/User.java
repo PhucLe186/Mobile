@@ -33,4 +33,10 @@ public class User {
     public void setFollow_status(String follow_status) {
         this.follow_status = follow_status;
     }
+
+    public void setId(String id) {this.id = id;}
+
+    public void setUsername(String username) {this.username = username;}
+
+    public void setAvatarUrl(String avatarUrl) {this.avatarUrl = avatarUrl;}
 }

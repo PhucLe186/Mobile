@@ -1,4 +1,4 @@
-package com.example.projectmobile.Comment;
+package com.example.projectmobile.Comment.Model;
 
 import java.util.ArrayList;
 import java.util.List;

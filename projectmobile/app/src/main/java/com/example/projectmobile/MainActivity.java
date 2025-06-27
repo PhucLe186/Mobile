@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.AuthApi;
@@ -35,8 +37,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     AuthApi api;
     private ImageView btnSearch;
     private FrameLayout btnAdd;
-    private ImageView btnUser, btnInbox, btnHome;
+    private ImageView btnUser, btnInbox, btnHome, btnCart ;
     private String token;
+    private Fragment videoFragment;
+    private Fragment inboxFragment;
+    private Fragment userFragment;
+    private Fragment cartFragment;
+    private Fragment guestFragment;
 
 
     private TextView btnPlus;
@@ -52,20 +59,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         token = prefs.getString("token", "");
 
+        initFragment();
         initView();
         SetupClick();
 
         CheckLogin(token);
+        // Hiện fragment mặc định
+        showFragment(videoFragment);
 
 
     }
 
+    private void showFragment(Fragment fragmentToShow) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        if (videoFragment != null) ft.hide(videoFragment);
+        if (inboxFragment != null) ft.hide(inboxFragment);
+        if (userFragment != null) ft.hide(userFragment);
+        if (cartFragment != null) ft.hide(cartFragment);
+        if (guestFragment != null) ft.hide(guestFragment);
+
+        if (!fragmentToShow.isAdded()) {
+            ft.add(R.id.fragment_container, fragmentToShow);
+        }
+        ft.show(fragmentToShow);
+        ft.commit();
+    }
+
+    private void initFragment() {
+        // Khởi tạo fragment 1 lần
+        videoFragment = new VideoActivity();
+        inboxFragment = new InboxActivity();
+        userFragment = new UserInformation_LoggedInProfile();
+        cartFragment = new CartActivity();
+        guestFragment = new GuestProfileActivity();
+    }
+
     private void SetupClick() {
+        findViewById(R.id.btn_cart).setOnClickListener(this);
         findViewById(R.id.btn_home).setOnClickListener(this);
         findViewById(R.id.btn_inbox).setOnClickListener(this);
         findViewById(R.id.btn_user_icon).setOnClickListener(this);
 
-        loadFragment(new VideoActivity());
+//        loadFragment(new VideoActivity());
 
         btnAdd.setOnClickListener(v -> {
             startActivity(new Intent( this, CreateVideoActivity.class));
@@ -75,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    @SuppressLint("WrongViewCast")
     private void initView() {
         btnSearch=findViewById(R.id.btn_search);
         btnAdd= findViewById(R.id.btn_add_video);
@@ -82,48 +120,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnHome = findViewById(R.id.img_home);
         btnInbox = findViewById(R.id.img_inbox);
         btnUser = findViewById(R.id.img_user_icon);
+        btnCart = findViewById(R.id.img_cart);
     }
 
-    private void loadFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
-    }
 
-    @SuppressLint("NonConstantResourceId")
+
     @Override
     public void onClick(View v) {
-        Fragment selectedFragment = null;
         int id =v.getId();
-
         if(id == R.id.btn_user_icon){
             if(token.isEmpty()){
-                selectedFragment= new GuestProfileActivity();
+                showFragment(guestFragment);
             }
             else {
-                selectedFragment= new UserInformation_LoggedInProfile();
+                showFragment(userFragment);
             }
         } else if (id == R.id.btn_home) {
-            selectedFragment = new VideoActivity();
-        }else if (id == R.id.btn_inbox) {
-            if(token.isEmpty()){
-                selectedFragment= new GuestProfileActivity();
+            showFragment(videoFragment);
+        } else if (id == R.id.btn_inbox) {
+                if(token.isEmpty()){
+                    showFragment(guestFragment);
+            } else {
+                    showFragment(inboxFragment);
             }
-            else {
-                selectedFragment = new InboxActivity();
-            }
+        } else if (id==R.id.btn_cart) {
+            showFragment(cartFragment);
         }
 
-        if (selectedFragment != null) {
-            loadFragment(selectedFragment);
-            updateMenuIconColor(id);
-        }
-        if (id == R.id.btn_home) {
-            btnSearch.setVisibility(View.VISIBLE);
-        } else {
-            btnSearch.setVisibility(View.GONE);
-        }
+        updateMenuIconColor(id);
+        btnSearch.setVisibility(id == R.id.btn_home ? View.VISIBLE : View.GONE);
     }
     @SuppressLint("ResourceAsColor")
     private void updateMenuIconColor(int selectedId) {
@@ -131,12 +156,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnHome.setImageResource(R.drawable.home1);
         btnInbox.setImageResource(R.drawable.chat);
         btnUser.setImageResource(R.drawable.user1);
+        btnCart.setImageResource(R.drawable.cart1);
+
 
         if(selectedId != R.id.btn_home){
             btnPlus.setTextColor(0xFFFFFFFF);
             btnAdd.setBackgroundResource(R.drawable.button_bg);
-
         }
+
         if (selectedId == R.id.btn_home) {
             btnPlus.setTextColor(0xFF000000);
             btnAdd.setBackgroundResource(R.drawable.tiktok_plus_symbol_button_bg);
@@ -145,6 +172,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             btnInbox.setImageResource(R.drawable.chat2);
         } else if (selectedId == R.id.btn_user_icon) {
             btnUser.setImageResource(R.drawable.user2);
+        } else if (selectedId ==R.id.btn_cart) {
+            btnCart.setImageResource(R.drawable.cart2);
+
         }
     }
 

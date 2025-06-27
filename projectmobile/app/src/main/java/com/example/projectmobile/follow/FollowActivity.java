@@ -163,7 +163,6 @@ public class FollowActivity extends AppCompatActivity implements UserAdapter.OnF
 
         } else {
             newStatus = "Follow";
-
             user.setFollow_status(newStatus);
             adapter.notifyItemChanged(position);
 

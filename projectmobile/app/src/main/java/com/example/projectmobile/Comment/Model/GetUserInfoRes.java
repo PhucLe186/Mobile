@@ -1,4 +1,4 @@
-package com.example.projectmobile.Comment;
+package com.example.projectmobile.Comment.Model;
 
 public class GetUserInfoRes {
     private String message;

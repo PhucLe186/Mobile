@@ -1,4 +1,4 @@
-package com.example.projectmobile.Information;
+package com.example.projectmobile.Information.Author;
 
 public class AuthorInfo {
     private int video_id;

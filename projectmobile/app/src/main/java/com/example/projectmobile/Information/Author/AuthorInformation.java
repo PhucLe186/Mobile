@@ -1,4 +1,4 @@
-package com.example.projectmobile.Information;
+package com.example.projectmobile.Information.Author;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.AuthorApi;
 import com.example.projectmobile.Notification.ChatActivity;
 import com.example.projectmobile.R;
+import com.example.projectmobile.Video.CallApi.LikeCall;
 import com.example.projectmobile.follow.FollowActivity;
 
 import retrofit2.Call;
@@ -124,7 +125,6 @@ public class AuthorInformation extends AppCompatActivity {
         likes.setText(String.valueOf(info.getLike_count())+ "\nThích" );
 
         following.setOnClickListener(v -> {
-
                 Intent intent= new Intent(this, FollowActivity.class);
                 intent.putExtra("following", "1");
                 intent.putExtra("name", info.getUsername());
@@ -132,12 +132,23 @@ public class AuthorInformation extends AppCompatActivity {
                 startActivity(intent);
         });
         follower.setOnClickListener(v -> {
-
             Intent intent= new Intent(this, FollowActivity.class);
             intent.putExtra("following", "0");
             intent.putExtra("name", info.getUsername());
             intent.putExtra("user_id", String.valueOf(info.getUser_id()));
             startActivity(intent);
+        });
+        btnFollow.setOnClickListener(v -> {
+            btnFollow.setText("bạn bè");
+            Toast.makeText(this, String.valueOf(info.getUser_id()), Toast.LENGTH_SHORT).show();
+            FollowHelper.Followvideo(this,info, new LikeCall() {
+                @Override
+                public void onSuccess() {
+                }
+                public void onFailure(String errorMessage) {
+
+                }
+            });
         });
 
         Glide.with(this)

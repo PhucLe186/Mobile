@@ -17,6 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.CommentApi;
+import com.example.projectmobile.Comment.Model.Comment;
+import com.example.projectmobile.Comment.Model.CommentRes;
+import com.example.projectmobile.Comment.Model.GetUserInfoRes;
+import com.example.projectmobile.Comment.Model.UploadCommentReq;
 import com.example.projectmobile.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -108,16 +112,15 @@ public class CommentBottomSheet {
     }
     private static void sendCommentToServer(String token,int video_id, String comment,Context context, OnCommentChangedListener listener) {
         commentApi.uploadComment("Bearer "+ token, new UploadCommentReq(video_id, comment, currentTime)).enqueue(
-                new Callback<UploadCommentRes>() {
+                new Callback<CommentAdapter.UploadCommentRes>() {
                     @Override
-                    public void onResponse(@NonNull Call<UploadCommentRes> call, @NonNull Response<UploadCommentRes> response) {
+                    public void onResponse(@NonNull Call<CommentAdapter.UploadCommentRes> call, @NonNull Response<CommentAdapter.UploadCommentRes> response) {
                         if(response.isSuccessful() &&   response.body() != null){
-                            UploadCommentRes res = response.body();
+                            CommentAdapter.UploadCommentRes res = response.body();
                             if(response.body().isSuccess()){
                                 Log.d("comment",res.getMessage());
 
                                 if (listener != null) {
-                                    Toast.makeText(context, String.valueOf(res.getComment_count()), Toast.LENGTH_SHORT).show();
                                     // Giả sử res.getCommentCount() trả về số lượng comment mới
                                     // Nếu API không trả về số lượng, bạn có thể cần gọi lại API để lấy số lượng comment mới
                                     listener.onCommentChanged(res.getComment_count());
@@ -135,7 +138,7 @@ public class CommentBottomSheet {
                         }
                     }
                     @Override
-                    public void onFailure(@NonNull Call<UploadCommentRes> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<CommentAdapter.UploadCommentRes> call, @NonNull Throwable t) {
                         Log.d("comment", "Error Occur:" + t.getMessage());
                         Toast.makeText(context, "Your comment can not be uploaded!", Toast.LENGTH_SHORT).show();
                     }

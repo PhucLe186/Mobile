@@ -1,9 +1,9 @@
 package com.example.projectmobile.ApiConfig;
 
-import com.example.projectmobile.Comment.CommentRes;
-import com.example.projectmobile.Comment.GetUserInfoRes;
-import com.example.projectmobile.Comment.UploadCommentReq;
-import com.example.projectmobile.Comment.UploadCommentRes;
+import com.example.projectmobile.Comment.CommentAdapter;
+import com.example.projectmobile.Comment.Model.CommentRes;
+import com.example.projectmobile.Comment.Model.GetUserInfoRes;
+import com.example.projectmobile.Comment.Model.UploadCommentReq;
 
 
 import retrofit2.Call;
@@ -21,6 +21,6 @@ public interface CommentApi {
     Call<GetUserInfoRes> getInfo(@Header("Authorization") String token);
 
     @POST("comment/uploadcomment")//send user comment to server
-    Call<UploadCommentRes> uploadComment(@Header("Authorization") String token, @Body UploadCommentReq uploadCommentReq);
+    Call<CommentAdapter.UploadCommentRes> uploadComment(@Header("Authorization") String token, @Body UploadCommentReq uploadCommentReq);
 
 }

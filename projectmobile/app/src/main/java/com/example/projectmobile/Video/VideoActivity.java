@@ -13,12 +13,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.VideoApi;
 import com.example.projectmobile.R;
 import com.example.projectmobile.Video.model.Video;
 
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,12 +29,15 @@ import retrofit2.Response;
 
 public class VideoActivity extends Fragment {
 
+
+    private SwipeRefreshLayout swipeRefreshLayout;
     private String token;
     private RecyclerView recyclerView;
     private VideoAdapter videoAdapter;
     private LinearLayoutManager linearLayoutManager;
     private PagerSnapHelper snapHelper;
     private VideoApi getVideo;
+
 
     public VideoActivity() {}
 
@@ -50,14 +55,18 @@ public class VideoActivity extends Fragment {
         snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
 
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+
 
         SharedPreferences prefs = getContext().getSharedPreferences("MyAppPrefs", getContext().MODE_PRIVATE);
         token = prefs.getString("token", "");
-        if(token.isEmpty()){
-            fetchVideoList(null);
-        }else {
-            fetchVideoList(token);
-        }
+
+        fetchVideoList(token.isEmpty() ? null : token);
+
+        // bắt sự kiện reload trang
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            fetchVideoList(token.isEmpty() ? null : token);
+        });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -70,7 +79,6 @@ public class VideoActivity extends Fragment {
                 }
             }
         });
-
         return view;
     }
     private void fetchVideoList(String token) {
@@ -81,10 +89,16 @@ public class VideoActivity extends Fragment {
                 public void onResponse(Call<List<Video>> call, Response<List<Video>> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         List<Video> videos = response.body();
+                        Collections.shuffle(videos);// xáo trộn video
+
+                        if (videoAdapter != null) {
+                            videoAdapter.releasePlayer(); // 🔥 Dừng player trước khi tạo adapter mới
+                        }
 
                         videoAdapter = new VideoAdapter(videos, getContext());
                         recyclerView.setAdapter(videoAdapter);
 
+                        swipeRefreshLayout.setRefreshing(false);
                         recyclerView.post(() -> {
                             int position = linearLayoutManager.findFirstVisibleItemPosition();
                             if (position != RecyclerView.NO_POSITION) {
@@ -109,10 +123,16 @@ public class VideoActivity extends Fragment {
                 public void onResponse(Call<List<Video>> call, Response<List<Video>> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         List<Video> videos = response.body();
+                        Collections.shuffle(videos);
+
+                        if (videoAdapter != null) {
+                            videoAdapter.releasePlayer(); // 🔥 Dừng player trước khi tạo adapter mới
+                        }
 
                         videoAdapter = new VideoAdapter(videos, getContext());
                         recyclerView.setAdapter(videoAdapter);
 
+                        swipeRefreshLayout.setRefreshing(false);
                         recyclerView.post(() -> {
                             int position = linearLayoutManager.findFirstVisibleItemPosition();
                             if (position != RecyclerView.NO_POSITION) {
@@ -141,13 +161,25 @@ public class VideoActivity extends Fragment {
     public void onPause() {
         super.onPause();
         if (videoAdapter != null) {
+
             videoAdapter.pausePlayer();
+
         }
     }
     public void onResume() {
         super.onResume();
         if (videoAdapter != null) {
             videoAdapter.Play();
+        }
+    }
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (videoAdapter != null) {
+            if (hidden) {
+                videoAdapter.pausePlayer();
+            } else {
+                videoAdapter.Play();
+            }
         }
     }
 }
