@@ -28,7 +28,6 @@
             android:contentDescription="Quay lại"
             android:padding="4dp" />
 
-        <!-- Icon kính lúp -->
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -37,8 +36,7 @@
             android:layout_marginEnd="4dp"
             android:contentDescription="Tìm kiếm" />
 
-        <!-- Ô nhập nội dung -->
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/editTextSearch"
             android:layout_width="0dp"
             android:layout_height="48dp"
@@ -53,7 +51,6 @@
             android:textColorHint="#888888"
             android:textSize="14sp" />
 
-        <!-- Nút Tìm kiếm -->
         <TextView
             android:id="@+id/btnSearch"
             android:layout_width="wrap_content"
@@ -64,7 +61,6 @@
             android:layout_marginStart="8dp" />
     </LinearLayout>
 
-    <!-- Danh sách kết quả -->
     <ListView
         android:id="@+id/listViewResults"
         android:layout_width="0dp"

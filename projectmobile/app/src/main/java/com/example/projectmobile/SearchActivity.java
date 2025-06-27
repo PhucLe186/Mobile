@@ -1,32 +1,35 @@
 package com.example.projectmobile;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchActivity extends AppCompatActivity {
 
-    EditText editTextSearch;
+    AutoCompleteTextView editTextSearch;
     TextView btnSearch;
     ListView listViewResults;
 
     ArrayList<String> userList = new ArrayList<>();
-    ArrayAdapter<String> adapter;
+    ArrayAdapter<String> listAdapter;
+
+    ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +40,15 @@ public class SearchActivity extends AppCompatActivity {
         btnSearch = findViewById(R.id.btnSearch);
         listViewResults = findViewById(R.id.listViewResults);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, userList);
-        listViewResults.setAdapter(adapter);
+        listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, userList);
+        listViewResults.setAdapter(listAdapter);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:5000")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        apiService = retrofit.create(ApiService.class);
 
         btnSearch.setOnClickListener(v -> {
             String keyword = editTextSearch.getText().toString().trim();
@@ -48,52 +58,40 @@ public class SearchActivity extends AppCompatActivity {
                 Toast.makeText(this, "Nhập từ khóa tìm kiếm", Toast.LENGTH_SHORT).show();
             }
         });
+
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String keyword = s.toString().trim();
+                if (!keyword.isEmpty()) {
+                    searchUser(keyword);
+                }
+            }
+        });
     }
 
     private void searchUser(String keyword) {
-        new Thread(() -> {
-            try {
-                URL url = new URL("http://10.0.2.2:5000/api/search?q=" + URLEncoder.encode(keyword, "UTF-8"));
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setConnectTimeout(5000);
-                conn.setReadTimeout(5000);
-
-                int responseCode = conn.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-
-                    while ((line = reader.readLine()) != null) {
-                        response.append(line);
-                    }
-
-                    reader.close();
-                    String json = response.toString();
-
-                    JSONArray jsonArray = new JSONArray(json);
+        apiService.searchUsers(keyword).enqueue(new Callback<List<UserResult>>() {
+            @Override
+            public void onResponse(Call<List<UserResult>> call, Response<List<UserResult>> response) {
+                if (response.isSuccessful() && response.body() != null) {
                     userList.clear();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject user = jsonArray.getJSONObject(i);
-                        String name = user.getString("username");
-                        String caption = user.optString("caption", "(Không có caption)");
-                        String display = "Người dùng: " + name + "\nCaption: " + caption;
-                        userList.add(display);
+                    for (UserResult user : response.body()) {
+                        userList.add(user.getUsername() + " - " + user.getCaption());
                     }
-
-                    runOnUiThread(() -> adapter.notifyDataSetChanged());
+                    listAdapter.notifyDataSetChanged();
                 } else {
-                    runOnUiThread(() ->
-                            Toast.makeText(this, "Lỗi server: " + responseCode, Toast.LENGTH_SHORT).show());
+                    Toast.makeText(SearchActivity.this, "Không có kết quả", Toast.LENGTH_SHORT).show();
                 }
-
-                conn.disconnect();
-            } catch (Exception e) {
-                e.printStackTrace();
-                runOnUiThread(() ->
-                        Toast.makeText(this, "Lỗi kết nối API", Toast.LENGTH_SHORT).show());
             }
-        }).start();
+
+            @Override
+            public void onFailure(Call<List<UserResult>> call, Throwable t) {
+                Toast.makeText(SearchActivity.this, "Lỗi kết nối server", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
