@@ -4,12 +4,14 @@ public class User {
     private String username;
     private String avatarUrl;
     private String follow_status;
+    private String myself;
 
-    public User(String id, String username, String avatarUrl, String follow_status) {
+    public User(String id, String username, String avatarUrl, String follow_status, String myself) {
         this.id = id;
         this.username = username;
         this.avatarUrl = avatarUrl;
         this.follow_status = follow_status;
+        this.myself=myself;
     }
 
     // Getters
@@ -39,4 +41,6 @@ public class User {
     public void setUsername(String username) {this.username = username;}
 
     public void setAvatarUrl(String avatarUrl) {this.avatarUrl = avatarUrl;}
+
+    public String getMyself() {return myself;}
 }

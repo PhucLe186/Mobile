@@ -23,8 +23,6 @@ public class VideoGridAdapter extends RecyclerView.Adapter<VideoGridAdapter.View
     Context context; //Context for accessing resources
     private final List<String> videoList; //List of videos
     private ExoPlayer currentPlayer; //ExoPlayer instance
-
-
     /*
      * Get the list of videos from the server, which belong the user
      * then display and play each of them on the screen

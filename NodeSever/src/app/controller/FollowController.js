@@ -2,9 +2,17 @@ const  db  = require('../../Config/sqlServer.js');
 const jwt = require('jsonwebtoken');
 
 class FollowController {
-    // [GET] /api/users/:userId/following?page=1&limit=10
-     async getFollowingList(req, res, next) {
+    async getFollowingList(req, res, next) {
     try {
+        let user_id;
+        const token = req.headers['authorization']?.split(' ')[1];
+        if (!token) return res.status(401).json({ message: 'Không có token' });
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            user_id = decoded.user_id;
+        } catch (err) {
+            return res.status(401).json({ message: 'Token không hợp lệ' });
+        }
         const { userId } = req.params;
         const connection = await db();
 
@@ -25,8 +33,14 @@ class FollowController {
                 ORDER BY f.followed_at DESC`,
             [userId]
         );
+        const checkuser=users.map(user=>{
+            return {
+                ...user,
+                myself: user.id===user_id? 1:0
+            }
+        })
 
-        res.json( users );
+        res.json( checkuser );
     } catch (error) {
         next(error);
     }
@@ -36,8 +50,7 @@ class FollowController {
     async getFollowersList(req, res, next) {
         try {
             const { userId } = req.params;
-           const connection = await db();
-
+            const connection = await db();
             const [users] = await connection.execute(
                  `SELECT 
                     u.user_id AS id,
@@ -79,6 +92,9 @@ class FollowController {
             } 
             const userId =  parseInt(req.body.id);
         
+            if(user_id===userId){
+                return;
+            }
             const connection = await db();
             const [[existing]] = await connection.execute(
                 `SELECT * FROM Follows WHERE follower_id = ? AND following_id = ?`,
@@ -119,8 +135,6 @@ class FollowController {
                 `DELETE FROM Follows WHERE follower_id = ? AND following_id = ?`,
                 [user_id, userId]
             );
-
-           
             res.json({ success: true, message: 'Unfollowed successfully' });
         } catch (error) {
             next(error);

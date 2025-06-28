@@ -56,9 +56,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 .error(R.drawable.ic_default_avatar)
                 .circleCrop()
                 .into(holder.avatar);
-
-        // Update follow button
-        updateFollowButton(holder.followButton, user.getFollow_status());
+        if("1".equals(user.getMyself())){
+            holder.followButton.setVisibility(View.GONE);
+        }else {
+            holder.followButton.setVisibility(View.VISIBLE);
+            updateFollowButton(holder.followButton, user.getFollow_status());
+        }
 
         // Set click listener
         holder.followButton.setOnClickListener(v -> {

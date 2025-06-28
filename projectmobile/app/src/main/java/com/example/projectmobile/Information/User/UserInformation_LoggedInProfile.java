@@ -65,8 +65,6 @@ public class UserInformation_LoggedInProfile extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_user_infomation_logged_in, container, false);
 
-
-
        initView(view);
 
         getUserIdFromToken();

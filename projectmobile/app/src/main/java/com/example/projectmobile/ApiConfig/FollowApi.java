@@ -14,11 +14,10 @@ import retrofit2.http.Path;
     public interface FollowApi {
 
         @GET("users/{userId}/following")
-        Call<List<User>> getFollowingList(@Path("userId") String userId);
+        Call<List<User>> getFollowingList(@Header("Authorization") String token,@Path("userId") String userId);
 
         @GET("users/{userId}/followers")
         Call<List<User>> getFollowersList(@Path("userId") String userId);
-
 
         @POST("users/follow")
         Call<Void> followUser(@Header("Authorization") String token, @Body User user);

@@ -97,7 +97,7 @@ public class FollowActivity extends AppCompatActivity implements UserAdapter.OnF
     }
 
     private void loadFollowingList() {
-        followApi.getFollowingList(currentUserId).enqueue(new Callback<List<User>>() {
+        followApi.getFollowingList("Bearer " + token ,currentUserId).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.isSuccessful() && response.body() != null) {
