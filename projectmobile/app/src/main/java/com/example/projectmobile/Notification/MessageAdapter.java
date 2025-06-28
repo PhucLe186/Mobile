@@ -31,8 +31,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         TextView messageText = convertView.findViewById(R.id.message_text);
         ImageView actionIcon = convertView.findViewById(R.id.action_icon);
 
-        senderName.setText(message.getSender());
-        messageText.setText(message.getContent());
+        // Nếu bạn chỉ có senderId (int), thì nên hiển thị là "Người dùng #<id>"
+        senderName.setText("Người dùng #" + message.getSenderId());
+
+        // Nội dung tin nhắn
+        messageText.setText(message.getMessage());
+
+        // Avatar và icon hành động có thể giữ nguyên
         avatar.setImageResource(R.drawable.user);
         actionIcon.setImageResource(R.drawable.ic_camera);
 
