@@ -10,8 +10,9 @@ public class Video {
     private int like_count;
     private int comment_count;
     private int liked;
+    private int meself;
 
-    public Video(int video_id, int user_id, String video_url, String caption, String username, String avatar_url, int like_count, int comment_count, int liked) {
+    public Video(int video_id, int user_id, String video_url, String caption, String username, String avatar_url, int like_count, int comment_count, int liked, int meself) {
         this.video_id = video_id;
         this.user_id = user_id;
         this.video_url = video_url;
@@ -21,6 +22,7 @@ public class Video {
         this.like_count = like_count;
         this.comment_count = comment_count;
         this.liked = liked;
+        this.meself=meself;
     }
 
     public int getVideo_id() {
@@ -70,4 +72,6 @@ public class Video {
     public void setComment_count(int comment_count) {
         this.comment_count = comment_count;
     }
+
+    public int getMeself() {return meself;}
 }

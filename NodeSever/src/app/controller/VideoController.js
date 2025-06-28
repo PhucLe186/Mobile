@@ -73,11 +73,17 @@ class TestController {
           v.video_id, v.user_id, v.video_url, v.caption,
           u.username, u.avatar_url
         ORDER BY v.created_at DESC
-
       `);
 
+      const check=rows.map(user=>{
+        return{
+          ...user,
+          meself: user.user_id===userId?1:0
+        }
+      })
+
       await connection.end();
-      res.json(rows);
+      res.json(check);
 
     } catch (err) {
       console.error('Lỗi truy vấn:', err);

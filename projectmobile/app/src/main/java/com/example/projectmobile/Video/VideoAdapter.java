@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.projectmobile.Comment.CommentBottomSheet;
 import com.example.projectmobile.Information.Author.AuthorInformation;
+import com.example.projectmobile.Information.User.UserInformationLoggedInActivity;
 import com.example.projectmobile.R;
 import com.example.projectmobile.Video.CallApi.LikeCall;
 import com.example.projectmobile.Video.CallApi.LikeHelper;
@@ -137,11 +138,18 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                         }
                     });
 
-                    authorAvatar.setOnClickListener(v->{
-                        Intent intentUserInformation = new Intent(context, AuthorInformation.class);
-                        intentUserInformation.putExtra("user_id", video.getUser_id());
-                        context.startActivity(intentUserInformation);
-                    });
+                    if(video.getMeself()==1){
+                        authorAvatar.setOnClickListener(v->{
+                            Intent intent = new Intent(context, UserInformationLoggedInActivity.class);
+                            context.startActivity(intent);
+                        });
+                    }else {
+                        authorAvatar.setOnClickListener(v->{
+                            Intent intentUserInformation = new Intent(context, AuthorInformation.class);
+                            intentUserInformation.putExtra("user_id", video.getUser_id());
+                            context.startActivity(intentUserInformation);
+                        });
+                    }
 
                     commentAvata.setOnClickListener(view -> {
                         CommentBottomSheet.show(context, video.getVideo_id(), new CommentBottomSheet.OnCommentChangedListener() {

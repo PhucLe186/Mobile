@@ -25,6 +25,9 @@
             android:name=".Auth.ChangePasswordActivity"
             android:exported="false" />
         <activity
+            android:name=".Information.User.UserInformationLoggedInActivity"
+            android:exported="false" />
+        <activity
             android:name=".Information.ItemVideo.FullScreenVideoActivity"
             android:exported="false"
             android:screenOrientation="fullSensor" />
