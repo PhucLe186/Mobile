@@ -5,7 +5,7 @@ async function connectDB() {
     const connection = await mysql.createConnection({
       host: 'localhost',
       user: 'root',
-      password: '123456',
+      password: 'kieungoctuanh007',
       database: 'clone_tiktok'
     });
     console.log('Kết nối thành công tới MySQL');
