@@ -111,6 +111,10 @@ public class CommentBottomSheet {
 
     }
     private static void sendCommentToServer(String token,int video_id, String comment,Context context, OnCommentChangedListener listener) {
+        if(token == null){
+            Toast.makeText(context, "Please Login!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         commentApi.uploadComment("Bearer "+ token, new UploadCommentReq(video_id, comment, currentTime)).enqueue(
                 new Callback<CommentAdapter.UploadCommentRes>() {
                     @Override
