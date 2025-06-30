@@ -114,10 +114,6 @@ public class SettingActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 break;
-            case "Đổi mật khẩu":
-                Intent changePassIntent = new Intent(this, ChangePasswordActivity.class);
-                startActivity(changePassIntent);
-                break;
         }
     }
 }

@@ -120,19 +120,6 @@ exports.getUserInfo = async (userId) => {
     console.error('Error fetching user info:', error);
     throw error; // Propagate the error to be handled by the controller
   }
-    // If the user does not exist, throw an error
-    if (existingEmail.length === 0) {
-      throw new Error('Email không tồn tại');
-    }
-    if (existingUser.length === 0) {
-      throw new Error('tên người dùng không tồn tại');
-    }
-    // Return the user's password
-    return existingUser[0].password;
-  } catch (error) {
-    console.error('Error during password recovery:', error);
-    throw error; // Propagate the error to be handled by the controller
-  }
 }
 exports.getUserInfo = async (userId) => {
   try {
@@ -167,7 +154,6 @@ exports.getUserInfo = async (userId) => {
           number_of_followers: user_info[0].follower_count || 0,
           number_of_likes: user_info[0].total_likes_received || 0,
           number_of_following: user_info[0].following_count || 0
-
         }
       }
     } else {

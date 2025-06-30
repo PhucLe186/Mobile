@@ -20,10 +20,6 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface VideoApi {
-
-
-    @POST("auth/listvideo")
-    Call<GetVideosItemRes> getUserVideo(@Body GetVideosItemReq req);
     @GET("video/")
     Call<List<Video>> getVideo();
 
