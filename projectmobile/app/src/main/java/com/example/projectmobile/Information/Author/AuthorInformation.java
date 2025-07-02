@@ -58,7 +58,6 @@ public class AuthorInformation extends AppCompatActivity {
         getUserVideo();
         recyclerView.setLayoutManager(new GridLayoutManager(AuthorInformation.this, 1));//set layout
     }
-
     private void getUserVideo() {
         ApiHelper.getUserVideo(userId, new ApiHelper.VideoCallback() {
             @Override
@@ -79,7 +78,6 @@ public class AuthorInformation extends AppCompatActivity {
             }
         });
     }
-
     private void fetchAuthorInfo() {
         ApiHelper.FetchAuthorInfo(token, userId, new ApiHelper.UserInfoCallback() {
             @Override

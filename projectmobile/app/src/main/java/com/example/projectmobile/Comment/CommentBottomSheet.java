@@ -108,7 +108,6 @@ public class CommentBottomSheet {
 
     public interface OnCommentChangedListener {
         void onCommentChanged( int newCommentCount);
-
     }
     private static void sendCommentToServer(String token,int video_id, String comment,Context context, OnCommentChangedListener listener) {
         commentApi.uploadComment("Bearer "+ token, new UploadCommentReq(video_id, comment, currentTime)).enqueue(
@@ -121,11 +120,8 @@ public class CommentBottomSheet {
                                 Log.d("comment",res.getMessage());
 
                                 if (listener != null) {
-                                    // Giả sử res.getCommentCount() trả về số lượng comment mới
-                                    // Nếu API không trả về số lượng, bạn có thể cần gọi lại API để lấy số lượng comment mới
                                     listener.onCommentChanged(res.getComment_count());
                                 }
-
                             }
                             else{
                                 Log.d("comment",res.getMessage());
@@ -143,7 +139,6 @@ public class CommentBottomSheet {
                         Toast.makeText(context, "Your comment can not be uploaded!", Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
     private static void getComments(CommentAdapter adapter, List<Comment> commentList,int videoId) {
         commentApi.getComments(videoId).enqueue(new Callback<CommentRes>() {
@@ -178,28 +173,22 @@ public class CommentBottomSheet {
             public void onResponse(@NonNull Call<GetUserInfoRes> call, @NonNull Response<GetUserInfoRes> response) {
                 if(response.isSuccessful()){
                     assert response.body() != null;
-
-
                     //Avatar URL here =)
                     avatar_url = response.body().getAvatar_url();
                     username = response.body().getUserName();
                     //=====================//
-
                     Glide.with(avt.getContext())
                             .load(avatar_url)
                             .placeholder(R.drawable.user)
                             .error(R.drawable.user)
                             .circleCrop()
                             .into(avt);
-
-
                     Log.d("avatar",avatar_url);
                 }
                 else{
                     Log.d("avatar", "Avatar Not Found");
                 }
             }
-
             @Override
             public void onFailure(Call<GetUserInfoRes> call, Throwable t) {
                 Log.e("avatar", "Connect Error: " + t.getMessage(), t);

@@ -17,7 +17,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     public MessageAdapter(Context context, ArrayList<Message> messages) {
         super(context, 0, messages);
     }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Message message = getItem(position);
@@ -31,8 +30,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         TextView messageText = convertView.findViewById(R.id.message_text);
         ImageView actionIcon = convertView.findViewById(R.id.action_icon);
 
-        senderName.setText(message.getSender());
-        messageText.setText(message.getContent());
+        // Nếu bạn chỉ có senderId (int), thì nên hiển thị là "Người dùng #<id>"
+        senderName.setText(message.getSenderUsername());
+
+        // Nội dung tin nhắn
+        messageText.setText(message.getMessage());
+
+        // Avatar và icon hành động có thể giữ nguyên
         avatar.setImageResource(R.drawable.user);
         actionIcon.setImageResource(R.drawable.ic_camera);
 

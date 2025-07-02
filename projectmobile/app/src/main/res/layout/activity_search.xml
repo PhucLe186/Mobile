@@ -8,49 +8,43 @@
     android:background="#FFFFFF">
 
     <!-- Thanh tìm kiếm -->
-
-    <!-- Danh sách kết quả -->
-
     <LinearLayout
+        android:layout_marginTop="50dp"
         android:id="@+id/searchBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <!-- Nút quay lại -->
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_media_previous"
             android:contentDescription="Quay lại"
-            android:padding="4dp"
-            android:src="@drawable/onback" />
+            android:padding="4dp" />
 
-        <!-- Icon kính lúp -->
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_search"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="4dp"
-            android:contentDescription="Tìm kiếm"
-            android:src="@android:drawable/ic_menu_search" />
+            android:contentDescription="Tìm kiếm" />
 
-        <!-- Ô nhập nội dung -->
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/editTextSearch"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="@android:drawable/edit_text"
-            android:hint="Tìm kiếm video..."
             android:minHeight="48dp"
+            android:hint="Tìm kiếm video..."
+            android:background="@android:drawable/edit_text"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
 
@@ -58,28 +52,26 @@
             android:textColorHint="#888888"
             android:textSize="14sp" />
 
-        <!-- Nút Tìm kiếm -->
         <TextView
             android:id="@+id/btnSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:text="Tìm kiếm"
             android:textColor="#FF0055"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginStart="8dp" />
     </LinearLayout>
 
     <ListView
         android:id="@+id/listViewResults"
-        android:layout_width="418dp"
-        android:layout_height="665dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/searchBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchBar"
-        app:layout_constraintVertical_bias="0.272" />
+        android:background="#FFFFFF" />
 </androidx.constraintlayout.widget.ConstraintLayout>

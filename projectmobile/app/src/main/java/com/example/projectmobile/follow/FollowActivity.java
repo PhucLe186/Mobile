@@ -1,6 +1,7 @@
 package com.example.projectmobile.follow;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -71,7 +72,6 @@ public class FollowActivity extends AppCompatActivity implements UserAdapter.OnF
         onback.setOnClickListener(v -> finish());
 
     }
-
     private void initView() {
         onback=findViewById(R.id.onback);
         headername=findViewById(R.id.header);
@@ -90,7 +90,6 @@ public class FollowActivity extends AppCompatActivity implements UserAdapter.OnF
                     loadFollowersList();
                 }
             }
-
             @Override public void onTabUnselected(TabLayout.Tab tab) {}
             @Override public void onTabReselected(TabLayout.Tab tab) {}
         });
@@ -149,7 +148,10 @@ public class FollowActivity extends AppCompatActivity implements UserAdapter.OnF
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        Log.d("Follow", "Follow success: " + user.getUserId());
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("refresh", true);
+                        setResult(RESULT_OK, resultIntent);
+
                     } else {
                         Log.e("Follow", "Follow failed");
                     }
@@ -170,7 +172,11 @@ public class FollowActivity extends AppCompatActivity implements UserAdapter.OnF
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        Log.d("Follow", "Unfollow success: " + currentUserId);
+
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("refresh", true);
+                        setResult(RESULT_OK, resultIntent);
+
                     } else {
                         Log.e("Follow", "Unfollow failed");
                     }

@@ -58,7 +58,7 @@ public class SettingActivity extends AppCompatActivity {
             arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.messageee, "Hỗ trợ"));
             arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.error, "Điều khoản và chính sách"));
         arraycontact.add(new SettingItem(SettingItem.TYPE_HEADER, 0, "Đăng nhập"));
-            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.ic_launcher_background, "Đổi mật khẩu"));
+            arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.changepass, "Đổi mật khẩu"));
             arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.arrows, "Chuyển đổi tài khoản"));
             arraycontact.add(new SettingItem(SettingItem.TYPE_ITEM, R.drawable.logout, "Đăng xuất"));
     }

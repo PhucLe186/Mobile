@@ -45,8 +45,6 @@ class FollowController {
         next(error);
     }
 }
-
-   
     async getFollowersList(req, res, next) {
         try {
             const { userId } = req.params;
@@ -69,17 +67,12 @@ class FollowController {
                     ORDER BY f.followed_at DESC`,
             [userId, userId]
             );
-
-
             res.json(users);
         } catch (error) {
             next(error);
         }
     }
-
-    
     async followUser(req, res, next) {
-        
         try {
             let user_id;
             const token = req.headers['authorization']?.split(' ')[1];

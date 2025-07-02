@@ -94,7 +94,6 @@ class TestController {
   async Likevideo(req, res){
     const connection = await db();
     const { video_id } = req.body;
-    console.log(video_id)
     let userId;
       try {
          const token = req.headers['authorization']?.split(' ')[1];

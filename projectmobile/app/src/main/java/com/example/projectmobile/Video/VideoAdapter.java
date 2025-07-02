@@ -161,8 +161,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                             }
                         });
                     });
-
-
                     icon_like.setOnClickListener(v -> {
                         int newLikedState = video.getLiked() == 1 ? 0 : 1;
                         int likeCountChange = newLikedState == 1 ? 1 : -1;
