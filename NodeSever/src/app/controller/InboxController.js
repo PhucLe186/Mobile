@@ -3,7 +3,7 @@ const db = require('../../Config/sqlServer.js');
 class InboxController {
   //  Lấy danh sách tin nhắn
   async getMessages(req, res) {
-    const user_id = req.user?.user_id;
+    let user_id = req.user?.user_id;
 
     if (!user_id) {
       console.log("Không có user_id trong token:", req.user);
@@ -27,6 +27,12 @@ ORDER BY Messages.sent_at DESC;
 `,
         [user_id, user_id]
       );
+      const checkvar=rows.map(infor=>{
+        return{
+          ...infor,
+          myself: infor.sender_id === user_id ? 1 : 0
+        }
+      })
 
       if (!rows || rows.length === 0) {
         return res.status(404).json({ message: "Không có tin nhắn nào" });
@@ -35,7 +41,7 @@ ORDER BY Messages.sent_at DESC;
       return res.status(200).json({
         success: true,
         message: "Lấy tin nhắn thành công",
-        data: rows
+        data: checkvar
       });
     } catch (error) {
       console.error("Lỗi khi lấy tin nhắn:", error.message);
