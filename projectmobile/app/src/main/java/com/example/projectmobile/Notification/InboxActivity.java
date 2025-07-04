@@ -57,7 +57,7 @@ public class InboxActivity extends Fragment {
             Message selectedMessage = messageList.get(position);
 
             SharedPreferences prefs = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
-            int currentUserId = prefs.getInt("user_id", -1);
+            int currentUserId = selectedMessage.getReceiverId();
             if (currentUserId == -1) {
                 Toast.makeText(context, "Không tìm thấy ID người dùng", Toast.LENGTH_SHORT).show();
                 return;

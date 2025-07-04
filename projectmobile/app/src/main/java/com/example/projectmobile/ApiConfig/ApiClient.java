@@ -10,6 +10,7 @@ public class ApiClient {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl("http://10.0.2.2:5000/")
+//                    .baseUrl("http://192.168.1.17:5000/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

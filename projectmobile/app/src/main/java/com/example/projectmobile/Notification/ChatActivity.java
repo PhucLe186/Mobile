@@ -54,10 +54,10 @@ public class ChatActivity extends AppCompatActivity {
             return;
         }
 
-        // Lấy token và senderId từ SharedPreferences (giả sử bạn lưu senderId riêng hoặc giải mã token)
+
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         token = prefs.getString("token", null);
-        senderId = prefs.getInt("user_id", -1);  // Giả sử bạn lưu user_id ở đây
+        senderId = prefs.getInt("user_id", -1);
 
         if (token == null || token.isEmpty() || senderId == -1) {
             Toast.makeText(this, "Vui lòng đăng nhập", Toast.LENGTH_SHORT).show();

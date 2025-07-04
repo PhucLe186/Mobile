@@ -79,7 +79,6 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     }
                 });
             }
-
             else {
                 itemHolder.itemView.setOnClickListener(v -> {
                     if (context instanceof SettingActivity) {

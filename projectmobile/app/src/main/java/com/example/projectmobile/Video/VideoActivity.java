@@ -92,7 +92,7 @@ public class VideoActivity extends Fragment {
                         Collections.shuffle(videos);// xáo trộn video
 
                         if (videoAdapter != null) {
-                            videoAdapter.releasePlayer(); // 🔥 Dừng player trước khi tạo adapter mới
+                            videoAdapter.releasePlayer(); // Dừng player trước khi tạo adapter mới
                         }
 
                         videoAdapter = new VideoAdapter(videos, getContext());

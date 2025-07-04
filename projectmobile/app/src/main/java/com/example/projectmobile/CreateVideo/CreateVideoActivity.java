@@ -55,6 +55,11 @@ public class CreateVideoActivity extends AppCompatActivity {
         ImageButton btnRecord = findViewById(R.id.btn_record);
         ImageView btnBack = findViewById(R.id.btn_back);
 
+        requestPermissions.launch(new String[]{
+                android.Manifest.permission.CAMERA,
+                android.Manifest.permission.RECORD_AUDIO
+        });
+
         //Back Button
         btnBack.setOnClickListener(v -> {
             finish();
@@ -63,17 +68,16 @@ public class CreateVideoActivity extends AppCompatActivity {
         btnRecord.setOnClickListener(v -> {
             if (isRecording) {
                 stopRecording();
-                isRecording = false;
+
                 btnRecord.setImageResource(android.R.drawable.ic_btn_speak_now);
             } else {
-                isRecording = true;
+
                 startRecording();
                 btnRecord.setImageResource(android.R.drawable.ic_media_pause);
             }
             isRecording = !isRecording;
         });
     }
-
     private final ActivityResultLauncher<String[]> requestPermissions=
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
                 Boolean cameraGranted = result.get(android.Manifest.permission.CAMERA);

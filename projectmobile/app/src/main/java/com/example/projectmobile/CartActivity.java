@@ -14,7 +14,6 @@ public class CartActivity extends Fragment {
 
 
     public CartActivity() {
-        // Constructor mặc định
     }
 
     @Nullable

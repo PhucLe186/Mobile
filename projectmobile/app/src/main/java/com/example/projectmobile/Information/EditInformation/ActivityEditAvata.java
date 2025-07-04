@@ -18,11 +18,9 @@ import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.EditProfile;
 import com.example.projectmobile.Information.EditInformation.Model.Information;
 import com.example.projectmobile.R;
+import com.example.projectmobile.Utils.FileUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -56,13 +54,13 @@ public class ActivityEditAvata extends AppCompatActivity {
         token = "Bearer " + prefs.getString("token", "");
 
         api= ApiClient.getClient().create(EditProfile.class);
+
         getInfor(token);
         initView();
         initLauncher();
         onclick();
 
     }
-
     private void onclick() {
         changeImageText.setOnClickListener(v -> openImagePicker());
         profileImage.setOnClickListener(v -> openImagePicker());
@@ -102,29 +100,6 @@ public class ActivityEditAvata extends AppCompatActivity {
         aiSelfValue = findViewById(R.id.aiSelfValue);
         aiSelfEditIcon = findViewById(R.id.aiSelfEditIcon);
     }
-    public File getFileFromUri(Context context, Uri uri) {
-        file = null;
-        try {
-            String fileName = "temp_image_" + System.currentTimeMillis() + ".jpg";
-            file = new File(context.getCacheDir(), fileName);
-
-            InputStream inputStream = context.getContentResolver().openInputStream(uri);
-            OutputStream outputStream = new FileOutputStream(file);
-
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = inputStream.read(buf)) > 0) {
-                outputStream.write(buf, 0, len);
-            }
-
-            outputStream.close();
-            inputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return file;
-    }
-
     private void getInfor(String token){
         Toast.makeText(ActivityEditAvata.this,"ok", Toast.LENGTH_SHORT).show();
     api.getInfor(token).enqueue(new Callback<List<Information>>() {
@@ -138,16 +113,16 @@ public class ActivityEditAvata extends AppCompatActivity {
                 .circleCrop()
                 .into(profileImage);
     }
-
     @Override
     public void onFailure(Call<List<Information>> call, Throwable t) {
+        Toast.makeText(ActivityEditAvata.this, "Upload thất bại: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+
 
     }
 });
-
     }
     private void UploadImages(Uri imageUri){
-        file = getFileFromUri(this, imageUri);
+        file = FileUtils.getFileFromUri(this, imageUri,".jpg" );
 
         RequestBody requestFile=RequestBody.create(MediaType.parse("image/*"), file);
         body=MultipartBody.Part.createFormData("image", file.getName(), requestFile);
@@ -172,17 +147,14 @@ public class ActivityEditAvata extends AppCompatActivity {
                         setResult(RESULT_OK, resultIntent);
                     }
                     else {
-                        Toast.makeText(ActivityEditAvata.this, "Upload thất bại! Mã lỗi: " + response.code(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityEditAvata.this, "Upload thất bại! Mã lỗi: " + response.message(), Toast.LENGTH_SHORT).show();
                     }
-
                 }
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    t.printStackTrace();
                     Toast.makeText(ActivityEditAvata.this, "Upload thất bại: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
 }
-
 }

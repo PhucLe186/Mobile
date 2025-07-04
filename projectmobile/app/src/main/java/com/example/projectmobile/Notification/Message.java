@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 public class Message {
     private int messageId;
 
+    private int myself;
+
     @SerializedName("sender_id")
     private int senderId;
 
@@ -75,5 +77,9 @@ public class Message {
 
     public String getReceiverAvatar() {
         return receiverAvatar;
+    }
+
+    public int getMyself() {
+        return myself;
     }
 }

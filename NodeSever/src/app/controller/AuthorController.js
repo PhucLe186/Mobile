@@ -98,9 +98,34 @@ class AuthorController {
             next(error);
         }
     }
+    async UploadVideo(req, res){
+        const video = req.file;
+        const { caption }= req.body;
+        let user_id;
+       
+        if (!video||!caption) {
+        return res.status(400).json({ message: 'Vui lòng tải lên video' });
+        }
+
+        const token = req.headers['authorization']?.split(' ')[1];
+        if (!token) return res.status(401).json({ message: 'Không có token' });
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            user_id = decoded.user_id;
+        } catch (err) {
+            return res.status(401).json({ message: 'Token không hợp lệ' });
+        }
+        const video_url=video.path
+        const connection=await db()
+        await connection.execute(
+            `INSERT INTO videos (user_id, video_url, caption) VALUES (?, ?, ?)`,
+            [user_id, video_url, caption]
+        )
+       
+        return res.status(200).json({ message: 'Upload thành công' });  
+    
+    }
 }
-
-
 module.exports = new AuthorController();
 
 

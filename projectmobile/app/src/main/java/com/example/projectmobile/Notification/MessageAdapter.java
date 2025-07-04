@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.projectmobile.R;
 
 import java.util.ArrayList;
@@ -30,12 +31,19 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         TextView messageText = convertView.findViewById(R.id.message_text);
         ImageView actionIcon = convertView.findViewById(R.id.action_icon);
 
-        // Nếu bạn chỉ có senderId (int), thì nên hiển thị là "Người dùng #<id>"
-        senderName.setText(message.getSenderUsername());
-
+        if(message.getMyself()==1){
+            senderName.setText(message.getReceiverUsername());
+            Glide.with(getContext())
+                    .load(message.getReceiverAvatar()).circleCrop().into(avatar);
+        }
+        else {
+            // Nếu bạn chỉ có senderId (int), thì nên hiển thị là "Người dùng #<id>"
+            senderName.setText(message.getSenderUsername());
+            Glide.with(getContext())
+                    .load(message.getSenderAvatar()).circleCrop().into(avatar);
+        }
         // Nội dung tin nhắn
         messageText.setText(message.getMessage());
-
         // Avatar và icon hành động có thể giữ nguyên
         avatar.setImageResource(R.drawable.user);
         actionIcon.setImageResource(R.drawable.ic_camera);

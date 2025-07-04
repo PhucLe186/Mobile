@@ -1,14 +1,15 @@
 const multer= require('multer');
 const {CloudinaryStorage}=require('multer-storage-cloudinary');
-const cloudinary=require('./Cloudinary');
+const cloudinary=require('../Config/Cloudinary');
 
 const storage =new CloudinaryStorage({
     cloudinary: cloudinary,
     params:{
-        allowed_formats: ['jpg', 'png'],
+        resource_type: 'video',
+        allowed_formats: ['mp4', 'mov', 'avi'],
     }
 });
-console.log(" Ddax vao dday")
+
 const upload=multer({ storage });
 
 
