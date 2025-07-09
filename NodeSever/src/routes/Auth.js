@@ -10,6 +10,7 @@ route.use('/checklogin', authController.Checklogin);
 route.use('/register', authController.Register);
 route.use('/forgotpassword', authController.ForgotPassword);
 route.use('/listvideo',authController.Videos);
+route.use('/listvideoliked',authController.VideoLiked);
 route.use('/userinfo', authController.GetUserInfo);
 route.use('/changepassword',authenticateToken,authController.ChangePassword)
 

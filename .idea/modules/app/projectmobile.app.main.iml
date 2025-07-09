@@ -130,5 +130,8 @@
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.5" level="project" />
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:disklrucache:4.16.0" level="project" />
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:annotations:4.16.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.socket:socket.io-client:2.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.socket:engine.io-client:2.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.json:json:20210307" level="project" />
   </component>
 </module>

@@ -1,4 +1,4 @@
-package com.example.projectmobile.Notification;
+package com.example.projectmobile.Notification.model;
 
 import com.google.gson.annotations.SerializedName;
 

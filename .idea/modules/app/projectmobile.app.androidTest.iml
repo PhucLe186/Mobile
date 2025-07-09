@@ -137,6 +137,9 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.code.gson:gson:2.8.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.github.bumptech.glide:disklrucache:4.16.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.github.bumptech.glide:annotations:4.16.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: io.socket:socket.io-client:2.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: io.socket:engine.io-client:2.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.json:json:20210307" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="projectmobile.app.main" />
 </module>

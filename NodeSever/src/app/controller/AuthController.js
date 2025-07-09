@@ -139,6 +139,29 @@ async ForgotPassword(req, res) {
       res.status(500).json({ error: error.message });
     }
   }
+
+  async VideoLiked(req, res) {
+    const { user_id } = req.body;
+    const connection= await db();
+    if (!user_id) {
+      return res.status(400).json({ error: "Cần user_id" });
+    }
+    try {
+       const [rows] = await connection.execute(`
+            SELECT v.*
+            FROM videos v
+            JOIN likes vl ON v.user_id = vl.video_id
+            WHERE vl.user_id = ?
+            ORDER BY vl.liked_at DESC
+        `, [user_id]);
+
+        res.json({ data: rows });
+    } catch (error) {
+      console.error("Error fetching user videos:", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+
   async GetUserInfo(req, res) {
     const { user_id } = req.body;
     if (!user_id) {

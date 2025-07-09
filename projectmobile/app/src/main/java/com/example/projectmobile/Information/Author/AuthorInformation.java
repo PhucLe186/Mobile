@@ -210,6 +210,9 @@ public class AuthorInformation extends AppCompatActivity {
             showFollowingUI(scale);
             btnFollow.setOnClickListener(v -> {
                 Intent intent = new Intent(AuthorInformation.this, ChatActivity.class);
+                intent.putExtra("id", info.getUser_id());
+                intent.putExtra("avt", info.getAvatar_url());
+                intent.putExtra("name", info.getUsername());
                 startActivity(intent);
             });
             btnMessage.setOnClickListener(v -> showBottomMenu(info));
@@ -218,6 +221,9 @@ public class AuthorInformation extends AppCompatActivity {
             showFollowUI(scale);
             btnMessage.setOnClickListener(v -> {
                 Intent intent = new Intent(AuthorInformation.this, ChatActivity.class);
+                intent.putExtra("id", info.getUser_id());
+                intent.putExtra("avt", info.getAvatar_url());
+                intent.putExtra("name", info.getUsername());
                 startActivity(intent);
             });
             btnFollow.setOnClickListener(v -> {

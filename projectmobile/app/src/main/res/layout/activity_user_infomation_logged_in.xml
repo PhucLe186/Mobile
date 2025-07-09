@@ -151,41 +151,39 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@drawable/border_bottom"
-        android:gravity="center"
-        android:orientation="horizontal"
+        android:layout_height="48dp"
+        android:id="@+id/layout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        tools:ignore="MissingConstraints">
+        android:background="@color/white"
+        app:tabIndicatorColor="@color/black"
+        app:tabBackground="@drawable/border_bottom"
+        app:tabIndicatorHeight="2dp"
+        app:tabIconTint="@color/tab_icon_color"
+        app:tabSelectedTextColor="@color/black">
 
-        <ImageView
-            android:id="@+id/btn_danhsachvid"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="8dp"
-            android:src="@drawable/icon_danhsachvid" />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/menu_doc" />
 
-        <ImageView
-            android:id="@+id/btn_danglai"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="8dp"
-            android:src="@drawable/icon_danglai" />
-    </LinearLayout>
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/heart" />
+    </com.google.android.material.tabs.TabLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="411dp"
-        android:layout_height="290dp"
+        android:layout_width="413dp"
+        android:layout_height="369dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        app:layout_constraintTop_toBottomOf="@+id/layout3"
         app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

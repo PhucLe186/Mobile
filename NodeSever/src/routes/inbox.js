@@ -4,7 +4,8 @@ const InboxController = require('../app/controller/InboxController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.get('/getmessages', authMiddleware, InboxController.getMessages);
-router.post('/sendMessage', authMiddleware, InboxController.sendMessage);
-router.use('/', InboxController.getMessages);
+router.get('/fetchChatMessages', authMiddleware, InboxController.fetchChatMessages);
+
+
 
 module.exports = router;

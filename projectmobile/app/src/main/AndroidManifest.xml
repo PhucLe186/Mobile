@@ -33,6 +33,9 @@
             tools:ignore="Instantiatable" />
 
         <activity
+            android:name=".Search.UserDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".Auth.ChangePasswordActivity"
             android:exported="false" />
         <activity

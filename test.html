@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Socket.IO Test</title>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+<body>
+  <h1>Socket.IO Test</h1>
+  <input id="peer_id" placeholder="Nhập peer_id">
+  <button onclick="joinRoom()">Tham gia phòng</button>
+  <input id="message" placeholder="Nhập tin nhắn">
+  <button onclick="sendMessage()">Gửi</button>
+  <div id="output"></div>
+
+  <script>
+    const socket = io('ws://localhost:5000', {
+      query: {
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJlbWFpbCI6ImNoYXJsaWVAZXhhbXBsZS5jb20iLCJpYXQiOjE3NTE5NjA0NDh9.6_Xe62JtSGyNzg2m2s3XbZN6UGyNsR58gNsdTLSZ-D8' // Thay bằng token hợp lệ
+      }
+    });
+
+    socket.on('connect', () => {
+      console.log('Kết nối thành công:', socket.id);
+      document.getElementById('output').innerHTML += `<p>Kết nối: ${socket.id}</p>`;
+    });
+
+    socket.on('connect_error', (error) => {
+      console.log('Lỗi kết nối:', error.message);
+      document.getElementById('output').innerHTML += `<p>Lỗi: ${error.message}</p>`;
+    });
+
+    socket.on('receive_message', (data) => {
+      console.log('Nhận tin nhắn:', data);
+      document.getElementById('output').innerHTML += `<p>Tin nhắn: ${JSON.stringify(data)}</p>`;
+    });
+
+    function joinRoom() {
+      const peer_id = document.getElementById('peer_id').value;
+      socket.emit('room', { peer_id });
+    }
+
+    function sendMessage() {
+      const receiver_id = document.getElementById('peer_id').value;
+      const message = document.getElementById('message').value;
+      socket.emit('send_message', { receiver_id, message });
+    }
+  </script>
+</body>
+</html>

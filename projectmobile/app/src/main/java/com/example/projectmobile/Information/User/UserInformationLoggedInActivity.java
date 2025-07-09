@@ -55,7 +55,6 @@ public class UserInformationLoggedInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_infomation_logged_in);
 
         initView();
-
         getUserIdFromToken();
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3)); // set layout
         getUserVideo(); // get video from server then store it into gridList

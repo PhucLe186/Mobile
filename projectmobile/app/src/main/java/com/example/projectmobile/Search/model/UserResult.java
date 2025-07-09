@@ -1,4 +1,4 @@
-package com.example.projectmobile.Search;
+package com.example.projectmobile.Search.model;
 
 public class UserResult {
     private String username;

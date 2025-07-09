@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.projectmobile.Notification.model.Message;
 import com.example.projectmobile.R;
 
 import java.util.ArrayList;
@@ -32,15 +33,15 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         ImageView actionIcon = convertView.findViewById(R.id.action_icon);
 
         if(message.getMyself()==1){
-            senderName.setText(message.getReceiverUsername());
+            senderName.setText(message.getReceiver_username());
             Glide.with(getContext())
-                    .load(message.getReceiverAvatar()).circleCrop().into(avatar);
+                    .load(message.getReceiver_avatar()).circleCrop().into(avatar);
         }
         else {
             // Nếu bạn chỉ có senderId (int), thì nên hiển thị là "Người dùng #<id>"
-            senderName.setText(message.getSenderUsername());
+            senderName.setText(message.getSender_username());
             Glide.with(getContext())
-                    .load(message.getSenderAvatar()).circleCrop().into(avatar);
+                    .load(message.getSender_avatar()).circleCrop().into(avatar);
         }
         // Nội dung tin nhắn
         messageText.setText(message.getMessage());

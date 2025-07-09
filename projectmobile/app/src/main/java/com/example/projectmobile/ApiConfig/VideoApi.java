@@ -19,6 +19,8 @@ public interface VideoApi {
 
     @POST("auth/listvideo")
     Call<GetVideosItemRes> getUserVideo(@Body GetVideosItemReq req);
+    @POST("auth/listvideoliked")
+    Call<GetVideosItemRes> getUserLikedVideos(@Body GetVideosItemReq req);
     @GET("video/")
     Call<List<Video>> getVideo();
     @GET("video/local")

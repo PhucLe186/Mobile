@@ -17,9 +17,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.InboxApi;
+import com.example.projectmobile.Notification.model.Message;
+import com.example.projectmobile.Notification.model.MessageResponse;
 import com.example.projectmobile.R;
+import com.example.projectmobile.Utils.MessageUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,28 +58,35 @@ public class InboxActivity extends Fragment {
         loadMessagesFromApi();
 
         inboxListView.setOnItemClickListener((parent, view, position, id) -> {
-            Message selectedMessage = messageList.get(position);
+            Message mgs = messageList.get(position);
 
-            SharedPreferences prefs = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
-            int currentUserId = selectedMessage.getReceiverId();
-            if (currentUserId == -1) {
-                Toast.makeText(context, "Không tìm thấy ID người dùng", Toast.LENGTH_SHORT).show();
+            int selectedchat = mgs.getMessage_id();
+            if (selectedchat == -1) {
                 return;
             }
-
-            int otherUserId = selectedMessage.getSenderId() == currentUserId
-                    ? selectedMessage.getReceiverId()
-                    : selectedMessage.getSenderId();
-
             Intent intent = new Intent(context, ChatActivity.class);
-            intent.putExtra("sender", currentUserId);
-            intent.putExtra("receiver", otherUserId);
+
+            int seleted;
+            if(mgs.getMyself()==1){
+                seleted=mgs.getReceiver_id();
+                intent.putExtra("id",seleted );
+                intent.putExtra("avt", mgs.getReceiver_avatar());
+                intent.putExtra("name", mgs.getReceiver_username());
+                Toast.makeText(getContext(), "vai "+seleted, Toast.LENGTH_SHORT).show();
+            }
+            else {
+                seleted=mgs.getSender_id();
+                intent.putExtra("id", mgs.getSender_id());
+                intent.putExtra("avt", mgs.getSender_avatar());
+                intent.putExtra("name", mgs.getSender_username());
+                Toast.makeText(getContext(), "vai "+seleted, Toast.LENGTH_SHORT).show();
+            }
+
             startActivity(intent);
         });
 
         return rootView;
     }
-
     private void loadMessagesFromApi() {
         SharedPreferences prefs = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
         String token = prefs.getString("token", null);
@@ -92,21 +103,14 @@ public class InboxActivity extends Fragment {
                 if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
                     messageList.clear();
                     if (response.body().getData() != null) {
-                        messageList.addAll(response.body().getData());
+                        List<Message> grouped = MessageUtils.groupMessages(response.body().getData());
+                        messageList.addAll(grouped);
                     }
                     messageAdapter.notifyDataSetChanged();
-                    Log.d(TAG, "Số tin nhắn nhận được: " + messageList.size());
                 } else {
                     Toast.makeText(context, "Không thể tải tin nhắn", Toast.LENGTH_SHORT).show();
-                    try {
-                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "null";
-                        Log.e(TAG, "Lỗi response: " + response.code() + ", body: " + errorBody);
-                    } catch (Exception e) {
-                        Log.e(TAG, "Lỗi khi đọc errorBody", e);
-                    }
                 }
             }
-
             @Override
             public void onFailure(Call<MessageResponse> call, Throwable t) {
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();

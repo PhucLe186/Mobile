@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Search.SearchActivity"
-    android:background="#FFFFFF">
+    android:orientation="vertical"
+    android:layout_marginTop="40dp"
+    >
+
 
     <LinearLayout
         android:id="@+id/searchBar"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:padding="8dp"
-        android:layout_marginTop="50dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center_vertical">
         <!-- Nút quay lại -->
         <ImageView
@@ -26,6 +23,7 @@
             android:contentDescription="Quay lại"
             android:padding="4dp" />
         <LinearLayout
+            android:id="@+id/editTextSearch"
             android:layout_width="285dp"
             android:gravity="center"
             android:background="@drawable/bg_search_bar"
@@ -35,11 +33,9 @@
                 android:layout_height="30dp"
                 android:src="@android:drawable/ic_menu_search"
                 android:layout_marginStart="8dp"
-
                 android:contentDescription="Tìm kiếm" />
-
             <AutoCompleteTextView
-                android:id="@+id/editTextSearch"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Tìm kiếm video..."
@@ -61,16 +57,10 @@
             android:layout_marginStart="8dp" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/listViewResults"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/searchBar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp"
-        android:background="#FFFFFF" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewVideos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+</LinearLayout>

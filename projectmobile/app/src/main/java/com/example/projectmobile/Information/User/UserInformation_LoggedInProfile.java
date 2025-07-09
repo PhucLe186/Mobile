@@ -33,6 +33,7 @@ import com.example.projectmobile.R;
 import com.example.projectmobile.Setting.SettingActivity;
 import com.example.projectmobile.follow.FollowActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,8 @@ import retrofit2.Response;
 
 public class UserInformation_LoggedInProfile extends Fragment {
 
+    private TabLayout tabLayout;
+    private  GetVideosItemReq request;
     private LinearLayout layout1, layout2, layout3;
     private TextView usernameText, followersText,followingText , likesText;
     private ImageView menuButton,imgAvatar, edit;
@@ -62,11 +65,13 @@ public class UserInformation_LoggedInProfile extends Fragment {
         View view = inflater.inflate(R.layout.activity_user_infomation_logged_in, container, false);
         initView(view);
         getUserIdFromToken();
+        videoApi = ApiClient.getClient().create(VideoApi.class);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));//set layout
         getUserVideo();//get video from server then store it into gridList
         getUserInfo();//get user info to display on screen
         menuButton.setOnClickListener(v -> showBottomMenu());
 
+        setupTabs(tabLayout);
         return view;
     }
     private void initView( View view) {
@@ -80,6 +85,7 @@ public class UserInformation_LoggedInProfile extends Fragment {
         imgAvatar = view.findViewById(R.id.img_avatar);
         recyclerView = view.findViewById(R.id.recyclerView);
         edit=view.findViewById(R.id.editor);
+        tabLayout= view.findViewById(R.id.layout3);
     }
     private void showBottomMenu() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
@@ -92,6 +98,23 @@ public class UserInformation_LoggedInProfile extends Fragment {
         bottomSheetView.findViewById(R.id.menu_settings).setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), SettingActivity.class));
             bottomSheetDialog.dismiss();
+        });
+    }
+    private void setupTabs(TabLayout tabLayout) {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                gridList.clear();
+                adapter = null;
+                recyclerView.setAdapter(null);
+                if (tab.getPosition() == 0) {
+                    getUserVideo();
+                } else {
+                    getUserVideoLike();
+                }
+            }
+            @Override public void onTabUnselected(TabLayout.Tab tab) {}
+            @Override public void onTabReselected(TabLayout.Tab tab) {}
         });
     }
     private void getUserInfo() {
@@ -167,8 +190,7 @@ public class UserInformation_LoggedInProfile extends Fragment {
         recyclerView.post(()->adapter.playVisibleVideos(recyclerView));
     }
     private void getUserVideo() {
-        videoApi = ApiClient.getClient().create(VideoApi.class);
-        GetVideosItemReq request = new GetVideosItemReq(user_id);
+        request = new GetVideosItemReq(user_id);
         videoApi.getUserVideo(request).enqueue(new Callback<GetVideosItemRes>() {
             @Override
             public void onResponse(@NonNull Call<GetVideosItemRes> call, @NonNull Response<GetVideosItemRes> response) {
@@ -186,6 +208,7 @@ public class UserInformation_LoggedInProfile extends Fragment {
                             recyclerView.setAdapter(adapter);//set adapter
                             videoHandle();//Handling video when it's display on screen
                         }
+                        adapter.notifyDataSetChanged();
                     }
                 }
                 else{//if fail in get user's video
@@ -194,6 +217,39 @@ public class UserInformation_LoggedInProfile extends Fragment {
             }
             @Override
             public void onFailure(@NonNull Call<GetVideosItemRes> call, @NonNull Throwable t) {
+            }
+        });
+    }
+    private void getUserVideoLike() {
+        request = new GetVideosItemReq(user_id);
+        videoApi.getUserLikedVideos(request).enqueue(new Callback<GetVideosItemRes>() {
+            @Override
+            public void onResponse(Call<GetVideosItemRes> call, Response<GetVideosItemRes> response) {
+                if(response.isSuccessful()){
+                    assert response.body() != null;//ensure response body is not null
+                    List<VideoItemHolder> videoList = response.body().getData();
+                    if(videoList != null && !videoList.isEmpty()){
+                        gridList.clear();
+                        for (VideoItemHolder video : videoList) {
+                            gridList.add(video.getVideo_url());
+                        }
+                        if(adapter==null){
+                            Log.d("getUserVideo", gridList.get(0));
+                            adapter = new VideoGridAdapter(getContext(), gridList);
+                            recyclerView.setAdapter(adapter);//set adapter
+                            videoHandle();//Handling video when it's display on screen
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+                else{//if fail in get user's video
+                    Log.d("getUserVideo", String.valueOf(response.body()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetVideosItemRes> call, Throwable t) {
+
             }
         });
     }

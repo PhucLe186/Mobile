@@ -1,141 +1,178 @@
 package com.example.projectmobile.Notification;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.InboxApi;
+import com.example.projectmobile.Notification.model.MessageList;
 import com.example.projectmobile.R;
+import com.example.projectmobile.SocketConfig;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import io.socket.client.Socket;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
 
+    private Socket socket;
+    private TextView name, namee;
+    private ChatAdapter adapter;
+    private InboxApi inboxApi;
     private ListView listViewMessages;
     private EditText editTextMessage;
-    private ImageView buttonSend;
-    private MessageAdapter messageAdapter;
-    private ArrayList<Message> messageList;
+    private ImageView buttonSend, avata, avata2, back;
+    private List<MessageList> messageList;
 
-    private int senderId;
-    private int receiverId;
-    private String token;
+    private int Newid;
+    private String token, avt, Name;
 
     private static final String TAG = "ChatActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        listViewMessages = findViewById(R.id.listViewMessages);
-        editTextMessage = findViewById(R.id.editTextMessage);
-        buttonSend = findViewById(R.id.buttonSend);
-
-        messageList = new ArrayList<>();
-        messageAdapter = new MessageAdapter(this, messageList);
-        listViewMessages.setAdapter(messageAdapter);
-
-        receiverId = getIntent().getIntExtra("receiver", -1);
-        if (receiverId == -1) {
+        initViews();
+        setupListeners();
+        getIntentData();
+        initChat();
+    }
+    private void initChat() {
+        if (Newid == -1) {
             Toast.makeText(this, "Thiếu thông tin người nhận", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
-
-
-        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        token = prefs.getString("token", null);
-        senderId = prefs.getInt("user_id", -1);
-
-        if (token == null || token.isEmpty() || senderId == -1) {
+        if (token == null || token.isEmpty()) {
             Toast.makeText(this, "Vui lòng đăng nhập", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
+        inboxApi = ApiClient.getClient().create(InboxApi.class);
+        messageList = new ArrayList<>();
+        adapter = new ChatAdapter(this, messageList); // Khởi tạo adapter trước
+        listViewMessages.setAdapter(adapter);
         loadMessages();
 
-        buttonSend.setOnClickListener(v -> {
-            String content = editTextMessage.getText().toString().trim();
-            if (!content.isEmpty()) {
-                sendMessage(receiverId, content);
-            } else {
-                Toast.makeText(this, "Vui lòng nhập tin nhắn", Toast.LENGTH_SHORT).show();
+        Glide.with(this).load(avt).circleCrop().into(avata);
+        Glide.with(this).load(avt).circleCrop().into(avata2);
+        name.setText(Name);
+        namee.setText(Name);
+        socket = SocketConfig.getSocket(token);
+        conectSocket();
+    }
+    private void conectSocket() {
+        socket.connect();
+        socket.on(Socket.EVENT_CONNECT, args -> {
+            try {
+                JSONObject joinData = new JSONObject();
+                joinData.put("peer_id", Newid);
+                socket.emit("room", joinData);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         });
-    }
+        socket.on("receive", args -> {
+            runOnUiThread(()->{
+                try{
+                    JSONObject msg=(JSONObject) args[0];
+                    int sender_id=msg.getInt("sender_id");
+                    int receive_id=msg.getInt("receiver_id");
+                    String messageContent = msg.getString("message");
 
-    private void loadMessages() {
-        InboxApi inboxApi = ApiClient.getClient().create(InboxApi.class);
-        Call<MessageResponse> call = inboxApi.getMessages("Bearer " + token);
-        call.enqueue(new Callback<MessageResponse>() {
-            @Override
-            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
-                if (response.isSuccessful()) {
-                    MessageResponse body = response.body();
-                    if (body != null && body.isSuccess() && body.getData() != null) {
-                        messageList.clear();
-                        for (Message msg : body.getData()) {
-                            // Lọc tin nhắn giữa sender và receiver hiện tại
-                            if ((msg.getSenderId() == senderId && msg.getReceiverId() == receiverId) ||
-                                    (msg.getSenderId() == receiverId && msg.getReceiverId() == senderId)) {
-                                messageList.add(msg);
-                            }
-                        }
-                        messageAdapter.notifyDataSetChanged();
-                        listViewMessages.smoothScrollToPosition(messageList.size() - 1);
-                        Log.d(TAG, "Loaded " + messageList.size() + " messages");
-                    } else {
-                        Toast.makeText(ChatActivity.this, "Không có tin nhắn nào", Toast.LENGTH_SHORT).show();
+                    if(receive_id == Newid){
+                        return ;
                     }
-                } else {
-                    Toast.makeText(ChatActivity.this, "Không thể tải tin nhắn: " + response.code(), Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Error response code: " + response.code());
-                }
-            }
+                    else {
+                        MessageList message = new MessageList();
+                        message.setMyself(0);
+                        message.setMessage(messageContent);
+                        message.setReceiver_avatar(avt);
+                        messageList.add(message);
+                        adapter.notifyDataSetChanged();
+                    }
 
-            @Override
-            public void onFailure(Call<MessageResponse> call, Throwable t) {
-                Toast.makeText(ChatActivity.this, "Lỗi kết nối máy chủ", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "API Failure: " + t.getMessage(), t);
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            });
+        });
+    }
+    private void getIntentData() {
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        token = "Bearer " + prefs.getString("token", "");
+        Newid = getIntent().getIntExtra("id", -1);
+        avt = getIntent().getStringExtra("avt");
+        Name = getIntent().getStringExtra("name");
+    }
+    private void setupListeners() {
+        back.setOnClickListener(v -> finish());
+        buttonSend.setOnClickListener(v -> {
+            String message = editTextMessage.getText().toString().trim();
+            if(!message.isEmpty()){
+                try {
+                    MessageList newMessage = new MessageList();
+                    newMessage.setMessage(message);
+                    newMessage.setMyself(1);
+
+                    messageList.add(newMessage);
+                    adapter.notifyDataSetChanged();
+                    JSONObject msg = new JSONObject();
+                    msg.put("receiver_id", Newid);
+                    msg.put("message",message);
+                    socket.emit("send",msg);
+                    editTextMessage.setText("");
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
 
-    private void sendMessage(int receiverId, String content) {
-        InboxApi inboxApi = ApiClient.getClient().create(InboxApi.class);
-        MessageRequest messageRequest = new MessageRequest(receiverId, content);
-        Call<Void> call = inboxApi.sendMessage("Bearer " + token, messageRequest);
-        call.enqueue(new Callback<Void>() {
+    private void initViews() {
+        listViewMessages = findViewById(R.id.listViewMessages);
+        editTextMessage = findViewById(R.id.editTextMessage);
+        buttonSend = findViewById(R.id.buttonSend);
+        avata = findViewById(R.id.avt);
+        avata2 = findViewById(R.id.avt2);
+        name = findViewById(R.id.name);
+        namee = findViewById(R.id.name2);
+        back = findViewById(R.id.btnback);
+    }
+    private void loadMessages() {
+        inboxApi.fetchChatMessages(token, Newid).enqueue(new Callback<List<MessageList>>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(ChatActivity.this, "Gửi tin nhắn thành công", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "Message sent");
-                    editTextMessage.setText("");
-                    loadMessages(); // Load lại để cập nhật
-                } else {
-                    Toast.makeText(ChatActivity.this, "Gửi thất bại: " + response.code(), Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Send message failed code: " + response.code());
+            public void onResponse(Call<List<MessageList>> call, Response<List<MessageList>> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    messageList.clear(); // Xóa danh sách cũ
+                    messageList.addAll(response.body()); // Thêm tin nhắn từ API
+                    adapter.notifyDataSetChanged();
                 }
             }
-
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(ChatActivity.this, "Lỗi kết nối máy chủ", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Send message error: " + t.getMessage(), t);
+            public void onFailure(Call<List<MessageList>> call, Throwable t) {
+                Toast.makeText(ChatActivity.this, "lỗi lấy tin: "+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

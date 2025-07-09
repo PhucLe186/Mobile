@@ -26,6 +26,7 @@ import retrofit2.Response;
 
 public class FollowActivity extends AppCompatActivity implements UserAdapter.OnFollowClickListener {
 
+    private String newStatus;
     private String token;
     private ImageView onback;
     private TextView headername;
@@ -139,7 +140,7 @@ public class FollowActivity extends AppCompatActivity implements UserAdapter.OnF
     @Override
     public void onFollowClick(int position, User user) {
 
-        String newStatus = user.getFollow_status();
+        newStatus = user.getFollow_status();
         user.setFollow_status("Bạn bè");
         adapter.notifyItemChanged(position);
 
