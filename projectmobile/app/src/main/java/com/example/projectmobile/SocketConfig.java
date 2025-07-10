@@ -14,10 +14,17 @@ public class SocketConfig {
                 IO.Options opts = new IO.Options();
                 opts.query = "token=" + token;
                 socket = IO.socket("http://10.0.2.2:5000", opts);
+                socket.connect();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
         }
         return socket;
+    }
+    public static void disconnectSocket() {
+        if (socket != null) {
+            socket.disconnect();
+            socket = null;
+        }
     }
 }

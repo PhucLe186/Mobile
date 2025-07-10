@@ -1,40 +1,4 @@
 const db = require('../../Config/sqlServer.js');
-// const  { io }  = require('../../sever.js');
-
-// console.log(io)
-// const authenticateSocket=require('../../middleware/authenticateSocket.js');
-// io.use(authenticateSocket);
-// let user_id = socket.user?.user_id;
-
-// io.on('connection', (socket) => {
-//   console.log('🟢 Connected:', socket.id);
-
-//   socket.on('join_room', async ({peer_id }) => {
-//     const room = await getOrCreateRoom(user_id, peer_id);
-//     socket.join(room.toString());
-//     console.log(`👥 User ${user_id} joined room ${room}`);
-//   });
-
-//   socket.on('send_message', async ({receiver_id, message }) => {
-//     const room = await getOrCreateRoom(user_id, receiver_id);
-//     const connection = await db();
-
-//     await connection.execute(`
-//       INSERT INTO messages (sender_id, receiver_id, message, room)
-//       VALUES (?, ?, ?, ?)
-//     `, [user_id, receiver_id, message, room]);
-
-//     await connection.end();
-
-//     io.to(room.toString()).emit('receive_message', {
-//       sender_id,
-//       receiver_id,
-//       message,
-//       room,
-//       sent_at: new Date().toISOString()
-//     });
-//   });
-// });
 class InboxController {
   /////////////
   async getOrCreateRoom({sender_id, receiver_id }) {
@@ -48,13 +12,20 @@ class InboxController {
     )
     if(rows.length==0){
       const newRoom = Math.floor(100000 + Math.random() * 900000);
-       await connection.end()
+      await connection.end()
       return newRoom
     }else{
-      console.log(rows[0].room);
-       await connection.end()
+      await connection.end()
       return rows[0].room 
     } 
+  }
+  async getAllroomofUser({user_id}){
+    const connection= await db()
+    const [rows]=await connection.execute(
+      'SELECT DISTINCT room FROM messages WHERE sender_id=? OR receiver_id=?',[user_id, user_id]
+    )
+    await connection.end()
+    return rows.map(r=>r.room)
   }
   ////////////////////////////////
   //  Lấy danh sách tin nhắn

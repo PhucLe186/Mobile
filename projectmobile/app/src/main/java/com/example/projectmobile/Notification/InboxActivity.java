@@ -25,17 +25,20 @@ import com.example.projectmobile.Utils.MessageUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.socket.client.Socket;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class InboxActivity extends Fragment {
 
+    private Socket socket;
     private ListView inboxListView;
     private ArrayList<Message> messageList;
     private MessageAdapter messageAdapter;
     private Context context;
-
+    private int user_id;
+    private String token;
     private static final String TAG = "InboxActivity";
 
     public InboxActivity() {
@@ -55,10 +58,17 @@ public class InboxActivity extends Fragment {
         messageAdapter = new MessageAdapter(context, messageList);
         inboxListView.setAdapter(messageAdapter);
 
-        loadMessagesFromApi();
+        SharedPreferences prefs = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        token = prefs.getString("token", null);
+        loadMessagesFromApi(token);
+//        user_id = Integer.parseInt(new DecodeToken().getUserIdFromToken(token));
+
+
+//        connectsocket();
 
         inboxListView.setOnItemClickListener((parent, view, position, id) -> {
             Message mgs = messageList.get(position);
+
 
             int selectedchat = mgs.getMessage_id();
             if (selectedchat == -1) {
@@ -68,6 +78,7 @@ public class InboxActivity extends Fragment {
 
             int seleted;
             if(mgs.getMyself()==1){
+
                 seleted=mgs.getReceiver_id();
                 intent.putExtra("id",seleted );
                 intent.putExtra("avt", mgs.getReceiver_avatar());
@@ -75,6 +86,7 @@ public class InboxActivity extends Fragment {
                 Toast.makeText(getContext(), "vai "+seleted, Toast.LENGTH_SHORT).show();
             }
             else {
+
                 seleted=mgs.getSender_id();
                 intent.putExtra("id", mgs.getSender_id());
                 intent.putExtra("avt", mgs.getSender_avatar());
@@ -87,14 +99,71 @@ public class InboxActivity extends Fragment {
 
         return rootView;
     }
-    private void loadMessagesFromApi() {
-        SharedPreferences prefs = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
-        String token = prefs.getString("token", null);
+
+//    private void connectsocket() {
+//        socket = SocketConfig.getSocket(token);
+//        if (socket.connected()) {
+//            socket.emit("joinAllrooms");
+//            return;
+//        }
+//        socket.connect();
+//        socket.on(Socket.EVENT_CONNECT, args -> {
+//            try {
+//                socket.emit("joinAllrooms");
+//
+//            } catch (RuntimeException e) {
+//                throw new RuntimeException(e);
+//            }
+//        });
+//        socket.on("update_receive", args ->{
+//            requireActivity().runOnUiThread(() -> {
+//                try {
+//                    JSONObject msg=(JSONObject) args[0];
+//                    int sender_id=msg.getInt("sender_id");
+//                    int receiver_id=msg.getInt("receiver_id");
+//                    String name= msg.getString("name");
+//                    String message= msg.getString("message");
+//                    String avt=msg.getString("avata_url");
+//                    String time=msg.getString("sent_at");
+//
+//
+//                    {
+//                        Message mess = new Message();
+//
+//
+//                        mess.setSender_id(sender_id);
+//                        mess.setSender_username(name);
+//                        mess.setSender_avatar(avt);
+//                        mess.setSent_at(time);
+//                        mess.setMyself(0);
+//                        mess.setMessage(message);
+//
+//
+//
+//                        // Nhóm lại các tin nhắn
+//                        List<Message> groupedMessages = MessageUtils.groupMessages(Collections.singletonList(mess));
+//                        messageList.clear();
+//                        messageList.add((Message) groupedMessages);
+//
+//                        // Cập nhật giao diện
+//                        messageAdapter.notifyDataSetChanged();
+//
+//                    }
+//                } catch (Exception e) {
+//                    throw new RuntimeException(e);
+//                }
+//            });
+//        });
+//
+//    }
+
+    private void loadMessagesFromApi( String token) {
 
         if (token == null || token.isEmpty()) {
             Toast.makeText(context, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
             return;
         }
+
         InboxApi inboxApi = ApiClient.getClient().create(InboxApi.class);
         Call<MessageResponse> call = inboxApi.getMessages("Bearer " + token);
         call.enqueue(new Callback<MessageResponse>() {
@@ -108,7 +177,6 @@ public class InboxActivity extends Fragment {
                     }
                     messageAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(context, "Không thể tải tin nhắn", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -118,4 +186,20 @@ public class InboxActivity extends Fragment {
             }
         });
     }
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        if (socket != null) {
+//            socket.off("update_receive");
+//            socket.disconnect();
+//            SocketConfig.disconnectSocket();
+//        }
+//    }
+@Override
+public void onHiddenChanged(boolean hidden) {
+    super.onHiddenChanged(hidden);
+    if (!hidden) {
+        loadMessagesFromApi(token); // khi fragment hiện lại
+    }
+}
 }

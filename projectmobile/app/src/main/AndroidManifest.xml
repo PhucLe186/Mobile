@@ -23,6 +23,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
+
+        <activity
+            android:name=".Information.EditInformation.ActivityEditName"
+            android:exported="false"
+            />
         <activity
             android:name=".CartActivity"
             android:exported="false"

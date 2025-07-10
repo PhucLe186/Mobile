@@ -78,10 +78,22 @@ public class ChatActivity extends AppCompatActivity {
         Glide.with(this).load(avt).circleCrop().into(avata2);
         name.setText(Name);
         namee.setText(Name);
-        socket = SocketConfig.getSocket(token);
+//        socket = SocketConfig.getSocket(token);
         conectSocket();
     }
+    private void getIntentData() {
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        token = "Bearer " + prefs.getString("token", "");
+        Newid = getIntent().getIntExtra("id", -1);
+        avt = getIntent().getStringExtra("avt");
+        Name = getIntent().getStringExtra("name");
+    }
     private void conectSocket() {
+        socket = SocketConfig.getSocket(token);
+        if (socket.connected()) {
+            socket.emit("room", Newid);
+            return;
+        }
         socket.connect();
         socket.on(Socket.EVENT_CONNECT, args -> {
             try {
@@ -107,7 +119,7 @@ public class ChatActivity extends AppCompatActivity {
                         MessageList message = new MessageList();
                         message.setMyself(0);
                         message.setMessage(messageContent);
-                        message.setReceiver_avatar(avt);
+                        message.setSender_avatar(avt);
                         messageList.add(message);
                         adapter.notifyDataSetChanged();
                     }
@@ -118,13 +130,6 @@ public class ChatActivity extends AppCompatActivity {
             });
         });
     }
-    private void getIntentData() {
-        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
-        token = "Bearer " + prefs.getString("token", "");
-        Newid = getIntent().getIntExtra("id", -1);
-        avt = getIntent().getStringExtra("avt");
-        Name = getIntent().getStringExtra("name");
-    }
     private void setupListeners() {
         back.setOnClickListener(v -> finish());
         buttonSend.setOnClickListener(v -> {
@@ -134,7 +139,6 @@ public class ChatActivity extends AppCompatActivity {
                     MessageList newMessage = new MessageList();
                     newMessage.setMessage(message);
                     newMessage.setMyself(1);
-
                     messageList.add(newMessage);
                     adapter.notifyDataSetChanged();
                     JSONObject msg = new JSONObject();
@@ -175,5 +179,15 @@ public class ChatActivity extends AppCompatActivity {
                 Toast.makeText(ChatActivity.this, "lỗi lấy tin: "+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (socket != null) {
+            socket.off("receive");
+            socket.disconnect();
+            SocketConfig.disconnectSocket();
+        }
     }
 }

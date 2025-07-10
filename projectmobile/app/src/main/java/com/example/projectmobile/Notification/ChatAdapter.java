@@ -44,10 +44,9 @@ public class ChatAdapter extends BaseAdapter {
         MessageList message = messageList.get(position);
         return message.getMyself() == 1 ? TYPE_RIGHT : TYPE_LEFT;
     }
-
     @Override
     public int getViewTypeCount() {
-        return 2; // Trái và phải
+        return 2;
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -71,7 +70,26 @@ public class ChatAdapter extends BaseAdapter {
             ImageView avatar = convertView.findViewById(R.id.avt);
 
             messageText.setText(message.getMessage());
-            Glide.with(context).load(message.getSender_avatar()).circleCrop().into(avatar);
+            messageText.setText(message.getMessage());
+
+            if (viewType == TYPE_LEFT) {
+                boolean isLastFromSender = true;
+                if (position < messageList.size() - 1) {
+                    MessageList nextMessage = messageList.get(position + 1);
+                    if (nextMessage.getMyself() == 0) {
+                        isLastFromSender = false;
+                    }
+                }
+                if (isLastFromSender) {
+                    avatar.setVisibility(View.VISIBLE);
+                    Glide.with(context)
+                            .load(message.getSender_avatar())
+                            .circleCrop()
+                            .into(avatar);
+                } else {
+                    avatar.setVisibility(View.INVISIBLE);
+                }
+            }
         }
 
         return convertView;

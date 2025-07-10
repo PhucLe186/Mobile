@@ -32,10 +32,11 @@ import retrofit2.Response;
 
 public class ActivityEditAvata extends AppCompatActivity {
 
+
     private int user_id;
     private MultipartBody.Part body;
     private EditProfile api;
-    private String token;
+    private String token, name;
     private androidx.activity.result.ActivityResultLauncher<android.content.Intent> imagePickerLauncher;
     private android.net.Uri selectedImageUri;
     private ImageView backImage, profileImage, nameEditIcon, tiktokIdEditIcon,
@@ -65,6 +66,27 @@ public class ActivityEditAvata extends AppCompatActivity {
         changeImageText.setOnClickListener(v -> openImagePicker());
         profileImage.setOnClickListener(v -> openImagePicker());
         backImage.setOnClickListener(v -> finish());
+        nameEditIcon.setOnClickListener(v -> {
+            Intent intent= new Intent(this, ActivityEditName.class);
+            intent.putExtra("name", name);
+            startActivity(intent);
+        });
+    }
+    private void initView() {
+        backImage = findViewById(R.id.backImage);
+        profileImage = findViewById(R.id.profileImage);
+        changeImageText = findViewById(R.id.changeImageText);
+        nameValue = findViewById(R.id.nameValue);
+        nameEditIcon = findViewById(R.id.nameEditIcon);
+        tiktokIdValue = findViewById(R.id.tiktokIdValue);
+        tiktokIdEditIcon = findViewById(R.id.tiktokIdEditIcon);
+        tiktokLink = findViewById(R.id.tiktokLink);
+        bioValue = findViewById(R.id.bioValue);
+        bioEditIcon = findViewById(R.id.bioEditIcon);
+        linkValue = findViewById(R.id.linkValue);
+        linkEditIcon = findViewById(R.id.linkEditIcon);
+        aiSelfValue = findViewById(R.id.aiSelfValue);
+        aiSelfEditIcon = findViewById(R.id.aiSelfEditIcon);
     }
     private void initLauncher() {
         imagePickerLauncher = registerForActivityResult(
@@ -84,27 +106,12 @@ public class ActivityEditAvata extends AppCompatActivity {
         intent.setType("image/*");
         imagePickerLauncher.launch(intent);
     }
-    private void initView() {
-        backImage = findViewById(R.id.backImage);
-        profileImage = findViewById(R.id.profileImage);
-        changeImageText = findViewById(R.id.changeImageText);
-        nameValue = findViewById(R.id.nameValue);
-        nameEditIcon = findViewById(R.id.nameEditIcon);
-        tiktokIdValue = findViewById(R.id.tiktokIdValue);
-        tiktokIdEditIcon = findViewById(R.id.tiktokIdEditIcon);
-        tiktokLink = findViewById(R.id.tiktokLink);
-        bioValue = findViewById(R.id.bioValue);
-        bioEditIcon = findViewById(R.id.bioEditIcon);
-        linkValue = findViewById(R.id.linkValue);
-        linkEditIcon = findViewById(R.id.linkEditIcon);
-        aiSelfValue = findViewById(R.id.aiSelfValue);
-        aiSelfEditIcon = findViewById(R.id.aiSelfEditIcon);
-    }
     private void getInfor(String token){
         Toast.makeText(ActivityEditAvata.this,"ok", Toast.LENGTH_SHORT).show();
     api.getInfor(token).enqueue(new Callback<List<Information>>() {
     @Override
     public void onResponse(Call<List<Information>> call, Response<List<Information>> response) {
+        name=response.body().get(0).getUsername();
         nameValue.setText(response.body().get(0).getUsername());
         Glide.with(ActivityEditAvata.this)
                 .load(response.body().get(0).getAvatar_url())
@@ -116,8 +123,6 @@ public class ActivityEditAvata extends AppCompatActivity {
     @Override
     public void onFailure(Call<List<Information>> call, Throwable t) {
         Toast.makeText(ActivityEditAvata.this, "Upload thất bại: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-
-
     }
 });
     }

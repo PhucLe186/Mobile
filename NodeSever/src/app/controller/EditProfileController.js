@@ -54,6 +54,17 @@ class EditProfileController {
 return res.status(500).json({ message: 'Lỗi server', error: err.message });
   }
   }
+
+  async changeName(req, res){
+    let user_id = req.user?.user_id;
+    const{name}=req.body;
+    console.log(name)
+
+    const connection= await db();
+    await connection.execute(`UPDATE users SET username =? WHERE user_id=?`, [name, user_id])
+
+    res.status(200).json({message: 'update complete'})
+  }
 }
 
 module.exports = new EditProfileController();

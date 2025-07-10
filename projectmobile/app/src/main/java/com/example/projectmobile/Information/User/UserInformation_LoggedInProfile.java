@@ -262,5 +262,4 @@ public class UserInformation_LoggedInProfile extends Fragment {
             }
         }
     }
-
 }
