@@ -37,13 +37,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
         setView();//Init all views
         setListener();//Set listener on elements
-        HandleForgotPassword();//forgot password handling
-    }
-
-    private void HandleForgotPassword() {
-    }
-
-    private void getInput() {
 
     }
 
@@ -55,11 +48,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         errorText = findViewById(R.id.txt_error);
     }//set view for all elements
     private void setListener() {
-        btnSend.setOnClickListener(v -> {
-            getInput();
+        btnSend.setOnClickListener(v ->{
             forgotPasswordHandler();
         });
-
+        btnBack.setOnClickListener(v ->{
+            finish();
+        });
     }
 
     private void forgotPasswordHandler() {

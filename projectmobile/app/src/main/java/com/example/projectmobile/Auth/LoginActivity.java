@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +21,10 @@ import com.example.projectmobile.Auth.AuthModel.LoginRequest;
 import com.example.projectmobile.Auth.AuthModel.LoginResponse;
 import com.example.projectmobile.MainActivity;
 import com.example.projectmobile.R;
+import com.example.projectmobile.model.ErrorResponse;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -96,6 +101,23 @@ public class LoginActivity extends AppCompatActivity {
                     editor.apply();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
+                }
+                else{
+                    try {
+                        if (response.errorBody() != null) {
+                            String errorJson = response.errorBody().string();
+                            ErrorResponse error = new Gson().fromJson(errorJson, ErrorResponse.class);
+                            txtError.setText(error.getError());
+                            txtError.setVisibility(View.VISIBLE);
+                        } else {
+                            txtError.setText("Unexpected error occurred");
+                            txtError.setVisibility(View.VISIBLE);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        txtError.setText("An error occurred while parsing error response");
+                        txtError.setVisibility(View.VISIBLE);
+                    }
                 }
             }
             @Override
