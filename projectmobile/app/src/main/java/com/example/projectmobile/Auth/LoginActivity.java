@@ -90,7 +90,6 @@ public class LoginActivity extends AppCompatActivity {
         LoginRequest loginModule= new LoginRequest(username, password);
         auth.Login(loginModule).enqueue(new Callback<LoginResponse>() {
 
-
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if(response.isSuccessful() && response.body() != null){

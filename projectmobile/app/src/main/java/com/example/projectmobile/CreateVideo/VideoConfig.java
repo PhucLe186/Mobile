@@ -1,6 +1,7 @@
 package com.example.projectmobile.CreateVideo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import androidx.media3.ui.PlayerView;
 
 import com.example.projectmobile.ApiConfig.ApiClient;
 import com.example.projectmobile.ApiConfig.AuthorApi;
+import com.example.projectmobile.MainActivity;
 import com.example.projectmobile.R;
 import com.example.projectmobile.Utils.FileUtils;
 
@@ -118,14 +120,18 @@ public class VideoConfig extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
+                    Toast.makeText(VideoConfig.this, "Upload thành công!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(VideoConfig.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                else {
                     try {
                         String errorBody = response.errorBody().string();
                         Log.e("UploadError", errorBody);
                         Toast.makeText(VideoConfig.this, "Upload thất bại: " + errorBody, Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }                }
-                else {
+                    }
                     Toast.makeText(VideoConfig.this, "Upload thất bại! Mã lỗi: " + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }

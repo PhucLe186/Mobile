@@ -129,8 +129,10 @@ public class CommentBottomSheet {
                             }
                         }
                         else{
-                            Log.e("comment", String.valueOf(response.code()));
-                            Toast.makeText(context, "Your comment can not be uploaded!", Toast.LENGTH_SHORT).show();
+                            Log.d("comment", String.valueOf(response.code()));
+                            if(response.code() == 403 ){//403 mean do not have token
+                                Toast.makeText(context, "Bạn phải đăng nhập để có bình luận", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                     @Override
