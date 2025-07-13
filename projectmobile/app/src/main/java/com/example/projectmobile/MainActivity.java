@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.ComponentActivity;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -105,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        loadFragment(new VideoActivity());
 
         btnAdd.setOnClickListener(v -> {
-            startActivity(new Intent( this, CreateVideoActivity.class));
+            if(!token.isEmpty()) startActivity(new Intent( this, CreateVideoActivity.class));
+            else Toast.makeText(MainActivity.this, "Cần đăng nhập để tạo video", Toast.LENGTH_LONG).show();
         });
         btnSearch.setOnClickListener(v -> {
             startActivity(new Intent( this, SearchActivity.class));
@@ -179,7 +181,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void CheckLogin(String token) {
-
         if(!token.isEmpty()){
             api= ApiClient.getClient().create(AuthApi.class);
             api.checkLogin("Bearer " + token).enqueue(new Callback<CheckLogin>() {
