@@ -167,7 +167,6 @@ public class UserInformation_LoggedInProfile extends Fragment {
         gridList.clear(); // Xóa danh sách video cũ để load lại
         getUserVideo();   // Cập nhật video user
     }
-
     private void getUserIdFromToken() {
         SharedPreferences prefs = requireContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = prefs.edit();
@@ -246,10 +245,8 @@ public class UserInformation_LoggedInProfile extends Fragment {
                     Log.d("getUserVideo", String.valueOf(response.body()));
                 }
             }
-
             @Override
             public void onFailure(Call<GetVideosItemRes> call, Throwable t) {
-
             }
         });
     }

@@ -70,6 +70,7 @@ CREATE TABLE Messages (
     sender_id INT,
     receiver_id INT,
     message TEXT,
+    room INT DEFAULT NULL, // xác dịnh đang chat với ai
     sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     is_read BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (sender_id) REFERENCES Users(user_id) ON DELETE CASCADE,
